@@ -1,0 +1,91 @@
+/* ===== design tokens ===== */
+/* Единственный источник правды: цвета, отступы, радиусы, тайминги.
+   Значения выверены по макету Figma (node 1519:27292). */
+
+:root {
+  /* --- цвета: поверхности --- */
+  --color-bg: #f7f9fb;
+  --color-surface: rgba(223, 230, 234, 0.6);
+  --color-surface-solid: #e3efed;
+
+  /* --- цвета: текст --- */
+  --color-text: #102b37;
+  --color-text-heading: #0e6d6f;
+  --color-text-card: #123a3c;
+  --color-text-muted: #5e7e7e;
+  --color-text-inverse: #fff;
+
+  /* --- цвета: акценты --- */
+  --color-accent: #154e55;
+  --color-accent-hover: #0e6d6f;
+  --color-brand: #2eabb7;
+
+  /* --- градиент-оверлей на фото-карточке --- */
+  --overlay-card: linear-gradient(
+    180deg,
+    rgba(14, 109, 111, 0.51) 0%,
+    rgba(5, 104, 137, 0.05) 50.962%,
+    rgba(14, 109, 111, 0.51) 100%
+  );
+
+  /* На узких экранах карточка короткая, описание попадает на прозрачную
+     середину градиента — там нужен более плотный скрим (responsive.css). */
+  --overlay-card-strong: linear-gradient(
+    180deg,
+    rgba(14, 109, 111, 0.72) 0%,
+    rgba(5, 104, 137, 0.42) 50%,
+    rgba(14, 109, 111, 0.72) 100%
+  );
+
+  /* --- шрифты --- */
+  --font-base: 'Alexandria', 'Helvetica Neue', Arial, sans-serif;
+  --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* --- отступы: шкала 4px --- */
+  --space-xs: 8px;
+  --space-s: 16px;
+  --space-m: 32px;
+  --space-l: 64px;
+  --space-xl: 128px;
+
+  /* --- отступы: сетка макета --- */
+  --page-pad: 20px; /* поле страницы со всех сторон */
+  --grid-gap: 20px;
+  /* вертикальный ритм экрана тянется за высотой вьюпорта:
+     на макетных 851px даёт ровно 93px из Figma */
+  --section-gap: clamp(32px, 10.9vh, 93px);
+  --card-gap: 8px;
+  --card-pad: 20px;
+  --nav-pad-y: 12px;
+  --nav-pad-x: 20px;
+  --brand-gap: 20px; /* лого ↔ переключатель языка */
+  --burger-w: 18px;
+  --burger-line: 2px;
+  --burger-gap: 6px;
+  --nav-item-gap: 10px;
+  --button-pad-x: 28px;
+  --card-body-gap: 14px;
+  --arrow-shift: 4px;
+
+  /* --- размеры --- */
+  --container-max: 1920px;
+  --header-pill-h: 42px;
+  --nav-item-h: 40px;
+  --logo-w: 120px;
+  --logo-h: 24.97px;
+  --lang-h: 31px;
+  --card-h: clamp(240px, 38vh, 445px); /* нижний порог; реальную высоту даёт flex внутри T_Screen */
+  --card-link-max-w: 220px;
+  --chevron-box: 12.728px;
+  --chevron-size: 9px;
+
+  /* --- прочее --- */
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 8px;
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  /* раскрытие карточки — как smart animate: всё меняется одним движением,
+     чистая прозрачность 0 → 100, без сдвигов и перестроения высоты */
+  --transition-card: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}

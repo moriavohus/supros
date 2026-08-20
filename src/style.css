@@ -1,0 +1,343 @@
+/* ===== base ===== */
+
+html {
+  /* Привязка скролла — фишка сайта: экран доскроливается до края целиком.
+     Отключается на мобильном и при prefers-reduced-motion (responsive.css). */
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* ===== W_Page ===== */
+
+.W_Page {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--page-pad);
+}
+
+/* ===== T_Screen ===== */
+/* Один экран снап-скролла: ровно вьюпорт в высоту, поле --page-pad внутри. */
+
+.T_Screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  min-height: 100dvh;
+  padding-block: var(--page-pad);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* ===== O_Header ===== */
+
+.O_Header {
+  /* Две равные колонки — grid, а не flex: flex-basis: 0 не даёт элементу
+     с паддингом ужаться уже своего паддинга и ломает деление 50/50.
+     Вторая колонка не сжимается уже min-content навигации: пока половина
+     шире неё (от ~1392px) колонки ровно равные, как в макете, а ниже нав
+     забирает своё, и ужимается плашка с лого — вместо того чтобы резать
+     текст кнопки. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(min-content, 1fr);
+  align-items: center;
+  gap: var(--card-gap);
+
+  .M_Brand {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--brand-gap);
+    height: var(--header-pill-h);
+    padding-inline: var(--nav-pad-x);
+    border-radius: var(--radius-s);
+    background: var(--color-surface);
+  }
+
+  .A_Logo {
+    flex-shrink: 0;
+
+    img {
+      width: var(--logo-w);
+      height: var(--logo-h);
+    }
+  }
+
+  .A_Lang {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    height: var(--lang-h);
+    border-radius: var(--radius-s);
+    color: var(--color-accent);
+  }
+
+  .M_Nav {
+    display: flex;
+    align-items: center;
+    gap: var(--card-gap);
+  }
+
+  .A_NavLink {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nav-item-gap);
+    padding: var(--nav-pad-y) var(--nav-pad-x);
+    border-radius: var(--radius-s);
+    background: var(--color-surface);
+    color: var(--color-text);
+    white-space: nowrap;
+    transition: background var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      background: var(--color-surface-solid);
+    }
+  }
+
+  .A_Chevron {
+    position: relative;
+    flex-shrink: 0;
+    width: var(--chevron-box);
+    height: var(--chevron-box);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--chevron-size);
+      height: var(--chevron-size);
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+  }
+
+  .A_NavToggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--header-pill-h);
+    height: var(--header-pill-h);
+    border-radius: var(--radius-s);
+    background: var(--color-surface);
+    color: var(--color-text);
+    transition: background var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      background: var(--color-surface-solid);
+    }
+
+    &[aria-expanded='true'] .A_Burger {
+      background: transparent;
+
+      &::before {
+        transform: translateY(var(--burger-gap)) rotate(45deg);
+      }
+
+      &::after {
+        transform: translateY(calc(-1 * var(--burger-gap))) rotate(-45deg);
+      }
+    }
+  }
+
+  .A_Burger {
+    position: relative;
+    display: block;
+    width: var(--burger-w);
+    height: var(--burger-line);
+    background: currentColor;
+    transition: background var(--transition-fast);
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: currentColor;
+      transition: transform var(--transition-base);
+    }
+
+    &::before {
+      top: calc(-1 * var(--burger-gap));
+    }
+
+    &::after {
+      top: var(--burger-gap);
+    }
+  }
+
+  .A_ButtonPrimary {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    height: var(--nav-item-h);
+    padding-inline: var(--button-pad-x);
+    border-radius: var(--radius-m);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+    white-space: nowrap;
+    overflow: hidden;
+    transition: background var(--transition-base);
+
+    &:hover,
+    &:focus-visible {
+      background: var(--color-accent-hover);
+    }
+  }
+}
+
+/* ===== O_Hero ===== */
+
+.O_Hero {
+  .W_Container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--grid-gap);
+  }
+
+  .W_BoxLeft,
+  .W_BoxRight {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  h1 {
+    color: var(--color-text-heading);
+  }
+
+  p {
+    color: var(--color-text-muted);
+  }
+}
+
+/* ===== O_Directions ===== */
+
+.O_Directions {
+  /* см. комментарий в O_Header — деление 50/50 держит grid */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  align-items: stretch;
+  gap: var(--card-gap);
+  overflow: hidden;
+
+  .W_CardPair {
+    display: flex;
+    min-width: 0;
+    align-self: stretch;
+    gap: var(--card-gap);
+  }
+}
+
+/* ===== T_DirectionCard ===== */
+/* Два состояния. Default — как 2-я и 3-я карточка в макете: только заголовок
+   и ссылка на приглушённой плашке. Hover/focus — как 1-я: фото, описание,
+   белый текст. На тач-устройствах развёрнутое состояние включено всегда
+   для карточек с фото (см. responsive.css).
+   Высота — min-height, а не height как в Figma: фиксированная высота при
+   длинном описании обрезала ссылку внизу. */
+
+.T_DirectionCard {
+  position: relative;
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-m);
+  min-height: var(--card-h);
+  padding: var(--card-pad);
+  border-radius: var(--radius-s);
+  background: var(--color-surface);
+  color: var(--color-text-card);
+  overflow: hidden;
+  transition:
+    background var(--transition-card),
+    color var(--transition-card);
+
+  .A_CardImage,
+  .A_CardOverlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-card);
+  }
+
+  .A_CardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom;
+  }
+
+  .A_CardOverlay {
+    background: var(--overlay-card);
+  }
+
+  .M_CardBody {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-body-gap);
+    align-self: stretch;
+
+    /* Описание всегда занимает своё место — меняется только прозрачность,
+       поэтому на ховере ничего не переставляется и не дёргается. */
+    p {
+      opacity: 0;
+      transition: opacity var(--transition-card);
+    }
+  }
+
+  .A_CardLink {
+    position: relative;
+    display: inline-block;
+    max-width: var(--card-link-max-w);
+    color: inherit;
+
+    &:hover .A_Arrow,
+    &:focus-visible .A_Arrow {
+      transform: translateX(var(--arrow-shift));
+    }
+  }
+
+  .A_Arrow {
+    display: inline-block;
+    transition: transform var(--transition-fast);
+  }
+
+  &:hover,
+  &:focus-within {
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+
+    .A_CardImage,
+    .A_CardOverlay {
+      opacity: 1;
+    }
+
+    .M_CardBody p {
+      opacity: 1;
+    }
+  }
+}

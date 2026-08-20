@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SUPROS — Engineering a More Efficient Industry</title>
+    <meta
+      name="description"
+      content="We verify specifications, calculate insulation systems, extract material quantities from ISO drawings and deliver from our warehouse in Atyrau."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://supros.kz/index.html" />
+    <link rel="alternate" hreflang="en" href="https://supros.kz/index.html" />
+    <link rel="alternate" hreflang="x-default" href="https://supros.kz/index.html" />
+
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/alexandria-latin.woff2" crossorigin />
+
+    <link rel="stylesheet" href="/src/stylesheets/reset.css" />
+    <link rel="stylesheet" href="/src/stylesheets/vars.css" />
+    <link rel="stylesheet" href="/src/stylesheets/fonts.css" />
+    <link rel="stylesheet" href="/src/stylesheets/typekit.css" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/stylesheets/responsive.css" />
+  </head>
+
+  <body>
+    <div class="W_Page">
+      <!-- Один T_Screen = один экран снап-скролла. Следующие секции добавлять сюда же. -->
+      <section class="T_Screen" id="intro">
+        <header class="O_Header">
+          <div class="M_Brand">
+            <a class="A_Logo" href="/" aria-label="SUPROS — home">
+              <img src="/src/images/logos/supros.svg" alt="SUPROS" width="120" height="25" />
+            </a>
+            <!-- TODO: сделать ссылкой на /ru/index.html, когда появится русская версия -->
+            <span class="A_Lang LangLabel" aria-current="true">EN</span>
+          </div>
+
+          <button
+            class="A_NavToggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="main-nav"
+            aria-label="Open menu"
+          >
+            <span class="A_Burger" aria-hidden="true"></span>
+          </button>
+
+          <nav class="M_Nav" id="main-nav" aria-label="Main">
+            <a class="A_NavLink NavLink" href="/about.html">About</a>
+            <a class="A_NavLink NavLink" href="/solutions.html">
+              Solutions
+              <span class="A_Chevron" aria-hidden="true"></span>
+            </a>
+            <a class="A_NavLink NavLink" href="/projects.html">Projects</a>
+            <a class="A_NavLink NavLink" href="/social-responsibility.html">Social Responsibility</a>
+            <a class="A_ButtonPrimary ButtonLabel" href="/contacts.html">Contact Us</a>
+          </nav>
+        </header>
+
+        <div class="O_Hero">
+          <div class="W_Container">
+            <div class="W_BoxLeft">
+              <h1 class="BigTitle">Engineering a More Efficient Industry</h1>
+            </div>
+            <div class="W_BoxRight">
+              <p>
+                We verify specifications, calculate insulation systems, extract material quantities
+                from ISO drawings and deliver from our warehouse in Atyrau.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="O_Directions">
+          <article class="T_DirectionCard">
+            <img
+              class="A_CardImage"
+              src="/src/images/cases/engineering.jpg"
+              alt="Insulated ductwork and pipework inside an industrial plant"
+              width="1024"
+              height="576"
+              decoding="async"
+            />
+            <span class="A_CardOverlay" aria-hidden="true"></span>
+
+            <div class="M_CardBody">
+              <h2 class="Title">Efficiency starts on paper</h2>
+              <p>
+                Specification review, thermal calculation and take-off from ISO drawings. The right
+                system and the right quantities — before anything is ordered.
+              </p>
+            </div>
+
+            <a class="A_CardLink Link" href="/solutions.html">
+              Go to Engineering <span class="A_Arrow" aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <div class="W_CardPair">
+            <!-- TODO: своё фото и описание — в макете их нет.
+                 Пока подложено фото первой карточки как заглушка. -->
+            <article class="T_DirectionCard">
+              <img
+                class="A_CardImage"
+                src="/src/images/cases/engineering.jpg"
+                alt=""
+                width="1024"
+                height="576"
+                decoding="async"
+              />
+              <span class="A_CardOverlay" aria-hidden="true"></span>
+
+              <div class="M_CardBody">
+                <h2 class="Title">Materials supply</h2>
+              </div>
+
+              <a class="A_CardLink LinkSmall" href="/catalog.html">
+                Go to Catalog <span class="A_Arrow" aria-hidden="true">→</span>
+              </a>
+            </article>
+
+            <!-- TODO: своё фото и описание — в макете их нет.
+                 Пока подложено фото первой карточки как заглушка. -->
+            <article class="T_DirectionCard">
+              <img
+                class="A_CardImage"
+                src="/src/images/cases/engineering.jpg"
+                alt=""
+                width="1024"
+                height="576"
+                decoding="async"
+              />
+              <span class="A_CardOverlay" aria-hidden="true"></span>
+
+              <div class="M_CardBody">
+                <h2 class="Title">We train the industry</h2>
+              </div>
+
+              <a class="A_CardLink LinkSmall" href="/training.html">
+                See more <span class="A_Arrow" aria-hidden="true">→</span>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/javascript/nav.js"></script>
+  </body>
+</html>
