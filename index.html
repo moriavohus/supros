@@ -24,14 +24,23 @@
   </head>
 
   <body>
-    <div class="W_Page">
-      <!-- Один T_Screen = один экран снап-скролла. Следующие секции добавлять сюда же. -->
-      <section class="T_Screen" id="intro">
+    <!-- Один T_Screen = один экран снап-скролла. Следующие секции добавлять сюда же. -->
+    <section class="T_Screen" id="intro">
+      <span class="A_ScreenBg" aria-hidden="true">
+        <img
+          src="/src/images/backgrounds/screen-intro.jpg"
+          alt=""
+          width="1440"
+          height="851"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </span>
+
+      <div class="W_Page">
         <header class="O_Header">
           <div class="M_Brand">
-            <a class="A_Logo" href="/" aria-label="SUPROS — home">
-              <img src="/src/images/logos/supros.svg" alt="SUPROS" width="120" height="25" />
-            </a>
+            <a class="A_Logo" href="/" aria-label="SUPROS — home"></a>
             <!-- TODO: сделать ссылкой на /ru/index.html, когда появится русская версия -->
             <span class="A_Lang LangLabel" aria-current="true">EN</span>
           </div>
@@ -143,8 +152,8 @@
             </article>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
 
     <script type="module" src="/src/javascript/nav.js"></script>
   </body>

@@ -157,9 +157,6 @@
    иначе фото и описание на телефоне не увидеть вовсе. */
 @media (hover: none) {
   .T_DirectionCard:has(.A_CardImage) {
-    background: var(--color-accent);
-    color: var(--color-text-inverse);
-
     .A_CardImage,
     .A_CardOverlay {
       opacity: 1;

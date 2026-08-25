@@ -12,25 +12,46 @@ body {
   color: var(--color-text);
 }
 
+/* ===== T_Screen ===== */
+/* Один экран снап-скролла: ровно вьюпорт в высоту, во всю ширину окна.
+   Фотоподложка лежит на самом экране, поэтому доходит до краёв окна,
+   а контент внутри ограничен --container-max. */
+
+.T_Screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.A_ScreenBg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
 /* ===== W_Page ===== */
 
 .W_Page {
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--page-pad);
-}
-
-/* ===== T_Screen ===== */
-/* Один экран снап-скролла: ровно вьюпорт в высоту, поле --page-pad внутри. */
-
-.T_Screen {
+  position: relative;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--section-gap);
-  min-height: 100dvh;
-  padding-block: var(--page-pad);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--page-pad);
 }
 
 /* ===== O_Header ===== */
@@ -58,13 +79,16 @@ body {
     background: var(--color-surface);
   }
 
+  /* Лого одноцветное, поэтому берём его маской — цвет приходит из токена
+     и логотип сам следует за темой экрана. */
   .A_Logo {
+    display: block;
     flex-shrink: 0;
-
-    img {
-      width: var(--logo-w);
-      height: var(--logo-h);
-    }
+    width: var(--logo-w);
+    height: var(--logo-h);
+    background: currentcolor;
+    /* префикс не нужен: проект и так требует Safari 17.2+ из-за CSS nesting */
+    mask: url('./images/logos/supros.svg') no-repeat center / contain;
   }
 
   .A_Lang {
@@ -74,7 +98,6 @@ body {
     justify-content: center;
     height: var(--lang-h);
     border-radius: var(--radius-s);
-    color: var(--color-accent);
   }
 
   .M_Nav {
@@ -92,13 +115,12 @@ body {
     padding: var(--nav-pad-y) var(--nav-pad-x);
     border-radius: var(--radius-s);
     background: var(--color-surface);
-    color: var(--color-text);
     white-space: nowrap;
     transition: background var(--transition-fast);
 
     &:hover,
     &:focus-visible {
-      background: var(--color-surface-solid);
+      background: var(--color-surface-hover);
     }
   }
 
@@ -129,12 +151,11 @@ body {
     height: var(--header-pill-h);
     border-radius: var(--radius-s);
     background: var(--color-surface);
-    color: var(--color-text);
     transition: background var(--transition-fast);
 
     &:hover,
     &:focus-visible {
-      background: var(--color-surface-solid);
+      background: var(--color-surface-hover);
     }
 
     &[aria-expanded='true'] .A_Burger {
@@ -187,15 +208,15 @@ body {
     height: var(--nav-item-h);
     padding-inline: var(--button-pad-x);
     border-radius: var(--radius-m);
-    background: var(--color-accent);
-    color: var(--color-text-inverse);
+    background: var(--color-button-bg);
+    color: var(--color-text-on-light);
     white-space: nowrap;
     overflow: hidden;
     transition: background var(--transition-base);
 
     &:hover,
     &:focus-visible {
-      background: var(--color-accent-hover);
+      background: var(--color-button-bg-hover);
     }
   }
 }
@@ -219,13 +240,6 @@ body {
     align-items: flex-start;
   }
 
-  h1 {
-    color: var(--color-text-heading);
-  }
-
-  p {
-    color: var(--color-text-muted);
-  }
 }
 
 /* ===== O_Directions ===== */
@@ -267,12 +281,8 @@ body {
   min-height: var(--card-h);
   padding: var(--card-pad);
   border-radius: var(--radius-s);
-  background: var(--color-surface);
-  color: var(--color-text-card);
+  background: var(--color-surface-card);
   overflow: hidden;
-  transition:
-    background var(--transition-card),
-    color var(--transition-card);
 
   .A_CardImage,
   .A_CardOverlay {
@@ -328,9 +338,6 @@ body {
 
   &:hover,
   &:focus-within {
-    background: var(--color-accent);
-    color: var(--color-text-inverse);
-
     .A_CardImage,
     .A_CardOverlay {
       opacity: 1;

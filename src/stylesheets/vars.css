@@ -1,24 +1,27 @@
 /* ===== design tokens ===== */
 /* Единственный источник правды: цвета, отступы, радиусы, тайминги.
-   Значения выверены по макету Figma (node 1519:27292). */
+   Значения выверены по макету Figma (node 1876:32849). */
 
 :root {
-  /* --- цвета: поверхности --- */
-  --color-bg: #f7f9fb;
-  --color-surface: rgba(223, 230, 234, 0.6);
-  --color-surface-solid: #e3efed;
+  /* --- цвета: поверхности ---
+     Экран лежит на размытой фотоподложке, поэтому плашки — полупрозрачное
+     «стекло», а не сплошная заливка. */
+  --color-bg: #f7f9fb; /* подложка страницы под фоновым изображением */
+  --color-surface: rgba(255, 255, 255, 0.1); /* плашка лого, ссылки навигации */
+  --color-surface-hover: rgba(255, 255, 255, 0.2);
+  --color-surface-card: rgba(255, 255, 255, 0.23); /* карточки направлений */
+  --color-surface-solid: #e3efed; /* подложка под фото в карточке */
 
   /* --- цвета: текст --- */
-  --color-text: #102b37;
-  --color-text-heading: #0e6d6f;
-  --color-text-card: #123a3c;
-  --color-text-muted: #5e7e7e;
-  --color-text-inverse: #fff;
+  --color-text: #fff;
+  --color-text-on-light: #184d51; /* текст на белой кнопке */
 
-  /* --- цвета: акценты --- */
-  --color-accent: #154e55;
-  --color-accent-hover: #0e6d6f;
-  --color-brand: #2eabb7;
+  /* --- цвета: кнопка --- */
+  --color-button-bg: #fff;
+  --color-button-bg-hover: rgba(255, 255, 255, 0.86);
+
+  /* --- цвета: бренд --- */
+  --color-brand: #2eabb7; /* фавикон */
 
   /* --- градиент-оверлей на фото-карточке --- */
   --overlay-card: linear-gradient(
