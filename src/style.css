@@ -46,7 +46,9 @@ body {
   grid-template-columns: minmax(0, 1fr) minmax(min-content, 1fr);
   align-items: center;
   height: var(--header-h);
-  border: var(--hairline) solid var(--color-border);
+  /* Каждая линия сетки рисуется ровно один раз: у шапки только низ,
+     у навигации только левый край. Рамки-коробки давали двойные хайрлайны. */
+  border-bottom: var(--hairline) solid var(--color-border);
   background: var(--color-surface-header);
   backdrop-filter: blur(var(--header-blur));
 
@@ -57,6 +59,9 @@ body {
     gap: var(--brand-gap);
     height: 100%;
     padding-inline: var(--nav-pad-x);
+    /* делитель шапки рисуем справа у плашки лого, а не слева у навигации:
+       так он попадает ровно в правую грань белого бокса заголовка ниже */
+    border-right: var(--hairline) solid var(--color-border);
   }
 
   /* Лого одноцветное, поэтому берём его маской — цвет приходит из currentcolor
@@ -82,7 +87,6 @@ body {
     display: flex;
     align-items: center;
     height: 100%;
-    border: var(--hairline) solid var(--color-border-nav);
   }
 
   .A_NavLink {
@@ -212,7 +216,9 @@ body {
     flex-direction: column;
     justify-content: center;
     padding-inline: var(--hero-pad-x);
-    border: var(--hairline) solid var(--color-border);
+    /* верх — это низ шапки, левый край — край окна; рисуем только свои две */
+    border-right: var(--hairline) solid var(--color-border);
+    border-bottom: var(--hairline) solid var(--color-border);
     background: var(--color-bg);
     color: var(--color-text-heading);
   }
