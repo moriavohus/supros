@@ -13,45 +13,25 @@ body {
 }
 
 /* ===== T_Screen ===== */
-/* Один экран снап-скролла: ровно вьюпорт в высоту, во всю ширину окна.
-   Фотоподложка лежит на самом экране, поэтому доходит до краёв окна,
-   а контент внутри ограничен --container-max. */
+/* Один экран снап-скролла: ровно вьюпорт в высоту, во всю ширину окна. */
 
 .T_Screen {
-  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  overflow: hidden;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-}
-
-.A_ScreenBg {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
 }
 
 /* ===== W_Page ===== */
 
 .W_Page {
-  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--section-gap);
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
-  padding: var(--page-pad);
 }
 
 /* ===== O_Header ===== */
@@ -60,26 +40,26 @@ body {
   /* Две равные колонки — grid, а не flex: flex-basis: 0 не даёт элементу
      с паддингом ужаться уже своего паддинга и ломает деление 50/50.
      Вторая колонка не сжимается уже min-content навигации: пока половина
-     шире неё (от ~1392px) колонки ровно равные, как в макете, а ниже нав
-     забирает своё, и ужимается плашка с лого — вместо того чтобы резать
-     текст кнопки. */
+     шире неё, колонки ровно равные, как в макете, а ниже нав забирает
+     своё, и ужимается плашка с лого — вместо того чтобы резать кнопку. */
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(min-content, 1fr);
   align-items: center;
-  gap: var(--card-gap);
+  height: var(--header-h);
+  border: var(--hairline) solid var(--color-border);
+  background: var(--color-surface-header);
+  backdrop-filter: blur(var(--header-blur));
 
   .M_Brand {
     display: flex;
     min-width: 0;
     align-items: center;
     gap: var(--brand-gap);
-    height: var(--header-pill-h);
+    height: 100%;
     padding-inline: var(--nav-pad-x);
-    border-radius: var(--radius-s);
-    background: var(--color-surface);
   }
 
-  /* Лого одноцветное, поэтому берём его маской — цвет приходит из токена
+  /* Лого одноцветное, поэтому берём его маской — цвет приходит из currentcolor
      и логотип сам следует за темой экрана. */
   .A_Logo {
     display: block;
@@ -87,7 +67,6 @@ body {
     width: var(--logo-w);
     height: var(--logo-h);
     background: currentcolor;
-    /* префикс не нужен: проект и так требует Safari 17.2+ из-за CSS nesting */
     mask: url('./images/logos/supros.svg') no-repeat center / contain;
   }
 
@@ -97,13 +76,13 @@ body {
     align-items: center;
     justify-content: center;
     height: var(--lang-h);
-    border-radius: var(--radius-s);
   }
 
   .M_Nav {
     display: flex;
     align-items: center;
-    gap: var(--card-gap);
+    height: 100%;
+    border: var(--hairline) solid var(--color-border-nav);
   }
 
   .A_NavLink {
@@ -112,15 +91,14 @@ body {
     align-items: center;
     justify-content: center;
     gap: var(--nav-item-gap);
+    height: 100%;
     padding: var(--nav-pad-y) var(--nav-pad-x);
-    border-radius: var(--radius-s);
-    background: var(--color-surface);
     white-space: nowrap;
-    transition: background var(--transition-fast);
+    transition: color var(--transition-fast);
 
     &:hover,
     &:focus-visible {
-      background: var(--color-surface-hover);
+      color: var(--color-accent-hover);
     }
   }
 
@@ -137,25 +115,24 @@ body {
       left: 50%;
       width: var(--chevron-size);
       height: var(--chevron-size);
-      border-right: 1px solid currentColor;
-      border-bottom: 1px solid currentColor;
+      border-right: var(--chevron-line) solid currentcolor;
+      border-bottom: var(--chevron-line) solid currentcolor;
       transform: translate(-50%, -50%) rotate(45deg);
     }
   }
 
   .A_NavToggle {
     display: none;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: var(--header-pill-h);
-    height: var(--header-pill-h);
-    border-radius: var(--radius-s);
-    background: var(--color-surface);
-    transition: background var(--transition-fast);
+    width: var(--header-h);
+    height: 100%;
+    transition: color var(--transition-fast);
 
     &:hover,
     &:focus-visible {
-      background: var(--color-surface-hover);
+      color: var(--color-accent-hover);
     }
 
     &[aria-expanded='true'] .A_Burger {
@@ -176,7 +153,7 @@ body {
     display: block;
     width: var(--burger-w);
     height: var(--burger-line);
-    background: currentColor;
+    background: currentcolor;
     transition: background var(--transition-fast);
 
     &::before,
@@ -186,7 +163,7 @@ body {
       left: 0;
       width: 100%;
       height: 100%;
-      background: currentColor;
+      background: currentcolor;
       transition: transform var(--transition-base);
     }
 
@@ -201,111 +178,95 @@ body {
 
   .A_ButtonPrimary {
     display: flex;
-    flex: 1 1 0;
+    flex: 1 0 0;
     min-width: 0;
     align-items: center;
     justify-content: center;
-    height: var(--nav-item-h);
+    height: 100%;
     padding-inline: var(--button-pad-x);
-    border-radius: var(--radius-m);
-    background: var(--color-button-bg);
-    color: var(--color-text-on-light);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
     white-space: nowrap;
     overflow: hidden;
     transition: background var(--transition-base);
 
     &:hover,
     &:focus-visible {
-      background: var(--color-button-bg-hover);
+      background: var(--color-accent-hover);
     }
   }
 }
 
 /* ===== O_Hero ===== */
+/* Сетка 2×2 встык: заголовок, два снимка по диагонали, блок карточек. */
 
 .O_Hero {
-  .W_Container {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: var(--grid-gap);
-  }
+  display: grid;
+  flex: 1;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
 
-  .W_BoxLeft,
-  .W_BoxRight {
+  .T_HeroTitle {
     display: flex;
-    flex: 1 1 0;
     min-width: 0;
     flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    padding-inline: var(--hero-pad-x);
+    border: var(--hairline) solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-heading);
   }
 
+  /* Картинку выводим из потока ячейки: как обычный элемент сетки она тянет
+     строку под свою пропорцию (height: 100% в строке неопределённой высоты
+     не резолвится), и экран перестаёт влезать во вьюпорт. */
+  .W_HeroPhoto {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .A_HeroPhoto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 /* ===== O_Directions ===== */
 
 .O_Directions {
-  /* см. комментарий в O_Header — деление 50/50 держит grid */
   display: grid;
   grid-template-columns: 1fr 1fr;
-  flex: 1;
-  align-items: stretch;
-  gap: var(--card-gap);
-  overflow: hidden;
-
-  .W_CardPair {
-    display: flex;
-    min-width: 0;
-    align-self: stretch;
-    gap: var(--card-gap);
-  }
+  min-width: 0;
 }
 
 /* ===== T_DirectionCard ===== */
-/* Два состояния. Default — как 2-я и 3-я карточка в макете: только заголовок
-   и ссылка на приглушённой плашке. Hover/focus — как 1-я: фото, описание,
-   белый текст. На тач-устройствах развёрнутое состояние включено всегда
-   для карточек с фото (см. responsive.css).
-   Высота — min-height, а не height как в Figma: фиксированная высота при
-   длинном описании обрезала ссылку внизу. */
+/* Два состояния. В покое — светлая плашка с заголовком и ссылкой.
+   На ховере/фокусе — бирюзовая заливка, белый текст и описание.
+   На тач-устройствах развёрнутое состояние включено всегда (responsive.css). */
 
 .T_DirectionCard {
   position: relative;
   display: flex;
-  flex: 1 0 0;
   min-width: 0;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--space-m);
-  min-height: var(--card-h);
+  min-height: var(--card-min-h);
   padding: var(--card-pad);
-  border-radius: var(--radius-s);
   background: var(--color-surface-card);
+  color: var(--color-text-card);
   overflow: hidden;
-
-  .A_CardImage,
-  .A_CardOverlay {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--transition-card);
-  }
-
-  .A_CardImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: bottom;
-  }
-
-  .A_CardOverlay {
-    background: var(--overlay-card);
-  }
+  transition:
+    background var(--transition-card),
+    color var(--transition-card);
 
   .M_CardBody {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--card-body-gap);
@@ -320,14 +281,13 @@ body {
   }
 
   .A_CardLink {
-    position: relative;
     display: inline-block;
     max-width: var(--card-link-max-w);
     color: inherit;
 
     &:hover .A_Arrow,
     &:focus-visible .A_Arrow {
-      transform: translateX(var(--arrow-shift));
+      transform: translateX(var(--space-xs));
     }
   }
 
@@ -338,10 +298,8 @@ body {
 
   &:hover,
   &:focus-within {
-    .A_CardImage,
-    .A_CardOverlay {
-      opacity: 1;
-    }
+    background: var(--overlay-card);
+    color: var(--color-text-inverse);
 
     .M_CardBody p {
       opacity: 1;

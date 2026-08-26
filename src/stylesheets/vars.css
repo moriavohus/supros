@@ -1,48 +1,38 @@
 /* ===== design tokens ===== */
 /* Единственный источник правды: цвета, отступы, радиусы, тайминги.
-   Значения выверены по макету Figma (node 1876:32849). */
+   Значения выверены по макету Figma (node 1948:39649). */
 
 :root {
-  /* --- цвета: поверхности ---
-     Экран лежит на размытой фотоподложке, поэтому плашки — полупрозрачное
-     «стекло», а не сплошная заливка. */
-  --color-bg: #f7f9fb; /* подложка страницы под фоновым изображением */
-  --color-surface: rgba(255, 255, 255, 0.1); /* плашка лого, ссылки навигации */
-  --color-surface-hover: rgba(255, 255, 255, 0.2);
-  --color-surface-card: rgba(255, 255, 255, 0.23); /* карточки направлений */
-  --color-surface-solid: #e3efed; /* подложка под фото в карточке */
+  /* --- цвета: поверхности --- */
+  --color-bg: #fff;
+  --color-surface-header: rgba(255, 255, 255, 0.6); /* стекло шапки */
+  --color-surface-card: #e9eef1; /* карточка в покое */
+  --color-surface-card-base: #e3efed; /* подложка карточки под заливкой ховера */
+
+  /* --- цвета: линии --- */
+  --color-border: #2eabb7;
+  --color-border-nav: #28afb5;
 
   /* --- цвета: текст --- */
-  --color-text: #fff;
-  --color-text-on-light: #184d51; /* текст на белой кнопке */
+  --color-text: #007887; /* навигация, лого, EN */
+  --color-text-heading: #007684;
+  --color-text-card: #123a3c;
+  --color-text-inverse: #fff;
 
-  /* --- цвета: кнопка --- */
-  --color-button-bg: #fff;
-  --color-button-bg-hover: rgba(255, 255, 255, 0.86);
+  /* --- цвета: акцент --- */
+  --color-accent: #007887; /* кнопка Contact Us */
+  --color-accent-hover: #005f6b;
 
-  /* --- цвета: бренд --- */
-  --color-brand: #2eabb7; /* фавикон */
-
-  /* --- градиент-оверлей на фото-карточке --- */
+  /* --- заливка карточки на ховере --- */
   --overlay-card: linear-gradient(
-    180deg,
-    rgba(14, 109, 111, 0.51) 0%,
-    rgba(5, 104, 137, 0.05) 50.962%,
-    rgba(14, 109, 111, 0.51) 100%
-  );
-
-  /* На узких экранах карточка короткая, описание попадает на прозрачную
-     середину градиента — там нужен более плотный скрим (responsive.css). */
-  --overlay-card-strong: linear-gradient(
-    180deg,
-    rgba(14, 109, 111, 0.72) 0%,
-    rgba(5, 104, 137, 0.42) 50%,
-    rgba(14, 109, 111, 0.72) 100%
-  );
+      90deg,
+      rgba(0, 120, 135, 0.77) 0%,
+      rgba(0, 120, 135, 0.77) 100%
+    ),
+    linear-gradient(90deg, #e3efed 0%, #e3efed 100%);
 
   /* --- шрифты --- */
-  --font-base: 'Alexandria', 'Helvetica Neue', Arial, sans-serif;
-  --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-base: 'Inter', 'Helvetica Neue', Arial, sans-serif;
 
   /* --- отступы: шкала 4px --- */
   --space-xs: 8px;
@@ -52,43 +42,36 @@
   --space-xl: 128px;
 
   /* --- отступы: сетка макета --- */
-  --page-pad: 20px; /* поле страницы со всех сторон */
-  --grid-gap: 20px;
-  /* вертикальный ритм экрана тянется за высотой вьюпорта:
-     на макетных 851px даёт ровно 93px из Figma */
-  --section-gap: clamp(32px, 10.9vh, 93px);
-  --card-gap: 8px;
   --card-pad: 20px;
-  --nav-pad-y: 12px;
+  --hero-pad-x: 52px;
   --nav-pad-x: 20px;
-  --brand-gap: 20px; /* лого ↔ переключатель языка */
-  --burger-w: 18px;
-  --burger-line: 2px;
-  --burger-gap: 6px;
-  --nav-item-gap: 10px;
+  --nav-pad-y: 12px;
+  --nav-item-gap: 4px;
+  --brand-gap: 20px;
   --button-pad-x: 28px;
-  --card-body-gap: 14px;
-  --arrow-shift: 4px;
+  --card-body-gap: 8px;
 
   /* --- размеры --- */
   --container-max: 1920px;
-  --header-pill-h: 42px;
-  --nav-item-h: 40px;
+  --header-h: 60px;
   --logo-w: 120px;
   --logo-h: 24.97px;
   --lang-h: 31px;
-  --card-h: clamp(240px, 38vh, 445px); /* нижний порог; реальную высоту даёт flex внутри T_Screen */
   --card-link-max-w: 220px;
+  --card-min-h: 0; /* высоту задаёт строка сетки; порог включается на стопке */
   --chevron-box: 12.728px;
   --chevron-size: 9px;
+  --chevron-line: 2px;
+  --burger-w: 18px;
+  --burger-line: 2px;
+  --burger-gap: 6px;
+  --hairline: 1px;
+  --header-blur: 20px;
 
   /* --- прочее --- */
   --radius-s: 4px;
-  --radius-m: 6px;
-  --radius-l: 8px;
   --transition-fast: 0.15s ease;
   --transition-base: 0.3s ease;
-  /* раскрытие карточки — как smart animate: всё меняется одним движением,
-     чистая прозрачность 0 → 100, без сдвигов и перестроения высоты */
+  /* раскрытие карточки — одним движением, чистая прозрачность 0 → 100 */
   --transition-card: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }

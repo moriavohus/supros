@@ -6,63 +6,32 @@
 @media (max-width: 1440px) {
   /* O_Hero */
   h1.BigTitle {
-    font-size: clamp(36px, 4.2vw, 60px);
+    font-size: clamp(32px, 5vw, 72px);
   }
 }
 
 /* ===== планшет ===== */
 @media (max-width: 1024px) {
   :root {
-    --section-gap: clamp(24px, 7vh, 56px);
-    --card-h: 380px;
+    --hero-pad-x: 32px;
+    --nav-pad-x: 14px;
   }
-
-  /* O_Header */
-  .O_Header {
-    grid-template-columns: 1fr;
-
-    .M_Nav {
-      flex-wrap: wrap;
-    }
-
-    .A_ButtonPrimary {
-      flex-basis: auto;
-    }
-  }
-
-  /* O_Hero */
-  .O_Hero {
-    .W_Container {
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--space-m);
-    }
-  }
-
-  /* O_Directions — ряд остаётся двухколоночным: экран должен влезать во вьюпорт */
 }
 
 /* ===== планшет вертикально / крупный мобильный ===== */
 @media (max-width: 768px) {
   :root {
-    --section-gap: 40px;
-    --card-h: 320px;
-    --nav-pad-x: 16px;
-    --overlay-card: var(--overlay-card-strong);
+    --hero-pad-x: 20px;
+    --card-min-h: 220px; /* карточки встали стопкой — нужен нижний порог */
   }
 
   /* типографика — наборный текст мельче */
   p {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   h2.Title {
-    font-size: 22px;
-  }
-
-  .Link,
-  .LinkSmall {
-    font-size: 15px;
+    font-size: 20px;
   }
 
   /* Экран выше вьюпорта — привязка тут только мешала бы читать. */
@@ -76,10 +45,16 @@
 
   /* O_Header — лого слева, бургер справа, меню разворачивается панелью */
   .O_Header {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    height: auto;
+
+    .M_Brand {
+      height: var(--header-h);
+    }
 
     .A_NavToggle {
       display: flex;
+      height: var(--header-h);
     }
 
     .M_Nav {
@@ -87,6 +62,8 @@
       grid-column: 1 / -1;
       flex-direction: column;
       align-items: stretch;
+      height: auto;
+      border-width: var(--hairline) 0 0;
     }
 
     .M_Nav[data-open='true'] {
@@ -95,54 +72,77 @@
 
     .A_NavLink {
       justify-content: flex-start;
+      height: var(--header-h);
     }
 
     .A_ButtonPrimary {
-      flex-basis: auto;
+      flex: 0 0 auto;
+      justify-content: flex-start;
+      height: var(--header-h);
     }
   }
 
-  /* O_Directions — на телефоне все карточки в одну колонку */
+  /* O_Hero — квадранты разворачиваются в одну колонку */
+  .O_Hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+
+    .T_HeroTitle {
+      padding-block: var(--space-m);
+    }
+
+    .W_HeroPhoto {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  /* O_Directions */
   .O_Directions {
     grid-template-columns: 1fr;
-
-    .W_CardPair {
-      flex-direction: column;
-    }
   }
 }
 
 /* ===== мобильный ===== */
 @media (max-width: 480px) {
   :root {
-    --grid-gap: 16px;
     --card-pad: 16px;
-    --section-gap: 32px;
-    --card-h: 280px;
+    --card-min-h: 200px;
   }
 
   /* типографика */
   p {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   h2.Title {
-    font-size: 20px;
-  }
-
-  /* O_Header */
-  .O_Header {
-    .M_Brand {
-      gap: var(--space-s);
-      padding-inline: var(--space-s);
-    }
+    font-size: 18px;
   }
 }
 
-/* ===== низкое окно на планшете ===== */
-/* Двухрядный хедер + колоночный хиро перестают влезать во вьюпорт около 740px,
-   а mandatory-привязка в таком случае прятала бы низ секции. Порог замерен. */
-@media (max-width: 1024px) and (max-height: 760px) {
+/* ===== низкое окно ===== */
+/* Когда экран перестаёт влезать во вьюпорт, mandatory-привязка прятала бы
+   низ секции. Пороги замерены: чем уже окно, тем выше становится контент. */
+@media (max-width: 1000px) and (max-height: 880px) {
+  html {
+    scroll-snap-type: none;
+  }
+
+  .T_Screen {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 1200px) and (max-height: 700px) {
+  html {
+    scroll-snap-type: none;
+  }
+
+  .T_Screen {
+    min-height: 0;
+  }
+}
+
+@media (max-height: 520px) {
   html {
     scroll-snap-type: none;
   }
@@ -153,14 +153,12 @@
 }
 
 /* ===== тач-устройства ===== */
-/* Ховера нет — карточка с фото всегда в развёрнутом состоянии,
-   иначе фото и описание на телефоне не увидеть вовсе. */
+/* Ховера нет — карточки всегда в развёрнутом состоянии,
+   иначе описание на телефоне не увидеть вовсе. */
 @media (hover: none) {
-  .T_DirectionCard:has(.A_CardImage) {
-    .A_CardImage,
-    .A_CardOverlay {
-      opacity: 1;
-    }
+  .T_DirectionCard {
+    background: var(--overlay-card);
+    color: var(--color-text-inverse);
 
     .M_CardBody p {
       opacity: 1;

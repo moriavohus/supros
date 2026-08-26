@@ -3,64 +3,40 @@
 
 body {
   font-family: var(--font-base);
-  font-weight: 300;
+  font-weight: 400;
+  /* «Inter Display» из макета — это Inter на крупных оптических размерах */
+  font-optical-sizing: auto;
 }
 
 h1.BigTitle {
-  font-size: 60px;
-  line-height: 106.667%;
+  font-size: 72px;
+  line-height: 105%;
   letter-spacing: -0.03em;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 h2.Title {
-  font-size: 26px;
-  line-height: 130.769%;
-  letter-spacing: -0.023em;
+  font-size: 24px;
+  line-height: 141.667%;
+  letter-spacing: -0.025em;
   font-weight: 500;
 }
 
 p {
-  font-size: 17px;
-  line-height: 158.824%;
-  letter-spacing: -0.012em;
-  font-weight: 300;
-}
-
-.Link {
-  font-size: 17px;
-  line-height: 152.941%;
-  letter-spacing: -0.006em;
-  font-weight: 500;
-}
-
-.LinkSmall {
-  font-size: 16px;
-  line-height: 143.75%;
-  letter-spacing: -0.0125em;
-  font-weight: 500;
-}
-
-.NavLink {
-  font-family: var(--font-ui);
-  font-size: 16px;
-  line-height: 100%;
-  font-weight: 300;
-}
-
-.ButtonLabel {
   font-size: 16px;
   line-height: 150%;
-  font-weight: 500;
+  letter-spacing: -0.01em;
+  font-weight: 400;
 }
 
+.Link,
+.NavLink,
+.ButtonLabel,
 .LangLabel {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 178.571%;
-  letter-spacing: 0.1286em;
-  font-weight: 400;
-  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  font-weight: 500;
 }
 
 /* модификаторы */
