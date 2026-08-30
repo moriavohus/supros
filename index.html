@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SUPROS — Smarter Engineering for Industry</title>
+    <title>SUPROS — инжиниринг и изоляция для промышленности</title>
     <meta
       name="description"
-      content="Specification review, thermal calculation and take-off from ISO drawings. The right system and the right quantities — before anything is ordered."
+      content="Анализ спецификаций, тепловой расчёт и подсчёт объёмов по чертежам. Поставка изоляционных материалов со склада в Атырау."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href="https://supros.kz/index.html" />
-    <link rel="alternate" hreflang="en" href="https://supros.kz/index.html" />
+    <link rel="alternate" hreflang="ru" href="https://supros.kz/index.html" />
     <link rel="alternate" hreflang="x-default" href="https://supros.kz/index.html" />
 
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-cyrillic.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
 
     <link rel="stylesheet" href="/src/stylesheets/reset.css" />
@@ -24,96 +25,115 @@
   </head>
 
   <body>
-    <!-- Один T_Screen = один экран снап-скролла. Следующие секции добавлять сюда же. -->
-    <section class="T_Screen" id="intro">
-      <div class="W_Page">
-        <header class="O_Header">
-          <div class="M_Brand">
-            <a class="A_Logo" href="/" aria-label="SUPROS — home"></a>
-            <!-- TODO: сделать ссылкой на /ru/index.html, когда появится русская версия -->
-            <span class="A_Lang LangLabel" aria-current="true">EN</span>
-          </div>
+    <div class="W_Page">
+      <header class="O_Header">
+        <div class="M_Brand">
+          <a class="A_Logo" href="/" aria-label="SUPROS — на главную"></a>
+          <!-- TODO: сделать ссылкой на /en/index.html, когда появится вторая версия -->
+          <span class="A_Lang NavLink" aria-current="true">EN</span>
+        </div>
 
-          <button
-            class="A_NavToggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="main-nav"
-            aria-label="Open menu"
-          >
-            <span class="A_Burger" aria-hidden="true"></span>
-          </button>
+        <button
+          class="A_NavToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="main-nav"
+          aria-label="Открыть меню"
+        >
+          <span class="A_Burger" aria-hidden="true"></span>
+        </button>
 
-          <nav class="M_Nav" id="main-nav" aria-label="Main">
-            <a class="A_NavLink NavLink" href="/about.html">About</a>
-            <a class="A_NavLink NavLink" href="/solutions.html">
-              Solutions
-              <span class="A_Chevron" aria-hidden="true"></span>
-            </a>
-            <a class="A_NavLink NavLink" href="/projects.html">Projects</a>
-            <a class="A_NavLink NavLink" href="/social-responsibility.html">Social Responsibility</a>
-            <a class="A_ButtonPrimary ButtonLabel" href="/contacts.html">Contact Us</a>
-          </nav>
-        </header>
+        <nav class="M_Nav" id="main-nav" aria-label="Основная навигация">
+          <a class="A_NavLink NavLink" href="/about.html">About</a>
+          <a class="A_NavLink NavLink" href="/solutions.html">
+            Solutions
+            <span class="A_Chevron" aria-hidden="true"></span>
+          </a>
+          <a class="A_NavLink NavLink" href="/projects.html">Projects</a>
+          <a class="A_NavLink NavLink" href="/social-responsibility.html">Social Responsibility</a>
+          <a class="A_ButtonPrimary NavLink" href="/contacts.html">Contact Us</a>
+        </nav>
+      </header>
 
-        <div class="O_Hero">
+      <section class="O_Hero">
+        <span class="W_HeroMedia" aria-hidden="true">
+          <img class="A_HeroPhoto" src="/src/images/hero/duct.jpg" alt="" width="1501" height="666" fetchpriority="high" decoding="async" />
+          <img class="A_HeroPhoto" src="/src/images/hero/hall.jpg" alt="" width="1501" height="666" fetchpriority="high" decoding="async" />
+        </span>
+
+        <div class="W_HeroRow">
           <div class="T_HeroTitle">
-            <h1 class="BigTitle">Smarter Engineering for Industry</h1>
-          </div>
-
-          <div class="W_HeroPhoto">
-            <img
-              class="A_HeroPhoto"
-              src="/src/images/hero/hall.jpg"
-              alt="Insulated ductwork running through an industrial hall"
-              width="1501"
-              height="666"
-              fetchpriority="high"
-              decoding="async"
-            />
-          </div>
-
-          <div class="W_HeroPhoto">
-            <img
-              class="A_HeroPhoto"
-              src="/src/images/hero/duct.jpg"
-              alt="Close-up of an insulated duct with an access hatch"
-              width="1501"
-              height="666"
-              fetchpriority="high"
-              decoding="async"
-            />
-          </div>
-
-          <div class="O_Directions">
-            <article class="T_DirectionCard">
-              <div class="M_CardBody">
-                <h2 class="Title">Efficiency starts on paper</h2>
-                <p>
-                  Specification review, thermal calculation and take-off from ISO drawings. The
-                  right system and the right quantities — before anything is ordered.
-                </p>
-              </div>
-
-              <a class="A_CardLink Link" href="/solutions.html">
-                Go to Engineering <span class="A_Arrow" aria-hidden="true">→</span>
-              </a>
-            </article>
-
-            <!-- TODO: описание для ховера — в макете его нет -->
-            <article class="T_DirectionCard">
-              <div class="M_CardBody">
-                <h2 class="Title">We train the industry</h2>
-              </div>
-
-              <a class="A_CardLink Link" href="/training.html">
-                See more <span class="A_Arrow" aria-hidden="true">→</span>
-              </a>
-            </article>
+            <h1 class="Display">Smarter Engineering for Industry</h1>
           </div>
         </div>
+
+        <div class="W_HeroRow W_HeroRow--bottom">
+          <article class="T_Card T_Card--accent">
+            <div class="M_CardBody">
+              <h3 class="Title3">Эффективность начинается с расчётов</h3>
+              <p class="BodySmall">
+                Анализ спецификаций, тепловой расчёт и подсчёт объёмов по&nbsp;чертежам.
+              </p>
+            </div>
+            <a class="A_LinkArrow Label" href="/contacts.html">
+              Contact us
+              <span class="A_Chip" aria-hidden="true">
+                <svg viewBox="0 0 14 14"><path d="M2 7h8.2L6.6 3.4 8 2l6 5-6 5-1.4-1.4L10.2 9H2z" /></svg>
+              </span>
+            </a>
+          </article>
+
+          <!-- TODO: логотип NIA лежит в макете картинкой, забрать ассет отдельно -->
+          <article class="T_CardPartner">
+            <h3 class="Title3">Only NIA member in Kazakhstan</h3>
+            <span class="A_PartnerLogo BodySmall Muted">NIA · National Insulation Association</span>
+          </article>
+        </div>
+      </section>
+
+      <div class="W_Row">
+        <section class="O_About">
+          <p class="M_AboutLabel Label">About Supros</p>
+          <div class="M_AboutBody">
+            <h2 class="Title2 Measure">
+              Наша миссия&nbsp;— помогать компаниям и сообществам переходить к&nbsp;более устойчивому
+              будущему, внедряя передовые технологии и соблюдая высочайшие стандарты качества.
+            </h2>
+            <a class="A_LinkArrow Label" href="/about.html">
+              Read more
+              <span class="A_Chip" aria-hidden="true">
+                <svg viewBox="0 0 14 14"><path d="M2 7h8.2L6.6 3.4 8 2l6 5-6 5-1.4-1.4L10.2 9H2z" /></svg>
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <article class="T_Card T_Card--mark">
+          <span class="A_Mark" aria-hidden="true"></span>
+        </article>
       </div>
-    </section>
+
+      <div class="W_Row">
+        <section class="T_Card T_Card--label">
+          <p class="Label">About in numbers</p>
+        </section>
+
+        <article class="T_Card T_Card--stat">
+          <span class="A_StatNumber Display">300+</span>
+          <span class="A_StatCaption Title3">Завершённых проектов</span>
+        </article>
+
+        <article class="T_Card T_Card--stat">
+          <span class="A_StatNumber Display">40+</span>
+          <span class="A_StatCaption Title3">Квалифицированных специалистов</span>
+        </article>
+
+        <article class="T_Card T_Card--stat">
+          <span class="A_StatNumber Display">20M&nbsp;$</span>
+          <span class="A_StatCaption Title3">Годовой объём</span>
+        </article>
+      </div>
+    </div>
 
     <script type="module" src="/src/javascript/nav.js"></script>
   </body>

@@ -1,45 +1,86 @@
 /* ===== typography ===== */
-/* По классу на стиль из макета. Размеры шрифта задаются только здесь. */
+/* Фиксированная модульная шкала. Размеры шрифта задаются только здесь.
+   Классы не привязаны к тегу: один и тот же стиль нужен и на заголовке,
+   и на span внутри карточки статистики. */
 
 body {
   font-family: var(--font-base);
-  font-weight: 400;
-  /* «Inter Display» из макета — это Inter на крупных оптических размерах */
   font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-h1.BigTitle {
-  font-size: 72px;
+.Display {
+  font-size: 80px;
+  line-height: 100%;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+.Title1 {
+  font-size: 56px;
   line-height: 105%;
-  letter-spacing: -0.03em;
-  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-weight: 400;
 }
 
-h2.Title {
-  font-size: 24px;
-  line-height: 141.667%;
-  letter-spacing: -0.025em;
-  font-weight: 500;
+.Title2 {
+  font-size: 40px;
+  line-height: 115%;
+  font-weight: 400;
 }
 
-p {
+.Title3 {
+  font-size: 28px;
+  line-height: 115%;
+  font-weight: 400;
+}
+
+p,
+.Body {
   font-size: 16px;
   line-height: 150%;
-  letter-spacing: -0.01em;
   font-weight: 400;
 }
 
-.Link,
-.NavLink,
-.ButtonLabel,
-.LangLabel {
+.BodySmall {
+  font-size: 14px;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+.Label {
+  font-size: 20px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.NavLink {
   font-size: 16px;
   line-height: 100%;
   letter-spacing: -0.01em;
-  font-weight: 500;
+  font-weight: 400;
+}
+
+.Mono {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 150%;
+  font-feature-settings: 'tnum' 1;
 }
 
 /* модификаторы */
-.Bold {
-  font-weight: 600;
+.Medium {
+  font-weight: 500;
+}
+
+.Muted {
+  color: var(--color-text-muted);
+}
+
+.Measure {
+  max-width: 62ch;
 }

@@ -1,6 +1,6 @@
 /**
- * Мобильное меню: бургер разворачивает M_Nav панелью под хедером.
- * Состояние держим на data-open + aria-expanded, вся отрисовка — в CSS.
+ * Мобильное меню: бургер разворачивает M_Nav панелью под шапкой.
+ * Состояние держим на aria-expanded и data-open, отрисовка — в CSS.
  */
 
 const toggle = document.querySelector('.A_NavToggle');
@@ -11,7 +11,7 @@ if (toggle && nav) {
 
   const setOpen = (open) => {
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    toggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
     nav.dataset.open = String(open);
   };
 
@@ -32,7 +32,6 @@ if (toggle && nav) {
     }
   });
 
-  // на десктопе меню всегда развёрнуто — закрываем, чтобы состояние не залипло
   desktop.addEventListener('change', (event) => {
     if (event.matches) setOpen(false);
   });

@@ -1,78 +1,65 @@
 /* ===== design tokens ===== */
-/* Единственный источник правды: цвета, отступы, радиусы, тайминги.
-   Значения выверены по макету Figma (node 1948:39649). */
+/* Единственный источник правды. Значения перенесены один в один
+   из коллекции «Supros» в Figma — там же лежат описания ролей. */
 
 :root {
-  /* --- цвета: поверхности --- */
-  --color-bg: #fff;
-  --color-surface-header: rgba(255, 255, 255, 0.6); /* стекло шапки */
-  --color-surface-card: #e9eef1; /* карточка в покое */
-  --color-surface-card-base: #e3efed; /* подложка карточки под заливкой ховера */
+  /* --- цвет: акцент. Два токена, один тон в двух ролях --- */
+  --color-accent: #01b3c0; /* заливки: карточки, кнопки */
+  --color-accent-strong: #0097a3; /* ховер заливки */
+  --color-accent-text: #0097a3; /* текст, цифры, ссылки */
+  --color-brand-mark: #2e9cb7; /* только логотип, замер из монограммы */
 
-  /* --- цвета: линии ---
-     В макете две почти одинаковые обводки (#2eabb7 и #28afb5); держим одну,
-     иначе на стыке делителя шапки с гранью бокса заголовка виден шов. */
-  --color-border: #2eabb7;
+  /* --- цвет: поверхности --- */
+  --color-bg: #f5f5f3;
+  --color-bg-inverse: #1c1d1e;
+  --color-surface: #fff;
+  --color-surface-muted: #e9ebef;
 
-  /* --- цвета: текст --- */
-  --color-text: #007887; /* навигация, лого, EN */
-  --color-text-heading: #007684;
-  --color-text-card: #123a3c;
-  --color-text-inverse: #fff;
+  /* --- цвет: текст --- */
+  --color-text: #1c1d1e;
+  --color-text-muted: #6b6d6e;
+  --color-text-heading: #123a3c;
+  --color-text-inverse: #f5f5f3;
 
-  /* --- цвета: акцент --- */
-  --color-accent: #007887; /* кнопка Contact Us */
-  --color-accent-hover: #005f6b;
+  /* --- цвет: линии и подложки --- */
+  --color-hairline: #d6d6d2;
+  --color-chip-on-accent: rgb(245 245 243 / 15%);
+  --color-chip-on-light: rgb(0 151 163 / 15%);
+  --color-overlay-photo: rgb(28 29 30 / 20%);
 
-  /* --- заливка карточки на ховере --- */
-  --overlay-card: linear-gradient(
-      90deg,
-      rgba(0, 120, 135, 0.77) 0%,
-      rgba(0, 120, 135, 0.77) 100%
-    ),
-    linear-gradient(90deg, #e3efed 0%, #e3efed 100%);
+  /* --- ритм: база 8 --- */
+  --space-half: 4px; /* плотный шов между карточками, приём из макета */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-16: 128px;
+
+  /* --- сетка --- */
+  --grid-columns: 12;
+  --gutter: 24px;
+  --container-max: 1920px;
+  --card-w: 372px; /* ширина карточки правой колонки из макета */
+  --header-h: 60px;
+  --hero-h: 666px;
+
+  /* --- радиусы: ровно два --- */
+  --radius-s: 4px;
+  --radius-l: 20px;
+
+  /* --- прочее --- */
+  --hairline: 1px;
+  --chip: 24px;
+  --ease-lock: cubic-bezier(0.2, 0, 0, 1);
+  --transition-fast: 0.2s var(--ease-lock);
+  --transition-base: 0.32s var(--ease-lock);
 
   /* --- шрифты --- */
   --font-base: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-
-  /* --- отступы: шкала 4px --- */
-  --space-xs: 8px;
-  --space-s: 16px;
-  --space-m: 32px;
-  --space-l: 64px;
-  --space-xl: 128px;
-
-  /* --- отступы: сетка макета --- */
-  --card-pad: 20px;
-  --hero-pad-x: 52px;
-  --nav-pad-x: 20px;
-  --nav-pad-y: 12px;
-  --nav-item-gap: 4px;
-  --brand-gap: 20px;
-  --button-pad-x: 28px;
-  --card-body-gap: 8px;
-
-  /* --- размеры --- */
-  --container-max: 1920px;
-  --header-h: 60px;
-  --logo-w: 120px;
-  --logo-h: 24.97px;
-  --lang-h: 31px;
-  --card-link-max-w: 220px;
-  --card-min-h: 0; /* высоту задаёт строка сетки; порог включается на стопке */
-  --chevron-box: 12.728px;
-  --chevron-size: 9px;
-  --chevron-line: 2px;
-  --burger-w: 18px;
-  --burger-line: 2px;
-  --burger-gap: 6px;
-  --hairline: 1px;
-  --header-blur: 20px;
-
-  /* --- прочее --- */
-  --radius-s: 4px;
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.3s ease;
-  /* раскрытие карточки — одним движением, чистая прозрачность 0 → 100 */
-  --transition-card: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
 }

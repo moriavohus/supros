@@ -1,70 +1,83 @@
 /* ===== responsive ===== */
-/* Desktop-first. Базовые стили — style.css (1440+), здесь только переопределения.
-   Порядок секций внутри брейкпоинта совпадает с style.css. */
+/* Desktop-first. Базовые стили — style.css, здесь только переопределения.
+   Брейкпоинты: 1440 / 1024 / 768 / 480. */
 
 /* ===== лэптоп ===== */
 @media (max-width: 1440px) {
-  /* O_Hero */
-  h1.BigTitle {
-    font-size: clamp(32px, 5vw, 72px);
+  :root {
+    --card-w: 300px;
+    --hero-h: 560px;
+  }
+
+  h1.Display {
+    font-size: clamp(40px, 5.5vw, 80px);
+  }
+
+  h2.Title2 {
+    font-size: clamp(24px, 2.6vw, 40px);
   }
 }
 
 /* ===== планшет ===== */
 @media (max-width: 1024px) {
   :root {
-    --hero-pad-x: 32px;
-    --nav-pad-x: 14px;
+    --card-w: 260px;
+    --hero-h: 480px;
+  }
+
+  h3.Title3 {
+    font-size: 22px;
+  }
+
+  /* O_About — метка встаёт над текстом */
+  .O_About {
+    flex-direction: column;
+    gap: var(--space-2);
+
+    .M_AboutLabel {
+      width: auto;
+    }
   }
 }
 
 /* ===== планшет вертикально / крупный мобильный ===== */
 @media (max-width: 768px) {
   :root {
-    --hero-pad-x: 20px;
-    --card-min-h: 220px; /* карточки встали стопкой — нужен нижний порог */
+    --hero-h: 420px;
   }
 
   /* типографика — наборный текст мельче */
-  p {
+  p,
+  .Body {
     font-size: 15px;
   }
 
-  h2.Title {
+  .Label {
+    font-size: 16px;
+  }
+
+  h3.Title3 {
     font-size: 20px;
   }
 
-  /* Экран выше вьюпорта — привязка тут только мешала бы читать. */
-  html {
-    scroll-snap-type: none;
-  }
-
-  .T_Screen {
-    min-height: 0;
-  }
-
-  /* O_Header — лого слева, бургер справа, меню разворачивается панелью */
+  /* O_Header — лого слева, бургер справа, меню панелью */
   .O_Header {
-    grid-template-columns: minmax(0, 1fr) auto;
+    position: relative;
+    flex-wrap: wrap;
     height: auto;
-
-    .M_Brand {
-      height: var(--header-h);
-      border-right: 0;
-    }
+    padding: var(--space-2);
 
     .A_NavToggle {
       display: flex;
-      height: var(--header-h);
     }
 
     .M_Nav {
       display: none;
-      grid-column: 1 / -1;
+      flex-basis: 100%;
       flex-direction: column;
       align-items: stretch;
       height: auto;
-      border-top: var(--hairline) solid var(--color-border);
+      padding-top: var(--space-2);
     }
 
     .M_Nav[data-open='true'] {
@@ -72,104 +85,55 @@
     }
 
     .A_NavLink {
-      justify-content: flex-start;
       height: var(--header-h);
+      padding-inline: 0;
     }
 
     .A_ButtonPrimary {
-      flex: 0 0 auto;
-      justify-content: flex-start;
-      height: var(--header-h);
+      margin-right: 0;
+      border-radius: var(--radius-s);
     }
   }
 
-  /* O_Hero — квадранты разворачиваются в одну колонку */
+  /* O_Hero — заголовок во всю ширину, карточки стопкой */
   .O_Hero {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-
     .T_HeroTitle {
-      padding-block: var(--space-m);
+      width: 100%;
     }
 
-    .W_HeroPhoto {
-      aspect-ratio: 16 / 9;
+    .W_HeroRow--bottom {
+      flex-direction: column;
     }
   }
 
-  /* O_Directions */
-  .O_Directions {
-    grid-template-columns: 1fr;
+  .T_Card,
+  .T_CardPartner {
+    width: auto;
+  }
+
+  /* ряды мозаики складываются */
+  .W_Row {
+    flex-direction: column;
   }
 }
 
 /* ===== мобильный ===== */
 @media (max-width: 480px) {
   :root {
-    --card-pad: 16px;
-    --card-min-h: 200px;
+    --hero-h: 360px;
   }
 
-  /* типографика */
-  p {
-    font-size: 14px;
-  }
-
-  h2.Title {
-    font-size: 18px;
-  }
-}
-
-/* ===== низкое окно ===== */
-/* Когда экран перестаёт влезать во вьюпорт, mandatory-привязка прятала бы
-   низ секции. Пороги замерены: чем уже окно, тем выше становится контент. */
-@media (max-width: 1000px) and (max-height: 880px) {
-  html {
-    scroll-snap-type: none;
-  }
-
-  .T_Screen {
-    min-height: 0;
-  }
-}
-
-@media (max-width: 1200px) and (max-height: 700px) {
-  html {
-    scroll-snap-type: none;
-  }
-
-  .T_Screen {
-    min-height: 0;
-  }
-}
-
-@media (max-height: 520px) {
-  html {
-    scroll-snap-type: none;
-  }
-
-  .T_Screen {
-    min-height: 0;
-  }
-}
-
-/* ===== тач-устройства ===== */
-/* Ховера нет — карточки всегда в развёрнутом состоянии,
-   иначе описание на телефоне не увидеть вовсе. */
-@media (hover: none) {
-  .T_DirectionCard {
-    background: var(--overlay-card);
-    color: var(--color-text-inverse);
-
-    .M_CardBody p {
-      opacity: 1;
-    }
+  .T_Card,
+  .T_CardPartner,
+  .T_HeroTitle,
+  .O_About {
+    padding: var(--space-3);
   }
 }
 
 /* ===== предпочтения пользователя ===== */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-snap-type: none;
+  * {
+    transition-duration: 0.01ms !important;
   }
 }
