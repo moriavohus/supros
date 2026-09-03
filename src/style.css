@@ -478,28 +478,29 @@ body {
 }
 
 /* ===== T_Service ===== */
-/* Плашка услуги: слева текст с перечнем, справа внизу фирменная «лестница».
-   Чередование заливки задаётся модификатором, как в макете. */
+/* Плашка услуги (Figma 2088:1047): слева текст с перечнем, справа внизу
+   фирменная «лестница». Чередование заливки — модификатором, как в макете.
+   Поля 50/40 из макета вне восьмёрочной шкалы, поэтому 50 стоит числом. */
 
 .T_Service {
   display: flex;
   align-items: stretch;
-  gap: var(--space-half);
+  gap: var(--space-2-5);
   min-height: 476px;
-  padding: var(--space-8) var(--space-4);
+  padding: 50px var(--space-5);
   background: var(--color-surface);
   color: var(--color-text);
   border-radius: var(--radius-l);
 
   /* 363px из макета — стартовая ширина, но колонка ужимается: между 1024 и
-     1440 текст и знак иначе не помещаются в половину панели */
+     1440 текст и знак иначе не помещаются в половину панели.
+     Отбивка «шапка → перечень» в макете фиксированная, не распор. */
   .M_ServiceBody {
     display: flex;
     flex: 0 1 363px;
     min-width: 0;
     flex-direction: column;
-    justify-content: space-between;
-    gap: var(--space-4);
+    gap: 120px;
   }
 
   .M_ServiceHead {
@@ -508,14 +509,11 @@ body {
     gap: 14px; /* шаг из макета, вне восьмёрочной шкалы */
   }
 
-  .M_ServiceHead p {
-    max-width: 324px;
-  }
-
   .M_ServiceList {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: var(--space-1-5);
+    max-width: 335px;
   }
 
   .A_ServiceItem {
@@ -534,13 +532,13 @@ body {
   }
 
   /* «Лестница» — png-экспорт из макета, работает маской, поэтому красится
-     токеном под заливку плашки. */
+     токеном под заливку плашки. Занимает остаток строки и прижата к низу,
+     высоту держит пропорция из макета. */
   .A_ServiceMark {
-    flex: none;
+    flex: 1;
+    min-width: 0;
     align-self: flex-end;
-    margin-left: auto;
-    width: 238px;
-    height: 233px;
+    aspect-ratio: 297.5 / 291;
     background: var(--color-accent);
     mask: url('./images/shapes/stairs.png') no-repeat center / contain;
   }

@@ -61,11 +61,11 @@
 
     .M_ServiceBody {
       flex: none;
+      gap: var(--space-6);
     }
 
     .A_ServiceMark {
-      width: 180px;
-      height: 176px;
+      max-width: 240px;
       margin-top: var(--space-4);
     }
   }
