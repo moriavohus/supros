@@ -7,19 +7,23 @@
   --color-accent: #01b3c0; /* заливки: карточки, кнопки */
   --color-accent-strong: #0097a3; /* ховер заливки */
   --color-accent-text: #0097a3; /* текст, цифры, ссылки */
-  --color-brand-mark: #2e9cb7; /* только логотип, замер из монограммы */
+  --color-accent-soft: #d7f3f6; /* маркеры и знак на акцентной плашке */
+  --color-brand-mark: #01b3c0; /* логотип; в макете совпадает с акцентом */
 
   /* --- цвет: поверхности --- */
   --color-bg: #f5f5f3;
-  --color-bg-inverse: #1c1d1e;
+  --color-bg-inverse: #131313; /* тёмная секция Solutions */
   --color-surface: #fff;
   --color-surface-muted: #e9ebef;
 
   /* --- цвет: текст --- */
-  --color-text: #1c1d1e;
+  --color-text: #1e1b1b;
   --color-text-muted: #6b6d6e;
+  --color-text-soft: rgb(30 27 27 / 67%); /* лид на светлой панели */
   --color-text-heading: #123a3c;
-  --color-text-inverse: #f5f5f3;
+  --color-text-inverse: #fff; /* текст на акценте и на тёмном */
+  --color-text-inverse-soft: rgb(255 255 255 / 80%);
+  --color-text-inverse-muted: rgb(255 255 255 / 67%);
 
   /* --- цвет: линии и подложки --- */
   --color-hairline: #d6d6d2;
@@ -30,6 +34,8 @@
   /* --- ритм: база 8 --- */
   --space-half: 4px; /* плотный шов между карточками, приём из макета */
   --space-1: 8px;
+  --space-1-5: 12px; /* внутренний шов «заголовок → лид» из макета */
+  --space-2-5: 20px; /* шаг шапки: поля боксов и ссылок */
   --space-2: 16px;
   --space-3: 24px;
   --space-4: 32px;
@@ -46,10 +52,15 @@
   --container-max: 1920px;
   --card-w: 372px; /* ширина карточки правой колонки из макета */
   --header-h: 60px;
-  --hero-h: 666px;
 
-  /* --- радиусы: ровно два --- */
+  /* первый экран: отступ под шапку и высота одного из двух рядов.
+     Ряды делят пополам то, что осталось от вьюпорта под шапкой. */
+  --hero-top: calc(var(--header-h) + var(--space-half) * 2);
+  --hero-row-h: calc((100svh - var(--hero-top) - var(--space-half) * 2) / 2);
+
+  /* --- радиусы --- */
   --radius-s: 4px;
+  --radius-m: 10px; /* плашки поверх фото */
   --radius-l: 20px;
 
   /* --- прочее --- */
@@ -60,6 +71,7 @@
   --transition-base: 0.32s var(--ease-lock);
 
   /* --- шрифты --- */
-  --font-base: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-base: 'Google Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-nav: 'Inter', 'Helvetica Neue', Arial, sans-serif; /* только шапка */
   --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
 }

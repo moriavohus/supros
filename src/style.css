@@ -15,6 +15,24 @@ body {
   outline-offset: 2px;
 }
 
+/* ===== W_Backdrop ===== */
+/* Снимок первого экрана закреплён во вьюпорте и служит подложкой всей
+   страницы: секции идут над ним, ничего под ними не заливаем. Уводить его
+   вниз незачем — тёмная SOLUTIONS перекрывает подложку своей заливкой. */
+
+.W_Backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+}
+
+.A_BackdropPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* ===== W_Page ===== */
 /* Мозаика карточек с плотным швом 4px — приём из макета. */
 
@@ -34,20 +52,38 @@ body {
 }
 
 /* ===== O_Header ===== */
+/* Шапка вне потока: лежит поверх первого экрана и не уезжает при скролле.
+   Ширина считается от вьюпорта, но не шире контейнера страницы, поэтому
+   на широких мониторах она держит ту же сетку, что и остальные секции.
+   Первая секция страницы обязана компенсировать её высоту своим padding —
+   сейчас это делает O_Hero. */
 
 .O_Header {
+  position: fixed;
+  top: var(--space-half);
+  left: 50%;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: min(100% - var(--space-half) * 2, var(--container-max) - var(--space-half) * 2);
   height: var(--header-h);
-  padding-inline: var(--space-3);
+  transform: translateX(-50%);
+  overflow: hidden;
   background: var(--color-surface-muted);
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-m);
+  backdrop-filter: blur(20px);
 
+  /* два бокса по половине шапки: бренд слева, разделы справа от середины.
+     Поля живут в боксах, а не в шапке, — так кнопка достаёт до края.
+     Нижние 5px у бренда — оптическая центровка логотипа из макета. */
   .M_Brand {
     display: flex;
+    flex: 1 0 0;
+    align-self: stretch;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-2-5);
+    padding: var(--space-1-5) var(--space-2-5) 5px;
   }
 
   .A_Logo {
@@ -59,13 +95,14 @@ body {
   }
 
   .A_Lang {
-    color: var(--color-text-heading);
+    color: var(--color-accent);
   }
 
   .M_Nav {
     display: flex;
+    flex: 1 0 0;
+    align-self: stretch;
     align-items: center;
-    height: 100%;
   }
 
   .A_NavLink {
@@ -73,8 +110,8 @@ body {
     align-items: center;
     gap: var(--space-half);
     height: 100%;
-    padding-inline: var(--space-3);
-    color: var(--color-text-heading);
+    padding-inline: var(--space-2-5);
+    color: var(--color-accent);
     white-space: nowrap;
     transition: color var(--transition-fast);
 
@@ -133,10 +170,10 @@ body {
   }
 
   .A_Chevron {
-    width: 10px;
-    height: 10px;
-    border-right: 1.5px solid currentcolor;
-    border-bottom: 1.5px solid currentcolor;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid currentcolor;
+    border-bottom: 2px solid currentcolor;
     transform: translateY(-2px) rotate(45deg);
   }
 }
@@ -161,13 +198,15 @@ body {
 }
 
 .O_Header .A_ButtonPrimary {
+  flex: 1 0 0;
   align-self: stretch;
-  border-radius: 0 var(--radius-s) var(--radius-s) 0;
-  margin-right: calc(-1 * var(--space-3));
+  border-radius: 0;
 }
 
 /* ===== A_LinkArrow ===== */
-/* Текстовая ссылка со стрелкой. Подложка иконки — токен с альфой. */
+/* Текстовая ссылка со стрелкой. Подложка иконки — токен с альфой.
+   Сама стрелка — svg-экспорт из Figma; в макете это иконка arrow-up,
+   повёрнутая на 90°, поэтому её и крутим, а не берём другой глиф. */
 
 .A_LinkArrow {
   display: inline-flex;
@@ -185,10 +224,12 @@ body {
     transition: transform var(--transition-fast);
   }
 
-  svg {
-    width: 14px;
-    height: 14px;
-    fill: currentcolor;
+  .A_ChipIcon {
+    width: 13.6px;
+    height: 16.7px;
+    background: currentcolor;
+    mask: url('./images/icons/arrow-up.svg') no-repeat center / contain;
+    rotate: 90deg;
   }
 
   &:hover .A_Chip,
@@ -198,41 +239,46 @@ body {
 }
 
 /* ===== O_Hero ===== */
-/* Фотополоса во всю ширину, поверх неё — карточки мозаики. */
+/* Первый экран занимает вьюпорт целиком: секция гасит поля страницы
+   отрицательными полями, поэтому карточки лежат на подложке от края до края.
+
+   Скролл — приём с aspensearch.com, только без библиотек: оба ряда липкие
+   с одинаковым top, а секция выше вьюпорта ровно на высоту ряда. Заголовок
+   прилипает сразу и стоит на месте, ряд карточек едет вверх, пока не упрётся
+   в ту же границу под шапкой, и накрывает заголовок (z-index). Дальше секция
+   доезжает и оба ряда уходят вместе с ней.
+
+   Ряды не могут висеть на flex: 1 — контейнер выше экрана, доля от него дала
+   бы полтора экрана на ряд. Поэтому высота ряда считается от вьюпорта. */
 
 .O_Hero {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-half);
-  min-height: var(--hero-h);
-  overflow: hidden;
-  border-radius: var(--radius-s);
+  min-height: calc(100svh + var(--hero-row-h) + var(--space-half));
+  margin: calc(-1 * var(--space-half)) calc(-1 * var(--space-half)) 0;
+  padding: var(--hero-top) var(--space-half) var(--space-half);
 
-  .W_HeroMedia {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    display: flex;
-  }
+  /* clip, а не hidden: hidden сделал бы секцию скролл-контейнером и убил
+     бы прилипание рядов. */
+  overflow: clip;
 
-  .A_HeroPhoto {
-    flex: 1;
-    min-width: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
+  /* два одинаковых бокса по половине экрана; карточки внутри тянутся
+     на всю высоту бокса */
   .W_HeroRow {
+    position: sticky;
+    top: var(--hero-top);
     display: flex;
+    height: var(--hero-row-h);
     gap: var(--space-half);
     align-items: stretch;
   }
 
+  .W_HeroRow + .W_HeroRow {
+    margin-top: var(--space-half);
+  }
+
   .W_HeroRow--bottom {
+    z-index: 1;
     justify-content: flex-end;
-    margin-top: auto;
   }
 }
 
@@ -244,6 +290,9 @@ body {
   width: 50%;
   padding: var(--space-4);
   background: var(--color-surface);
+
+  /* в макете у этой карточки радиус 10, но по просьбе держим общий
+     карточный радиус — так первый экран собирается в одну сетку */
   border-radius: var(--radius-l);
 
   h1 {
@@ -273,6 +322,16 @@ body {
 .T_Card--accent {
   background: var(--color-accent);
   color: var(--color-text-inverse);
+
+  .M_CardBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1-5);
+  }
+
+  .M_CardBody p {
+    color: var(--color-text-inverse-soft);
+  }
 
   .A_Chip {
     background: var(--color-chip-on-accent);
@@ -309,6 +368,8 @@ body {
 }
 
 /* ===== T_CardPartner ===== */
+/* Форма карточки — svg-экспорт ноды Union из макета: радиус 20 по двум углам,
+   два противоположных срезаны. Маска тянется по размеру карточки. */
 
 .T_CardPartner {
   display: flex;
@@ -320,12 +381,19 @@ body {
   background: var(--color-surface-muted);
   color: var(--color-text-heading);
   border-radius: var(--radius-l);
+  mask: url('./images/shapes/partner-card-cut.svg') no-repeat center / 100% 100%;
 
   .A_PartnerLogo {
     display: inline-flex;
+    align-self: flex-start;
     padding: var(--space-half);
     background: var(--color-surface);
     border-radius: var(--radius-s);
+
+    img {
+      width: 220px;
+      height: auto;
+    }
   }
 }
 
@@ -360,5 +428,126 @@ body {
 
   .A_LinkArrow {
     color: var(--color-accent-text);
+  }
+}
+
+/* ===== O_Solutions ===== */
+/* Светлая панель в две колонки (Figma 2088:1046): слева заголовок, справа
+   плашки услуг. Заголовок липкий — стоит под шапкой, пока мимо него едут
+   плашки; align-self: start обязателен, иначе колонка растянулась бы на всю
+   высоту панели и прилипать было бы нечему.
+   В макете панель ровно 700px и плашки из неё торчат — это её «окно»
+   прокрутки. У нас панель растёт по содержимому, а роль окна играет вьюпорт:
+   так скролл остаётся один, без вложенной полосы. */
+
+.O_Solutions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-half);
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  border-radius: var(--radius-l);
+
+  .M_SolutionsIntro {
+    position: sticky;
+    top: var(--hero-top);
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .A_SolutionsLead {
+    max-width: 659px;
+    color: var(--color-text-soft);
+  }
+}
+
+/* ===== M_SolutionCards ===== */
+/* Правая колонка: её высота и даёт секции ход прокрутки. */
+
+.M_SolutionCards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-half);
+}
+
+/* ===== T_Service ===== */
+/* Плашка услуги: слева текст с перечнем, справа внизу фирменная «лестница».
+   Чередование заливки задаётся модификатором, как в макете. */
+
+.T_Service {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-half);
+  min-height: 476px;
+  padding: var(--space-8) var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-l);
+
+  /* 363px из макета — стартовая ширина, но колонка ужимается: между 1024 и
+     1440 текст и знак иначе не помещаются в половину панели */
+  .M_ServiceBody {
+    display: flex;
+    flex: 0 1 363px;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .M_ServiceHead {
+    display: flex;
+    flex-direction: column;
+    gap: 14px; /* шаг из макета, вне восьмёрочной шкалы */
+  }
+
+  .M_ServiceHead p {
+    max-width: 324px;
+  }
+
+  .M_ServiceList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .A_ServiceItem {
+    display: flex;
+    gap: var(--space-1);
+    align-items: flex-start;
+  }
+
+  .A_Marker {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    margin-top: var(--space-half); /* подгонка под первую строку, как в макете */
+    background: var(--color-accent-text);
+    border-radius: 2px;
+  }
+
+  /* «Лестница» — png-экспорт из макета, работает маской, поэтому красится
+     токеном под заливку плашки. */
+  .A_ServiceMark {
+    flex: none;
+    align-self: flex-end;
+    margin-left: auto;
+    width: 238px;
+    height: 233px;
+    background: var(--color-accent);
+    mask: url('./images/shapes/stairs.png') no-repeat center / contain;
+  }
+}
+
+.T_Service--accent {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+
+  .A_Marker,
+  .A_ServiceMark {
+    background: var(--color-accent-soft);
   }
 }

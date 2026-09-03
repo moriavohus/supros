@@ -1,7 +1,9 @@
 /* ===== typography ===== */
 /* Фиксированная модульная шкала. Размеры шрифта задаются только здесь.
    Классы не привязаны к тегу: один и тот же стиль нужен и на заголовке,
-   и на span внутри карточки статистики. */
+   и на span внутри карточки статистики.
+   Значения — из макета (Figma 2017:4272): трекинг переведён из px в em,
+   межстрочный — из абсолютных px в проценты того же кегля. */
 
 body {
   font-family: var(--font-base);
@@ -19,21 +21,23 @@ body {
 }
 
 .Title1 {
-  font-size: 56px;
-  line-height: 105%;
+  font-size: 48px;
+  line-height: 100%;
   letter-spacing: -0.02em;
   font-weight: 400;
 }
 
 .Title2 {
-  font-size: 40px;
-  line-height: 115%;
+  font-size: 36px;
+  line-height: 128%;
+  letter-spacing: 0.013em;
   font-weight: 400;
 }
 
 .Title3 {
-  font-size: 28px;
+  font-size: 26px;
   line-height: 115%;
+  letter-spacing: 0.018em;
   font-weight: 400;
 }
 
@@ -44,10 +48,16 @@ p,
   font-weight: 400;
 }
 
+.BodyTight {
+  font-size: 16px;
+  line-height: 120%;
+  font-weight: 500;
+}
+
 .BodySmall {
   font-size: 14px;
-  line-height: 150%;
-  font-weight: 400;
+  line-height: 120%;
+  font-weight: 500;
 }
 
 .Label {
@@ -59,10 +69,11 @@ p,
 }
 
 .NavLink {
+  font-family: var(--font-nav);
   font-size: 16px;
   line-height: 100%;
   letter-spacing: -0.01em;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .Mono {

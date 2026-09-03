@@ -13,7 +13,8 @@
     <link rel="alternate" hreflang="ru" href="https://supros.kz/index.html" />
     <link rel="alternate" hreflang="x-default" href="https://supros.kz/index.html" />
 
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-cyrillic.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/google-sans-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/google-sans-cyrillic.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
 
     <link rel="stylesheet" href="/src/stylesheets/reset.css" />
@@ -26,6 +27,20 @@
 
   <body>
     <div class="W_Page">
+      <!-- Снимок первого экрана — подложка всей страницы: секции проезжают
+           над ним, тёмная SOLUTIONS перекрывает его своей заливкой. -->
+      <span class="W_Backdrop" aria-hidden="true">
+        <img
+          class="A_BackdropPhoto"
+          src="/src/images/hero/plant.jpg"
+          alt=""
+          width="1264"
+          height="711"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </span>
+
       <header class="O_Header">
         <div class="M_Brand">
           <a class="A_Logo" href="/" aria-label="SUPROS — на главную"></a>
@@ -56,11 +71,6 @@
       </header>
 
       <section class="O_Hero">
-        <span class="W_HeroMedia" aria-hidden="true">
-          <img class="A_HeroPhoto" src="/src/images/hero/duct.jpg" alt="" width="1501" height="666" fetchpriority="high" decoding="async" />
-          <img class="A_HeroPhoto" src="/src/images/hero/hall.jpg" alt="" width="1501" height="666" fetchpriority="high" decoding="async" />
-        </span>
-
         <div class="W_HeroRow">
           <div class="T_HeroTitle">
             <h1 class="Display">Smarter Engineering for Industry</h1>
@@ -78,15 +88,23 @@
             <a class="A_LinkArrow Label" href="/contacts.html">
               Contact us
               <span class="A_Chip" aria-hidden="true">
-                <svg viewBox="0 0 14 14"><path d="M2 7h8.2L6.6 3.4 8 2l6 5-6 5-1.4-1.4L10.2 9H2z" /></svg>
+                <span class="A_ChipIcon"></span>
               </span>
             </a>
           </article>
 
-          <!-- TODO: логотип NIA лежит в макете картинкой, забрать ассет отдельно -->
           <article class="T_CardPartner">
             <h3 class="Title3">Only NIA member in Kazakhstan</h3>
-            <span class="A_PartnerLogo BodySmall Muted">NIA · National Insulation Association</span>
+            <span class="A_PartnerLogo">
+              <img
+                src="/src/images/logos/nia.png"
+                alt="National Insulation Association"
+                width="220"
+                height="68"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
           </article>
         </div>
       </section>
@@ -102,7 +120,7 @@
             <a class="A_LinkArrow Label" href="/about.html">
               Read more
               <span class="A_Chip" aria-hidden="true">
-                <svg viewBox="0 0 14 14"><path d="M2 7h8.2L6.6 3.4 8 2l6 5-6 5-1.4-1.4L10.2 9H2z" /></svg>
+                <span class="A_ChipIcon"></span>
               </span>
             </a>
           </div>
@@ -115,7 +133,7 @@
 
       <div class="W_Row">
         <section class="T_Card T_Card--label">
-          <p class="Label">About in numbers</p>
+          <p class="Label">SUPROS in numbers</p>
         </section>
 
         <article class="T_Card T_Card--stat">
@@ -133,8 +151,109 @@
           <span class="A_StatCaption Title3">Годовой объём</span>
         </article>
       </div>
+
+      <!-- TODO: в макете все три плашки повторяют текст MTO — дождаться
+           реальных описаний услуг от студента -->
+      <section class="O_Solutions">
+        <div class="M_SolutionsIntro">
+          <h2 class="Display">Solutions</h2>
+          <p class="A_SolutionsLead Title3">
+            We provide services in engineering, material supply, and training
+          </p>
+        </div>
+
+        <div class="M_SolutionCards">
+          <article class="T_Service T_Service--accent">
+            <div class="M_ServiceBody">
+              <div class="M_ServiceHead">
+                <h3 class="Title1">Material take-off (MTO)</h3>
+                <p class="BodyTight">
+                  Quantities extracted directly from ISO drawings — materials list ready for
+                  procurement.
+                </p>
+              </div>
+
+              <ul class="M_ServiceList">
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Full scope: insulation, cladding, fixings and accessories
+              </li>
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Procurement-ready format — Excel or your ERP template
+              </li>
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Updated with every drawing revision
+              </li>
+              </ul>
+            </div>
+
+            <span class="A_ServiceMark" aria-hidden="true"></span>
+          </article>
+
+          <article class="T_Service">
+            <div class="M_ServiceBody">
+              <div class="M_ServiceHead">
+                <h3 class="Title1">Material take-off (MTO)</h3>
+                <p class="BodyTight">
+                  Quantities extracted directly from ISO drawings — materials list ready for
+                  procurement.
+                </p>
+              </div>
+
+              <ul class="M_ServiceList">
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Full scope: insulation, cladding, fixings and accessories
+              </li>
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Procurement-ready format — Excel or your ERP template
+              </li>
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Updated with every drawing revision
+              </li>
+              </ul>
+            </div>
+
+            <span class="A_ServiceMark" aria-hidden="true"></span>
+          </article>
+
+          <article class="T_Service T_Service--accent">
+            <div class="M_ServiceBody">
+              <div class="M_ServiceHead">
+                <h3 class="Title1">Material take-off (MTO)</h3>
+                <p class="BodyTight">
+                  Quantities extracted directly from ISO drawings — materials list ready for
+                  procurement.
+                </p>
+              </div>
+
+              <ul class="M_ServiceList">
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Full scope: insulation, cladding, fixings and accessories
+              </li>
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Procurement-ready format — Excel or your ERP template
+              </li>
+              <li class="A_ServiceItem BodyTight">
+                <span class="A_Marker" aria-hidden="true"></span>
+                Updated with every drawing revision
+              </li>
+              </ul>
+            </div>
+
+            <span class="A_ServiceMark" aria-hidden="true"></span>
+          </article>
+        </div>
+      </section>
     </div>
 
     <script type="module" src="/src/javascript/nav.js"></script>
+    <script type="module" src="/src/javascript/scroll.js"></script>
   </body>
 </html>
