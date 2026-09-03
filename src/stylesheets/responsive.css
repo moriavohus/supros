@@ -163,6 +163,16 @@
     flex-direction: column;
   }
 
+  /* в колонке align-self управляет уже шириной — метка снова во всю ширину,
+     а фиксированная высота карточкам цифр не нужна */
+  .T_Card--label {
+    align-self: stretch;
+  }
+
+  .T_Card--stat {
+    min-height: 0;
+  }
+
   /* карточки цифр во всю ширину — цифра снова в полный размер */
   .A_StatNumber.Display {
     font-size: 80px;

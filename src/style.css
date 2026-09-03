@@ -338,8 +338,10 @@ body {
   }
 }
 
+/* высота 348 из макета: цифры стоят в ряд одинаковыми карточками */
 .T_Card--stat {
   align-items: flex-start;
+  min-height: 348px;
   gap: var(--space-8);
 
   .A_StatNumber,
@@ -361,8 +363,10 @@ body {
   }
 }
 
+/* карточка-метка в макете hug по высоте: не тянется под соседние */
 .T_Card--label {
   flex: 1;
+  align-self: flex-start;
   width: auto;
   justify-content: center;
 }

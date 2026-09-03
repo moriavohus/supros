@@ -11,7 +11,7 @@ if (toggle && nav) {
 
   const setOpen = (open) => {
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     nav.dataset.open = String(open);
   };
 
