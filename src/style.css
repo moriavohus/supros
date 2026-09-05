@@ -74,6 +74,10 @@ body {
   border-radius: var(--radius-m);
   backdrop-filter: blur(20px);
 
+  /* в макете шапка — единственное место с Inter */
+  font-family: var(--font-nav);
+  letter-spacing: -0.01em;
+
   /* два бокса по половине шапки: бренд слева, разделы справа от середины.
      Поля живут в боксах, а не в шапке, — так кнопка достаёт до края.
      Нижние 5px у бренда — оптическая центровка логотипа из макета. */
@@ -526,7 +530,7 @@ body {
     flex: none;
     width: 12px;
     height: 12px;
-    margin-top: var(--space-half); /* подгонка под первую строку, как в макете */
+    margin-top: 9px; /* по центру первой строки: (30 − 12) / 2 */
     background: var(--color-accent-text);
     border-radius: 2px;
   }
@@ -537,6 +541,8 @@ body {
   .A_ServiceMark {
     flex: 1;
     min-width: 0;
+    max-width: 140px; /* вдвое меньше макетных 281px */
+    margin-left: auto;
     align-self: flex-end;
     aspect-ratio: 297.5 / 291;
     background: var(--color-accent);
@@ -552,4 +558,19 @@ body {
   .A_ServiceMark {
     background: var(--color-accent-soft);
   }
+}
+
+/* ===== A_Tag ===== */
+/* Плашка-ярлык у названия услуги (Figma 2129:39223). Идёт в строке заголовка,
+   поэтому набрана мелким стилем и выровнена по середине строки. */
+
+.A_Tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-half) 14px;
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  border-radius: 30px;
+  white-space: nowrap;
+  vertical-align: middle;
 }

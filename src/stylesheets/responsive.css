@@ -8,14 +8,6 @@
     --card-w: 300px;
   }
 
-  h1.Display,
-  h2.Display {
-    font-size: clamp(40px, 5.5vw, 80px);
-  }
-
-  h2.Title2 {
-    font-size: clamp(24px, 2.6vw, 36px);
-  }
 }
 
 /* ===== планшет ===== */
@@ -24,19 +16,11 @@
     --card-w: 260px;
   }
 
-  h3.Title3 {
-    font-size: 22px;
-  }
-
   /* T_Card--stat — цифры и подписи не должны распирать карточку */
   .T_Card--stat {
     flex: 1;
     width: auto;
     min-width: 0;
-
-    .A_StatNumber {
-      font-size: clamp(40px, 6vw, 80px);
-    }
 
     .A_StatCaption {
       overflow-wrap: anywhere;
@@ -64,8 +48,12 @@
       gap: var(--space-6);
     }
 
+    /* в колонке flex: 1 растит знак по высоте, а ширины у него нет —
+       поэтому задаём её явно, высоту по-прежнему держит пропорция */
     .A_ServiceMark {
-      max-width: 240px;
+      flex: none;
+      width: 120px;
+      max-width: 100%;
       margin-top: var(--space-4);
     }
   }
@@ -73,22 +61,27 @@
 
 /* ===== планшет вертикально / крупный мобильный ===== */
 @media (max-width: 768px) {
-  /* типографика — наборный текст мельче */
+  /* маркер перечня — по центру первой строки: (22 − 12) / 2 */
+  .A_Marker {
+    margin-top: 5px;
+  }
+
+  /* типографика — те же три стиля в мобильных значениях макета */
+  .Display {
+    font-size: 44px;
+    letter-spacing: -0.02em; /* −0.88px из макета */
+  }
+
+  .Title {
+    font-size: 19px;
+    line-height: 22px;
+    letter-spacing: normal;
+  }
+
   p,
   .Body {
-    font-size: 15px;
-  }
-
-  .Label {
-    font-size: 16px;
-  }
-
-  h3.Title3 {
-    font-size: 20px;
-  }
-
-  h3.Title1 {
-    font-size: 32px;
+    font-size: 12px;
+    line-height: 120%;
   }
 
   /* O_Header — лого слева, бургер справа, меню панелью.
@@ -134,22 +127,89 @@
     }
   }
 
-  /* O_Hero — заголовок во всю ширину, карточки стопкой; прилипание рядов
-     снимается, высота идёт по содержимому, запас на скролл не нужен */
+  /* O_Hero — та же композиция, что на десктопе, только в один экран:
+     заголовок сверху по содержимому, ряд карточек прижат к низу, между ними
+     видно фото. Прилипание рядов снимается — делить экран пополам нечем. */
+  /* O_Hero — сетка макета 2129:37353: заголовок и два ряда карточек по трети
+     экрана. Ряды не отдельные блоки, а клетки сетки 2×2: серая карточка справа
+     во втором ряду, зелёная слева в третьем, в пустых клетках видно фото.
+
+     Прокрутка: заголовок и серая карточка прилипают на своих местах, зелёная
+     едет вверх и встаёт на уровень серой, накрывая её. Ход равен одной трети
+     плюс шов — он же добавлен секции снизу полем, чтобы не попасть во
+     флекс-раскладку и не растянуть ряды. */
   .O_Hero {
+    --hero-third: calc((100svh - var(--hero-top) - var(--space-half) * 3) / 3);
+    --hero-travel: calc(var(--hero-third) + var(--space-half));
+    --hero-cards-top: calc(var(--hero-top) + var(--hero-third) + var(--space-half));
+
+    display: flex;
+    flex-direction: column;
+
+    /* Секция ровно в экран, никакого запаса снизу: страница едет как обычно,
+       и всё, что ниже, поднимается одновременно с зелёной карточкой. Эффект
+       держится на прилипании — стоят заголовок и серая, а не на удлинении
+       секции. До About остаётся обычный шов: 4px поля секции + 4px зазора. */
     min-height: 100svh;
 
-    .W_HeroRow {
+    /* Ряд заголовка выше своей трети ровно на величину хода: столько карточка
+       и стоит приклеенной. Дальше ряд кончается, карточка отлипает и уезжает
+       вместе со страницей — то есть в момент, когда зелёная доехала до серой,
+       начинается обычная прокрутка. Отрицательное поле снизу возвращает сетку
+       карточек на её место, чтобы лишняя высота ряда не сдвигала раскладку. */
+    .W_HeroRow:not(.W_HeroRow--bottom) {
       position: static;
-      height: auto;
+      flex: none;
+      height: calc(var(--hero-third) + var(--hero-travel));
+      margin-bottom: calc(-1 * var(--hero-travel));
     }
 
     .T_HeroTitle {
+      position: sticky;
+      top: var(--hero-top);
+      align-self: flex-start;
       width: 100%;
+      height: var(--hero-third);
+      padding: var(--space-4);
     }
 
-    .W_HeroRow--bottom {
-      flex-direction: column;
+    /* Ряд карточек — флекс, а не сетка: у элемента сетки рамка прилипания —
+       его собственная клетка, и приклеить его к экрану нельзя. У флекс-элемента
+       рамка — весь ряд, поэтому серая стоит на месте, пока зелёная едет к ней.
+       Шахматный порядок задаёт align-self: серая по верху, зелёная по низу. */
+    .W_HeroRow + .W_HeroRow--bottom {
+      position: static;
+      height: calc(var(--hero-third) * 2 + var(--space-half));
+
+      .T_Card--accent,
+      .T_CardPartner {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+        height: var(--hero-third);
+      }
+
+      /* приклеена только серая: она стоит, зелёная едет к ней снизу и,
+         поравнявшись, накрывает — дальше обе едут со страницей */
+      .T_CardPartner {
+        position: sticky;
+        top: var(--hero-cards-top);
+        align-self: flex-start;
+        padding: var(--space-2-5) var(--space-2-5) 30px;
+        mask-image: url('../images/shapes/partner-card-cut-mobile.svg');
+      }
+
+      .T_Card--accent {
+        z-index: 1;
+        align-self: flex-end;
+        padding: var(--space-2-5);
+      }
+    }
+
+    /* логотип партнёра ужимается под колонку */
+    .A_PartnerLogo img {
+      width: 100%;
+      height: auto;
     }
   }
 
@@ -171,11 +231,6 @@
 
   .T_Card--stat {
     min-height: 0;
-  }
-
-  /* карточки цифр во всю ширину — цифра снова в полный размер */
-  .A_StatNumber.Display {
-    font-size: 80px;
   }
 
   /* O_Solutions — одна колонка, заголовок перестаёт прилипать */
@@ -209,8 +264,21 @@
 @media (max-height: 600px) {
   .O_Hero {
     min-height: auto;
+    padding-bottom: var(--space-half); /* запас хода тут не нужен */
+
+    &::after {
+      display: none;
+    }
 
     .W_HeroRow {
+      position: static;
+      height: auto;
+      margin-bottom: 0;
+    }
+
+    .T_HeroTitle,
+    .T_Card--accent,
+    .T_CardPartner {
       position: static;
       height: auto;
     }
