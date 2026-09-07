@@ -6,6 +6,12 @@
   box-sizing: border-box;
 }
 
+/* Атрибут hidden должен побеждать раскладку: display из браузерных стилей
+   слабее любого правила по классу, а секции у нас flex и grid. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
 
