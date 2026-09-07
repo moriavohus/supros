@@ -28,85 +28,181 @@ body {
 }
 
 .A_BackdropPhoto {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+/* Канвас сводит оба снимка шейдером и ложится поверх запасного <img>.
+   Проявляется, только когда шейдер поднялся: иначе на экране остаётся
+   статичный верхний кадр. */
+.A_BackdropCanvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+
+  &[data-ready] {
+    opacity: 1;
+  }
+}
+
 /* ===== W_Page ===== */
-/* Мозаика карточек с плотным швом 4px — приём из макета. */
+/* Сетка встык: блоки без полей и скруглений, между ними волосок. */
 
 .W_Page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-half);
   max-width: var(--container-max);
   margin-inline: auto;
-  padding: var(--space-half);
 }
 
+/* Ряд — макетная сетка: 12 тянущихся колонок, поля 0. Блоки занимают колонки
+   спанами, собственной ширины у них нет. Обводка по макету у самого ряда:
+   внутри неё текстовый блок остаётся без рамки, а разделителем служит левая
+   грань блока с логотипом. */
 .W_Row {
-  display: flex;
-  gap: var(--space-half);
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  position: relative;
   align-items: stretch;
+
+  /* Рамка ряда — отдельным слоем поверх содержимого. Ни border, ни outline
+     тут не годятся: дети занимают ряд целиком и закрывают кромку, по которой
+     те рисуются, — блок с логотипом вдобавок сдвинут на неё отрицательными
+     полями. Псевдоэлемент лежит выше детей и кликам не мешает. */
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    border: var(--hairline) solid var(--color-line);
+    pointer-events: none;
+  }
+}
+
+/* ===== линии сетки ===== */
+/* Обводка в макете — признак белой плашки: очерчены только они (девять нод на
+   всю страницу), а блоки с заливкой акцентом или бледной бирюзой отделяет от
+   соседей сама заливка. Поэтому линию рисует не «каждый блок», а конкретные
+   белые.
+
+   В Figma обводка стоит по центру границы и у соседей сходится в одну линию.
+   В CSS она всегда внутренняя, поэтому две смежные дали бы двойную толщину —
+   соседей сдвигаем друг на друга на толщину линии, и общие грани совпадают. */
+
+.T_HeroTitle,
+.T_Card--accent,
+.T_CardPartner,
+.T_NumberLabel,
+.T_Stat,
+.T_Service:not(.T_Service--accent),
+.O_Solutions {
+  border: var(--hairline) solid var(--color-line);
+}
+
+/* соседи по горизонтали — внутри ряда */
+.W_Row > * + *,
+.W_HeroRow > * + *,
+.O_Numbers > * + * {
+  margin-left: calc(-1 * var(--hairline));
+}
+
+/* соседи по вертикали — ряды первого экрана, плашки услуг и секции страницы.
+   Первый экран сдвигается под шапку: её нижняя грань становится его верхней. */
+.W_HeroRow + .W_HeroRow,
+.M_SolutionCards > * + *,
+.O_Hero,
+.O_Hero ~ * {
+  margin-top: calc(-1 * var(--hairline));
 }
 
 /* ===== O_Header ===== */
-/* Шапка вне потока: лежит поверх первого экрана и не уезжает при скролле.
-   Ширина считается от вьюпорта, но не шире контейнера страницы, поэтому
-   на широких мониторах она держит ту же сетку, что и остальные секции.
-   Первая секция страницы обязана компенсировать её высоту своим padding —
-   сейчас это делает O_Hero. */
+/* Шапка по макету 2136:41124: стекло — белый на 90% с размытием, поэтому
+   подложка сквозь неё просвечивает. Вне потока, лежит поверх первого экрана
+   и не уезжает при скролле; ширину держит контейнер страницы, чтобы на широких
+   мониторах шапка стояла в той же сетке. Высоту шапки компенсирует своим
+   верхним полем первая секция — сейчас это O_Hero.
+
+   Отрицательные поля перекрытия обводок на шапку не распространяются: она
+   позиционирована, и поле сдвинуло бы её относительно окна, открывая полосу
+   подложки под ней. */
 
 .O_Header {
   position: fixed;
-  top: var(--space-half);
+  top: 0;
   left: 50%;
   z-index: 10;
-  display: flex;
+
+  /* шапка стоит на той же сетке, что и страница: бренд и разделы занимают
+     по шесть колонок, поэтому их граница совпадает с вертикалью блоков под
+     ними. На процентах она не совпадала — половина шапки и шесть колонок
+     дают разные числа, когда у шапки есть собственная обводка. */
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   align-items: center;
-  justify-content: space-between;
-  width: min(100% - var(--space-half) * 2, var(--container-max) - var(--space-half) * 2);
+  width: min(100%, var(--container-max));
   height: var(--header-h);
   transform: translateX(-50%);
   overflow: hidden;
-  background: var(--color-surface-muted);
-  border-radius: var(--radius-m);
+  background: rgb(255 255 255 / 90%);
+  border: var(--hairline) solid var(--color-line);
   backdrop-filter: blur(20px);
 
-  /* в макете шапка — единственное место с Inter */
-  font-family: var(--font-nav);
-  letter-spacing: -0.01em;
-
-  /* два бокса по половине шапки: бренд слева, разделы справа от середины.
-     Поля живут в боксах, а не в шапке, — так кнопка достаёт до края.
-     Нижние 5px у бренда — оптическая центровка логотипа из макета. */
+  /* левый бокс: плитка с логотипом вплотную к краю, за ней язык */
   .M_Brand {
     display: flex;
-    flex: 1 0 0;
+    grid-column: span 6;
     align-self: stretch;
     align-items: center;
     gap: var(--space-2-5);
-    padding: var(--space-1-5) var(--space-2-5) 5px;
+    padding-right: var(--space-2-5);
   }
 
+  /* логотип сидит на акцентной плитке во всю высоту шапки, сам знак белый */
   .A_Logo {
-    display: block;
-    width: 120px;
-    height: 25px;
-    background: var(--color-brand-mark);
-    mask: url('./images/logos/supros.svg') no-repeat center / contain;
+    display: grid;
+    place-items: center;
+    align-self: stretch;
+    padding-inline: var(--space-2-5);
+    background: var(--color-accent);
+
+    &::before {
+      content: '';
+      width: 82px;
+      aspect-ratio: 120 / 25;
+      background: var(--color-surface);
+      mask: url('./images/logos/supros.svg') no-repeat center / contain;
+    }
   }
 
+  /* переключатель языка — единственное место с Inter */
   .A_Lang {
+    font-family: var(--font-nav);
+    letter-spacing: -0.01em;
     color: var(--color-accent);
   }
 
+  /* Правый бокс с разделами — шесть колонок. Обводка полная и сдвинута
+     перекрытием по всем четырём граням, как у блоков страницы: сверху, справа
+     и снизу она ложится на грани самой шапки, слева — на ту же вертикаль,
+     по которой проходит линия блоков под шапкой.
+
+     Сдвиг слева обязателен: обводка в CSS внутренняя, и без него линия шапки
+     шла бы по правому краю колонки, а линия блоков — по левому. Те же шесть
+     колонок, но вертикали разные на пиксель. */
   .M_Nav {
     display: flex;
-    flex: 1 0 0;
+    grid-column: span 6;
     align-self: stretch;
     align-items: center;
+    margin: calc(-1 * var(--hairline));
+    border: var(--hairline) solid var(--color-line);
   }
 
   .A_NavLink {
@@ -114,14 +210,14 @@ body {
     align-items: center;
     gap: var(--space-half);
     height: 100%;
-    padding-inline: var(--space-2-5);
-    color: var(--color-accent);
+    padding: var(--space-1-5) 22px;
+    color: var(--color-accent-deep);
     white-space: nowrap;
     transition: color var(--transition-fast);
 
     &:hover,
     &:focus-visible {
-      color: var(--color-accent-text);
+      color: var(--color-accent);
     }
   }
 
@@ -131,7 +227,7 @@ body {
     justify-content: center;
     width: var(--header-h);
     height: var(--header-h);
-    color: var(--color-text-heading);
+    color: var(--color-accent-deep);
 
     &[aria-expanded='true'] .A_Burger {
       background: transparent;
@@ -204,6 +300,7 @@ body {
 .O_Header .A_ButtonPrimary {
   flex: 1 0 0;
   align-self: stretch;
+  padding: var(--space-2) 28px; /* 16 / 28 из макета */
   border-radius: 0;
 }
 
@@ -243,55 +340,59 @@ body {
 }
 
 /* ===== O_Hero ===== */
-/* Первый экран занимает вьюпорт целиком: секция гасит поля страницы
-   отрицательными полями, поэтому карточки лежат на подложке от края до края.
+/* Первый экран ровно во вьюпорт: два ряда по половине, карточки лежат на
+   подложке, в пустых колонках видно фото.
 
-   Скролл — приём с aspensearch.com, только без библиотек: оба ряда липкие
-   с одинаковым top, а секция выше вьюпорта ровно на высоту ряда. Заголовок
-   прилипает сразу и стоит на месте, ряд карточек едет вверх, пока не упрётся
-   в ту же границу под шапкой, и накрывает заголовок (z-index). Дальше секция
-   доезжает и оба ряда уходят вместе с ней.
-
-   Ряды не могут висеть на flex: 1 — контейнер выше экрана, доля от него дала
-   бы полтора экрана на ряд. Поэтому высота ряда считается от вьюпорта. */
+   Прокрутка — приём с aspensearch.com, но без запаса хода у секции. Запас
+   отодвигал бы вниз всё, что идёт после первого экрана, и низ страницы
+   трогался бы с места только после карточек. Вместо этого приклеен один
+   заголовок: ряд под ним выше своей половины ровно на путь нижнего ряда,
+   столько карточка и держится. Ряд кончился — заголовок отлип и поехал
+   вместе со страницей, то есть карточки и все секции ниже поднимаются
+   одновременно, как на мобильном. */
 
 .O_Hero {
   position: relative;
-  min-height: calc(100svh + var(--hero-row-h) + var(--space-half));
-  margin: calc(-1 * var(--space-half)) calc(-1 * var(--space-half)) 0;
-  padding: var(--hero-top) var(--space-half) var(--space-half);
+  min-height: 100svh;
+
+  /* верхний отступ равен высоте шапки — под ней ровно ноль */
+  padding-top: var(--hero-top);
+
 
   /* clip, а не hidden: hidden сделал бы секцию скролл-контейнером и убил
-     бы прилипание рядов. */
+     бы прилипание заголовка. */
   overflow: clip;
 
-  /* два одинаковых бокса по половине экрана; карточки внутри тянутся
-     на всю высоту бокса */
   .W_HeroRow {
-    position: sticky;
-    top: var(--hero-top);
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
     height: var(--hero-row-h);
-    gap: var(--space-half);
     align-items: stretch;
   }
 
-  .W_HeroRow + .W_HeroRow {
-    margin-top: var(--space-half);
+  /* ряд заголовка выше своей половины на путь нижнего ряда, лишнее съедает
+     отрицательное поле — раскладка от этого не разъезжается */
+  .W_HeroRow:not(.W_HeroRow--bottom) {
+    height: calc(var(--hero-row-h) * 2 + var(--seam));
+    margin-bottom: calc(-1 * (var(--hero-row-h) + var(--seam)));
   }
 
-  .W_HeroRow--bottom {
-    z-index: 1;
-    justify-content: flex-end;
+  /* нижний ряд: слева шесть пустых колонок — там видно подложку */
+  .W_HeroRow--bottom .T_Card--accent {
+    grid-column: 7 / span 3;
   }
 }
 
 /* ===== T_HeroTitle ===== */
 
 .T_HeroTitle {
+  position: sticky;
+  top: var(--pin-top);
   display: flex;
+  grid-column: span 6;
+  height: var(--hero-row-h);
+  align-self: start;
   align-items: center;
-  width: 50%;
   padding: var(--space-4);
   background: var(--color-surface);
 
@@ -300,7 +401,7 @@ body {
   border-radius: var(--radius-l);
 
   h1 {
-    color: var(--color-accent-text);
+    color: var(--color-accent-deep);
   }
 }
 
@@ -311,8 +412,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  grid-column: span 3;
   gap: var(--space-3);
-  width: var(--card-w);
   padding: var(--space-4);
   background: var(--color-surface);
   color: var(--color-text-heading);
@@ -342,21 +443,13 @@ body {
   }
 }
 
-/* высота 348 из макета: цифры стоят в ряд одинаковыми карточками */
-.T_Card--stat {
-  align-items: flex-start;
-  min-height: 348px;
-  gap: var(--space-8);
-
-  .A_StatNumber,
-  .A_StatCaption {
-    color: var(--color-accent-text);
-  }
-}
-
+/* Карточка со знаком: монограмма во всю клетку, заливка серой. Внешний контур
+   рисует сам ряд, поэтому карточке нужна одна грань — та, что делит ряд
+   на текст и знак. */
 .T_Card--mark {
   align-items: center;
   justify-content: center;
+  border-left: var(--hairline) solid var(--color-line);
 
   .A_Mark {
     width: 100%;
@@ -367,12 +460,60 @@ body {
   }
 }
 
-/* карточка-метка в макете hug по высоте: не тянется под соседние */
-.T_Card--label {
-  flex: 1;
-  align-self: flex-start;
-  width: auto;
-  justify-content: center;
+/* ===== O_Numbers ===== */
+/* Карточки цифр стоят лесенкой: каждая ниже предыдущей на свою высоту.
+   Все прилипают к одной границе под шапкой, поэтому при прокрутке первая
+   встаёт и ждёт, вторая доезжает до её уровня, следом третья — к концу
+   секции все три стоят в линию.
+
+   Высота секции равна трём карточкам: столько и длится сведение. Запаса
+   сверх этого нет, значит секции ниже трогаются с места сразу, а не ждут,
+   пока лесенка сложится. */
+
+.O_Numbers {
+  --stat-h: 200px; /* высота карточки цифры из макета */
+
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  align-items: start;
+  background: var(--color-surface-muted);
+}
+
+.T_NumberLabel {
+  grid-column: span 3;
+  height: calc(var(--stat-h) * 3);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-text-heading);
+}
+
+.T_Stat {
+  position: sticky;
+  top: var(--pin-top);
+  display: flex;
+  grid-column: span 3;
+  height: var(--stat-h);
+  flex-direction: column;
+  justify-content: space-between;
+
+  /* ступенька: каждая следующая начинает на карточку ниже */
+  margin-top: calc(var(--stat-h) * var(--step, 0));
+  padding: var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-accent-deep);
+}
+
+
+.T_Stat:nth-of-type(2) {
+  --step: 1;
+}
+
+.T_Stat:nth-of-type(3) {
+  --step: 2;
+}
+
+.T_Stat--pale {
+  background: var(--color-accent-soft);
 }
 
 /* ===== T_CardPartner ===== */
@@ -383,13 +524,11 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  grid-column: span 3;
   gap: var(--space-3);
-  width: var(--card-w);
   padding: var(--space-4);
   background: var(--color-surface-muted);
   color: var(--color-text-heading);
-  border-radius: var(--radius-l);
-  mask: url('./images/shapes/partner-card-cut.svg') no-repeat center / 100% 100%;
 
   .A_PartnerLogo {
     display: inline-flex;
@@ -407,31 +546,32 @@ body {
 
 /* ===== O_About ===== */
 
+/* Девять колонок ряда; внутри — подсетка, чтобы метка и текст стояли
+   на тех же направляющих, что и остальные блоки страницы. */
 .O_About {
-  display: flex;
-  flex: 1;
-  gap: var(--space-3);
-  align-items: flex-start;
-  padding: var(--space-4);
+  display: grid;
+  grid-column: span 9;
+  grid-template-columns: subgrid;
+  align-items: start;
   background: var(--color-surface);
-  border-radius: var(--radius-l);
 
   .M_AboutLabel {
-    width: var(--card-w);
-    flex-shrink: 0;
+    grid-column: span 3;
+    padding: var(--space-4);
     color: var(--color-text-heading);
   }
 
   .M_AboutBody {
     display: flex;
-    flex: 1;
+    grid-column: span 6;
     min-width: 0;
     flex-direction: column;
     gap: var(--space-3);
+    padding: var(--space-4);
   }
 
   h2 {
-    color: var(--color-accent-text);
+    color: var(--color-accent-deep);
   }
 
   .A_LinkArrow {
@@ -450,15 +590,19 @@ body {
 
 .O_Solutions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-half);
+
+  /* колонки те же, что у страницы: половины панели ложатся на направляющие
+     сетки, а не делят её ширину пополам сами по себе */
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--seam);
   background: var(--color-surface-muted);
   color: var(--color-text);
-  border-radius: var(--radius-l);
+  border: var(--hairline) solid var(--color-line);
 
   .M_SolutionsIntro {
+    grid-column: span 6;
     position: sticky;
-    top: var(--hero-top);
+    top: var(--pin-top);
     align-self: start;
     display: flex;
     flex-direction: column;
@@ -476,35 +620,37 @@ body {
 /* Правая колонка: её высота и даёт секции ход прокрутки. */
 
 .M_SolutionCards {
+  grid-column: span 6;
   display: flex;
+  margin: calc(-1 * var(--hairline));
   flex-direction: column;
-  gap: var(--space-half);
+  gap: var(--seam);
 }
 
 /* ===== T_Service ===== */
-/* Плашка услуги (Figma 2088:1047): слева текст с перечнем, справа внизу
-   фирменная «лестница». Чередование заливки — модификатором, как в макете.
-   Поля 50/40 из макета вне восьмёрочной шкалы, поэтому 50 стоит числом. */
+/* Плашка услуги по макету 2136:41029 — один компонент на три карточки.
+   Инстансы отличаются тремя вещами и только ими: заливкой, текстом и знаком.
+   Знак приходит переменной --service-mark, цвет знака и маркеров — --service-ink,
+   поэтому добавить четвёртую услугу = строка в разметке и одна строка стилей.
+
+   Карточка делится ровно пополам: слева текст, справа знак. Половины совпадают
+   с колонками сетки — карточка занимает шесть, значит на каждую половину
+   приходится по три. */
 
 .T_Service {
-  display: flex;
-  align-items: stretch;
-  gap: var(--space-2-5);
-  min-height: 476px;
-  padding: 50px var(--space-5);
+  --service-ink: var(--color-accent);
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-height: 441px;
+  padding: 50px var(--space-5); /* 50 / 40 из макета */
   background: var(--color-surface);
   color: var(--color-text);
-  border-radius: var(--radius-l);
 
-  /* 363px из макета — стартовая ширина, но колонка ужимается: между 1024 и
-     1440 текст и знак иначе не помещаются в половину панели.
-     Отбивка «шапка → перечень» в макете фиксированная, не распор. */
   .M_ServiceBody {
     display: flex;
-    flex: 0 1 363px;
-    min-width: 0;
     flex-direction: column;
-    gap: 120px;
+    justify-content: space-between;
   }
 
   .M_ServiceHead {
@@ -517,7 +663,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--space-1-5);
-    max-width: 335px;
   }
 
   .A_ServiceItem {
@@ -528,36 +673,44 @@ body {
 
   .A_Marker {
     flex: none;
-    width: 12px;
-    height: 12px;
-    margin-top: 9px; /* по центру первой строки: (30 − 12) / 2 */
-    background: var(--color-accent-text);
+    width: 10px;
+    height: 10px;
+    margin-top: 3px; /* по центру первой строки */
+    background: var(--service-ink);
     border-radius: 2px;
   }
 
-  /* «Лестница» — png-экспорт из макета, работает маской, поэтому красится
-     токеном под заливку плашки. Занимает остаток строки и прижата к низу,
-     высоту держит пропорция из макета. */
+  /* знак прижат к низу правой половины и красится маской, поэтому один файл
+     работает и на бирюзовой заливке, и на белой */
   .A_ServiceMark {
-    flex: 1;
-    min-width: 0;
-    max-width: 140px; /* вдвое меньше макетных 281px */
-    margin-left: auto;
-    align-self: flex-end;
-    aspect-ratio: 297.5 / 291;
-    background: var(--color-accent);
-    mask: url('./images/shapes/stairs.png') no-repeat center / contain;
+    align-self: end;
+    justify-self: end;
+    width: 50%; /* 168.25 из 336.5 — половина колонки знака */
+    aspect-ratio: 428 / 419;
+    background: var(--service-ink);
+    mask: var(--service-mark) no-repeat center / contain;
   }
 }
 
+/* бирюзовая заливка: на ней знак и маркеры светлые */
 .T_Service--accent {
+  --service-ink: var(--color-accent-soft);
+
   background: var(--color-accent);
   color: var(--color-text-inverse);
+}
 
-  .A_Marker,
-  .A_ServiceMark {
-    background: var(--color-accent-soft);
-  }
+/* у каждой услуги свой знак */
+.T_Service--thermal {
+  --service-mark: url('./images/shapes/mark-thermal.png');
+}
+
+.T_Service--mto {
+  --service-mark: url('./images/shapes/mark-mto.png');
+}
+
+.T_Service--audit {
+  --service-mark: url('./images/shapes/mark-audit.png');
 }
 
 /* ===== A_Tag ===== */
@@ -573,4 +726,253 @@ body {
   border-radius: 30px;
   white-space: nowrap;
   vertical-align: middle;
+}
+
+/* ===== M_SectionHead ===== */
+/* Общая шапка секции: крупный заголовок и лид под ним. */
+
+.M_SectionHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 726px;
+}
+
+.A_SectionLead {
+  color: var(--color-text-soft);
+}
+
+/* ===== A_Fact ===== */
+/* Пара «метка → значение»: кейсы и контакты набраны одинаково. */
+
+.A_Fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-half);
+
+  dt {
+    color: var(--color-text-muted);
+  }
+}
+
+/* ===== O_Materials ===== */
+/* Белая панель: шапка, сетка групп материалов, ссылка на запрос. */
+
+.O_Materials {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-l);
+
+  .A_LinkArrow {
+    align-self: flex-start;
+    color: var(--color-accent-text);
+  }
+}
+
+.M_MaterialGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--seam);
+}
+
+.T_Material {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-l);
+
+  p {
+    color: var(--color-text-soft);
+  }
+}
+
+/* ===== O_Projects ===== */
+/* Тёмная панель, кейсы — белыми карточками мозаики. */
+
+.O_Projects {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-4);
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-l);
+
+  .A_SectionLead {
+    color: var(--color-text-inverse-muted);
+  }
+}
+
+.M_ProjectList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--seam);
+}
+
+.T_Project {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-l);
+}
+
+.M_ProjectFacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+/* ===== O_Contact ===== */
+/* Акцентная панель: слева приглашение и контакты, справа форма заявки. */
+
+.O_Contact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--seam);
+  padding: var(--space-8) var(--space-4);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-l);
+}
+
+.M_ContactIntro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 560px;
+
+  p {
+    color: var(--color-text-inverse-soft);
+  }
+}
+
+.M_ContactList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-4);
+
+  .A_Fact dt {
+    color: var(--color-text-inverse-muted);
+  }
+}
+
+/* ===== M_RequestForm ===== */
+
+.M_RequestForm {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-l);
+
+  .A_ButtonPrimary {
+    justify-self: start;
+  }
+}
+
+.A_Field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  span {
+    color: var(--color-text-muted);
+  }
+}
+
+.A_Field--wide {
+  grid-column: 1 / -1;
+}
+
+textarea.A_Input {
+  resize: vertical; /* тянуть вбок нечего — колонка фиксированная */
+}
+
+.A_Input {
+  width: 100%;
+  padding: var(--space-2);
+  color: inherit;
+  background: var(--color-surface-muted);
+  border: var(--hairline) solid transparent;
+  border-radius: var(--radius-s);
+  font: inherit;
+  transition: border-color var(--transition-fast);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-accent);
+  }
+}
+
+.A_FormNote {
+  grid-column: 1 / -1;
+  color: var(--color-text-muted);
+
+  a {
+    color: var(--color-accent-text);
+    text-decoration: underline;
+  }
+}
+
+/* ===== O_Footer ===== */
+
+.O_Footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-4);
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-l);
+
+  a {
+    color: var(--color-text-inverse-muted);
+    transition: color var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text-inverse);
+    }
+  }
+}
+
+.M_FooterNav {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.M_FooterCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.M_FooterBottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: var(--hairline) solid var(--color-text-inverse-muted);
+  color: var(--color-text-inverse-muted);
+
+  .M_Langs span {
+    color: var(--color-text-inverse);
+  }
 }

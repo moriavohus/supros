@@ -1,8 +1,7 @@
 /* ===== typography ===== */
-/* Три стиля на десктопе и три на мобильном — больше макету не нужно.
-   Кегль задаётся только здесь, мобильные значения — в responsive.css.
-   Регистр, цвет и ширина набора вынесены в модификаторы: это варианты
-   одного стиля, а не отдельные стили. */
+/* Шкала макета 2136:40975. Кегль задаётся только здесь, мобильные значения —
+   в responsive.css. Трекинг переведён из px в em, межстрочный — в проценты
+   того же кегля, поэтому размеры можно менять, не пересчитывая всё заново. */
 
 body {
   font-family: var(--font-base);
@@ -12,6 +11,7 @@ body {
   line-height: 120%;
 }
 
+/* заголовки экранов, названия секций, цифры */
 .Display {
   font-size: 80px;
   line-height: 100%;
@@ -19,6 +19,15 @@ body {
   font-weight: 400;
 }
 
+/* заголовки карточек услуг */
+.Heading {
+  font-size: 38px;
+  line-height: 100%;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+
+/* миссия, лиды секций */
 .Title {
   font-size: 26px;
   line-height: 115%;
@@ -26,19 +35,49 @@ body {
   font-weight: 400;
 }
 
+/* подписи под цифрами */
+.Caption {
+  font-size: 24px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+/* метки секций и текстовые ссылки: ABOUT SUPROS, CONTACT US, READ MORE */
+.Label {
+  font-size: 20px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* лид под заголовком карточки */
+.Lead {
+  font-size: 17px;
+  line-height: 120%;
+  font-weight: 400;
+}
+
+/* наборный текст и навигация */
 p,
 .Body {
   font-size: 16px;
   line-height: 120%;
-  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+/* мелкие метки: пункты перечней в плашках услуг */
+.Small {
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
 /* ===== модификаторы ===== */
-
-.Caps {
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
-}
 
 .Muted {
   color: var(--color-text-muted);

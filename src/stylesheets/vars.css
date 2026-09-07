@@ -4,11 +4,12 @@
 
 :root {
   /* --- цвет: акцент. Два токена, один тон в двух ролях --- */
-  --color-accent: #01b3c0; /* заливки: карточки, кнопки */
-  --color-accent-strong: #0097a3; /* ховер заливки */
-  --color-accent-text: #0097a3; /* текст, цифры, ссылки */
+  --color-accent: #009ca8; /* заливки: карточки, кнопки */
+  --color-accent-strong: #00818b; /* ховер заливки */
+  --color-accent-text: #009ca8; /* текст, цифры, ссылки */
   --color-accent-soft: #d7f3f6; /* маркеры и знак на акцентной плашке */
-  --color-brand-mark: #01b3c0; /* логотип; в макете совпадает с акцентом */
+  --color-accent-deep: #00858f; /* разделы в шапке */
+  --color-brand-mark: #009ca8; /* логотип; в макете совпадает с акцентом */
 
   /* --- цвет: поверхности --- */
   --color-bg: #f5f5f3;
@@ -17,22 +18,25 @@
   --color-surface-muted: #e9ebef;
 
   /* --- цвет: текст --- */
-  --color-text: #1e1b1b;
+  --color-text: #171717;
   --color-text-muted: #6b6d6e;
-  --color-text-soft: rgb(30 27 27 / 67%); /* лид на светлой панели */
-  --color-text-heading: #123a3c;
+  --color-text-soft: rgb(23 23 23 / 67%); /* лид на светлой панели */
+  --color-text-heading: #171717; /* в макете 2136:40975 тёмный один */
   --color-text-inverse: #fff; /* текст на акценте и на тёмном */
   --color-text-inverse-soft: rgb(255 255 255 / 80%);
   --color-text-inverse-muted: rgb(255 255 255 / 67%);
 
   /* --- цвет: линии и подложки --- */
   --color-hairline: #d6d6d2;
+  --color-line: #009ca8; /* линия между блоками сетки */
   --color-chip-on-accent: rgb(245 245 243 / 15%);
   --color-chip-on-light: rgb(0 151 163 / 15%);
   --color-overlay-photo: rgb(28 29 30 / 20%);
 
   /* --- ритм: база 8 --- */
-  --space-half: 4px; /* плотный шов между карточками, приём из макета */
+  --space-half: 4px; /* внутренние мелкие отбивки */
+  --seam: 0px; /* блоки стоят вплотную: 4px в макете — это gutter
+                  направляющих, а не зазор */
   --space-1: 8px;
   --space-1-5: 12px; /* внутренний шов «заголовок → лид» из макета */
   --space-2-5: 20px; /* шаг шапки: поля боксов и ссылок */
@@ -47,21 +51,23 @@
   --space-16: 128px;
 
   /* --- сетка --- */
-  --grid-columns: 12;
-  --gutter: 24px;
+  --grid-columns: 12; /* макетная сетка: тянущиеся колонки, поля 0 */
   --container-max: 1920px;
-  --card-w: 372px; /* ширина карточки правой колонки из макета */
   --header-h: 60px;
 
   /* первый экран: отступ под шапку и высота одного из двух рядов.
      Ряды делят пополам то, что осталось от вьюпорта под шапкой. */
-  --hero-top: calc(var(--header-h) + var(--space-half) * 2);
-  --hero-row-h: calc((100svh - var(--hero-top) - var(--space-half) * 2) / 2);
+  --hero-top: calc(var(--header-h) + var(--seam));
+
+  /* липкие блоки встают на волосок выше шапки: их верхняя грань ложится
+     на её нижнюю тем же перекрытием, что и в сетке, — иначе две линии */
+  --pin-top: calc(var(--hero-top) - var(--hairline));
+  --hero-row-h: calc((100svh - var(--hero-top) - var(--seam)) / 2);
 
   /* --- радиусы --- */
-  --radius-s: 4px;
-  --radius-m: 10px; /* плашки поверх фото */
-  --radius-l: 20px;
+  --radius-s: 4px; /* иконки и кнопки — единственное, что скруглено */
+  --radius-m: 0;
+  --radius-l: 0; /* макет 2136:40975: блоки прямоугольные */
 
   /* --- прочее --- */
   --hairline: 1px;
