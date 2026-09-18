@@ -259,60 +259,279 @@
 
       <!-- TODO: тексты материалов, кейсов и контактов — рыба под структуру из
            ИА (Figma 2130:39768), заменить на реальные данные SUPROS -->
-      <section class="O_Materials" hidden>
-        <div class="M_SectionHead">
-          <h2 class="Display">Materials supply</h2>
-          <p class="A_SectionLead Title">
-            Insulation materials from stock in Atyrau. Specifications, manufacturers, datasheets
-            and certificates — on request.
-          </p>
+      <section class="O_Materials" id="materials">
+        <div class="M_MaterialsIntro">
+          <div class="M_SectionHead">
+            <h2 class="Display">Materials Supply</h2>
+            <p class="A_MaterialsLead Body">
+              We offer a wide range of insulation materials to meet all the needs of industrial
+              projects
+            </p>
+          </div>
+
+          <figure class="W_PipeScheme" aria-label="Разрез изолированного трубопровода">
+            <span class="A_Ring" data-layer="4" style="--x: 0.0%; --s: 100.0%">
+              <img src="/src/images/materials/ring-4.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
+            </span>
+            <span class="A_Ring" data-layer="3" style="--x: 2.334%; --s: 95.33%">
+              <img src="/src/images/materials/ring-3.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
+            </span>
+            <span class="A_Ring" data-layer="2" style="--x: 29.334%; --s: 41.33%">
+              <img src="/src/images/materials/ring-2.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
+            </span>
+            <span class="A_Ring" data-layer="1" style="--x: 32.001%; --s: 36.0%">
+              <img src="/src/images/materials/ring-1.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
+            </span>
+            <figcaption class="A_SchemeLabel Small">
+              <span>300&nbsp;°C</span>
+              <span>пар, Ø219</span>
+            </figcaption>
+          </figure>
         </div>
 
-        <ul class="M_MaterialGrid">
-          <li class="T_Material">
-            <h3 class="Title">Mineral wool</h3>
-            <p class="Body">Slabs, lamella mats and wired mats for hot service.</p>
+        <ul class="M_LayerList">
+          <li class="T_Layer" data-layer="1" data-open="true">
+            <h3 class="A_LayerHead">
+              <button
+                class="A_LayerToggle Heading"
+                type="button"
+                aria-expanded="true"
+                aria-controls="layer-1"
+              >
+                Layer 1 — Thermal Insulation
+              </button>
+            </h3>
+            <div class="M_LayerBody" id="layer-1">
+              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
+            </div>
           </li>
-          <li class="T_Material">
-            <h3 class="Title">Cellular glass</h3>
-            <p class="Body">Blocks and shells for cryogenic and cold lines.</p>
+          <li class="T_Layer" data-layer="2">
+            <!-- TODO: своя копия слоя; в макете заполнен только Layer 1 -->
+            <h3 class="A_LayerHead">
+              <button
+                class="A_LayerToggle Heading"
+                type="button"
+                aria-expanded="false"
+                aria-controls="layer-2"
+              >
+                Layer 2 — Thermal Insulation
+              </button>
+            </h3>
+            <div class="M_LayerBody" id="layer-2">
+              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
+            </div>
           </li>
-          <li class="T_Material">
-            <h3 class="Title">Aerogel blankets</h3>
-            <p class="Body">Thin high-temperature insulation for tight layouts.</p>
+          <li class="T_Layer" data-layer="3">
+            <!-- TODO: своя копия слоя; в макете заполнен только Layer 1 -->
+            <h3 class="A_LayerHead">
+              <button
+                class="A_LayerToggle Heading"
+                type="button"
+                aria-expanded="false"
+                aria-controls="layer-3"
+              >
+                Layer 3 — Thermal Insulation
+              </button>
+            </h3>
+            <div class="M_LayerBody" id="layer-3">
+              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
+            </div>
           </li>
-          <li class="T_Material">
-            <h3 class="Title">PIR and PUR</h3>
-            <p class="Body">Panels and preformed shells for cold service.</p>
-          </li>
-          <li class="T_Material">
-            <h3 class="Title">Calcium silicate</h3>
-            <p class="Body">Shells and blocks for high-temperature equipment.</p>
-          </li>
-          <li class="T_Material">
-            <h3 class="Title">Cladding</h3>
-            <p class="Body">Galvanized, aluminium and stainless steel jacketing.</p>
-          </li>
-          <li class="T_Material">
-            <h3 class="Title">Fixings</h3>
-            <p class="Body">Bands, screws, rivets and support rings.</p>
-          </li>
-          <li class="T_Material">
-            <h3 class="Title">Vapour barriers</h3>
-            <p class="Body">Mastics, tapes and membranes against condensation.</p>
-          </li>
-          <li class="T_Material">
-            <h3 class="Title">Passive fire protection</h3>
-            <p class="Body">Boards, wraps and coatings for steel structures.</p>
+          <li class="T_Layer" data-layer="4">
+            <!-- TODO: своя копия слоя; в макете заполнен только Layer 1 -->
+            <h3 class="A_LayerHead">
+              <button
+                class="A_LayerToggle Heading"
+                type="button"
+                aria-expanded="false"
+                aria-controls="layer-4"
+              >
+                Layer 4 — Thermal Insulation
+              </button>
+            </h3>
+            <div class="M_LayerBody" id="layer-4">
+              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
+            </div>
           </li>
         </ul>
+      </section>
 
-        <a class="A_LinkArrow Label" href="/contacts.html">
-          Request a quote
-          <span class="A_Chip" aria-hidden="true">
-            <span class="A_ChipIcon"></span>
-          </span>
-        </a>
+      <section class="O_Training" id="training">
+        <div class="M_TrainingLabel">
+          <p class="Label">We train the industry</p>
+        </div>
+
+        <div class="M_TrainingBody">
+          <p class="Title">
+            Наша миссия — помогать компаниям и сообществам переходить к более устойчивому
+            будущему, внедряя передовые технологии и соблюдая высочайшие стандарты качества.
+          </p>
+
+          <a class="A_LinkArrow Label" href="/about.html">
+            Read more
+            <span class="A_Chip" aria-hidden="true">
+              <span class="A_ChipIcon"></span>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <section class="O_Clients" id="clients">
+        <div class="M_ClientsLabel">
+          <p class="Label">Our clients</p>
+        </div>
+
+        <!-- TODO: подписать alt именами клиентов — в макете логотипы без названий -->
+        <div class="W_ClientsTrack">
+        <ul class="M_ClientLogos" aria-label="Клиенты">
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-01.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-02.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-03.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-04.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-05.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-06.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-07.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-08.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-09.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-10.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-11.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-12.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-13.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-14.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-15.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-16.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-17.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-18.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-19.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-20.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-21.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-22.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-23.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-24.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+        </ul>
+        <ul class="M_ClientLogos" aria-hidden="true">
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-01.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-02.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-03.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-04.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-05.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-06.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-07.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-08.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-09.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-10.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-11.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-12.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-13.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-14.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-15.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-16.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-17.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-18.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-19.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-20.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-21.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-22.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-23.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-24.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+        </ul>
+        </div>
       </section>
 
       <section class="O_Projects" hidden>
@@ -482,6 +701,7 @@
     </div>
 
     <script type="module" src="/src/javascript/nav.js"></script>
+    <script type="module" src="/src/javascript/materials.js"></script>
     <script type="module" src="/src/javascript/scroll.js"></script>
     <script type="module" src="/src/javascript/backdrop.js"></script>
   </body>

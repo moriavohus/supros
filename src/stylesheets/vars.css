@@ -16,6 +16,8 @@
   --color-bg-inverse: #131313; /* тёмная секция Solutions */
   --color-surface: #fff;
   --color-surface-muted: #e9ebef;
+  --color-surface-raised: #fafafa; /* левая панель «Materials Supply» */
+  --color-ink: #232323; /* раскрытый слой и линии аккордеона */
 
   /* --- цвет: текст --- */
   --color-text: #171717;
@@ -72,6 +74,8 @@
   /* --- прочее --- */
   --hairline: 1px;
   --chip: 24px;
+  --scheme-max: 326px; /* разрез трубы: габарит группы колец из макета */
+  --dim: 0.18; /* непрозрачность неактивных колец схемы */
   --ease-lock: cubic-bezier(0.2, 0, 0, 1);
   --transition-fast: 0.2s var(--ease-lock);
   --transition-base: 0.32s var(--ease-lock);

@@ -43,6 +43,39 @@
 
 /* ===== планшет вертикально / крупный мобильный ===== */
 @media (max-width: 768px) {
+  /* O_Materials — схема и аккордеон встают друг под друга */
+  .O_Materials {
+    grid-template-columns: 1fr;
+  }
+
+  .M_MaterialsIntro {
+    gap: var(--space-5);
+  }
+
+  .M_LayerList {
+    grid-template-rows: none;
+  }
+
+  .T_Layer {
+    min-height: 88px;
+  }
+
+  /* O_Training */
+  .O_Training {
+    grid-template-columns: 1fr;
+  }
+
+  .M_TrainingLabel {
+    border-right: 0;
+    border-bottom: var(--hairline) solid var(--color-line);
+  }
+
+  .M_TrainingBody {
+    min-height: 0;
+    gap: var(--space-5);
+  }
+
+
   /* маркер перечня — по центру первой строки: (22 − 12) / 2 */
   .A_Marker {
     margin-top: 5px;
