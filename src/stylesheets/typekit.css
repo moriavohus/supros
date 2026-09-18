@@ -27,6 +27,14 @@ body {
   font-weight: 400;
 }
 
+/* заголовки слоёв и миссия: шаг 31 из макета (--font-size/31) */
+.Subhead {
+  font-size: 31px;
+  line-height: 110%; /* 34px из макета */
+  letter-spacing: -0.02em; /* −0.62px */
+  font-weight: 500;
+}
+
 /* миссия, лиды секций */
 .Title {
   font-size: 26px;
