@@ -1,382 +1,522 @@
 /* ===== responsive ===== */
-/* Desktop-first. Базовые стили — style.css, здесь только переопределения.
-   Брейкпоинты: 1440 / 1024 / 768 / 480. */
+/* Desktop-first. Базовые стили — style.css, здесь только переопределения
+   раскладки; мобильная шкала кеглей — в typekit.css. Брейкпоинты:
+   1440 — шапка отвязывается от колонок; 1279 — в шапке бургер и
+   полноэкранное меню (nav.js держит тот же порог); 1024 — поля уже;
+   768 — телефон по макету «Главная · Mobile v2» (Figma 2338:22694, ширина
+   393, поля 16). */
 
-/* ===== планшет ===== */
-@media (max-width: 1024px) {
-  /* длинные подписи цифр переносятся, а не распирают клетку */
-  .A_StatCaption {
-    overflow-wrap: anywhere;
+/* ===== видимость по ширине ===== */
+/* шапка: строка разделов от 1280, бургер и полноэкранное меню — уже */
+@media (min-width: 1280px) {
+  .U_NarrowOnly {
+    display: none !important;
   }
+}
 
-  /* новые секции — сетки ужимаются под планшет */
-  .M_MaterialGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (max-width: 1279px) {
+  .U_WideOnly {
+    display: none !important;
   }
+}
 
-  .O_Contact {
-    grid-template-columns: minmax(0, 1fr);
+@media (min-width: 769px) {
+  .U_MobileOnly {
+    display: none !important;
   }
+}
 
-  .M_FooterNav {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media (max-width: 768px) {
+  .U_DesktopOnly {
+    display: none !important;
   }
+}
 
-  /* T_Service — половина карточки уже не вмещает перечень рядом со знаком,
-     поэтому колонки схлопываются: текст сверху, знак под ним справа. */
-  .T_Service {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
+/* ===== ноутбук ===== */
+/* Разделы с кнопкой занимают около 670px и в две колонки сетки влезают только
+   от ~1460px. Уже этого шапка раскладывается по краям: логотип слева, меню
+   справа своей шириной, кнопка по-прежнему до края окна. */
+@media (max-width: 1440px) {
+  .O_Header {
+    display: flex;
+    justify-content: space-between;
 
-    /* по высоте больше нечего распирать — разводим блоки зазором */
-    .M_ServiceBody {
-      gap: var(--space-6);
-    }
-
-    .A_ServiceMark {
-      justify-self: end;
-      width: 180px;
-      margin-top: var(--space-4);
+    .M_Brand,
+    .O_Menu {
+      flex: none;
     }
   }
 }
 
-/* ===== планшет вертикально / крупный мобильный ===== */
-@media (max-width: 768px) {
-  /* O_Materials — схема и аккордеон встают друг под друга */
-  .O_Materials {
-    grid-template-columns: 1fr;
+/* ===== планшет ===== */
+@media (max-width: 1024px) {
+  :root {
+    --grid-margin: var(--space-5);
   }
 
-  .M_MaterialsIntro {
-    gap: var(--space-5);
+  /* длинные подписи цифр переносятся, а не распирают клетку */
+  .T_Stat {
+    overflow-wrap: anywhere;
   }
+}
 
-  .M_LayerList {
-    grid-template-rows: none;
-  }
-
-  .T_Layer {
-    min-height: 88px;
-  }
-
-  /* O_Training */
-  .O_Training {
-    grid-template-columns: 1fr;
-  }
-
-  .M_TrainingLabel {
-    border-right: 0;
-    border-bottom: var(--hairline) solid var(--color-line);
-  }
-
-  .M_TrainingBody {
-    min-height: 0;
-    gap: var(--space-5);
-  }
-
-
-  /* маркер перечня — по центру первой строки: (22 − 12) / 2 */
-  .A_Marker {
-    margin-top: 5px;
-  }
-
-  /* типографика — те же три стиля в мобильных значениях макета */
-  .Display {
-    font-size: 44px;
-    letter-spacing: -0.02em; /* −0.88px из макета */
-  }
-
-  .Title {
-    font-size: 19px;
-    line-height: 22px;
-    letter-spacing: normal;
-  }
-
-  p,
-  .Body {
-    font-size: 12px;
-    line-height: 120%;
-  }
-
-  /* в макете подписи цифр идут тем же кеглем, что и лиды */
-  .Caption {
-    font-size: 19px;
-  }
-
-  /* цифры и наборный текст плашек услуг мельче не становятся */
-  .T_Stat .Display {
-    font-size: 80px;
-  }
-
-  .T_Service .Body {
-    font-size: 16px;
-  }
-
-  /* O_Header — макет 2155:32557: слева группой плитка логотипа и язык,
-     справа бургер. Своих полей у шапки нет: слева отступ держит плитка,
-     справа — сама кнопка. Строка ровно 60px, а высота — auto, чтобы под ней
-     разворачивалась панель меню. */
+/* ===== шапка: бургер ===== */
+/* Уже 1280 разделы в строку шапки не помещаются: справа бургер, а меню
+   становится полноэкранной панелью под шапкой (Figma 1Zd6…:1:1577) —
+   затемнение с размытием, аккордеон разделов, кнопки и выбор языка.
+   Панель лежит под шапкой: шапка — свой слой, стекло у неё на ::before. */
+@media (max-width: 1279px) {
   .O_Header {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    height: auto;
+    padding-right: 0;
 
-    .M_Brand {
-      flex: 0 0 auto;
-      padding-right: 0;
-    }
-
-    /* язык в шапке не мельчает вместе с общей шкалой */
-    .A_Lang {
-      font-size: 16px;
+    .A_Logo {
+      margin-right: 0;
     }
 
     .A_NavToggle {
       display: flex;
       width: auto;
-      height: var(--header-h);
+      height: var(--size-header);
       padding-inline: var(--space-2-5);
     }
 
-    /* бургер 40×10 из макета: три полосы по 2px через 2px */
+    /* две полосы в 10 друг от друга: средняя прозрачная */
     .A_Burger {
-      width: 40px;
+      --burger-step: calc(var(--space-1-25) / 2);
 
-      &::before {
-        top: -4px;
-      }
-
-      &::after {
-        top: 4px;
-      }
+      width: var(--size-burger-l);
+      background: transparent;
+      color: var(--color-accent);
     }
 
-    /* крест собирается из тех же полос, только сдвиг под новую высоту */
+    /* открытое меню: бургер становится крестиком 14 × 14 из тех же полос */
     .A_NavToggle[aria-expanded='true'] .A_Burger {
-      &::before {
-        transform: translateY(4px) rotate(45deg);
-      }
+      --burger-step: 0px;
 
-      &::after {
-        transform: translateY(-4px) rotate(-45deg);
-      }
-    }
-
-    .M_Nav {
-      display: none;
-      flex-basis: 100%;
-      flex-direction: column;
-      align-items: stretch;
-      height: auto;
-      border: 0;
-      padding-top: var(--space-2);
-    }
-
-    .M_Nav[data-open='true'] {
-      display: flex;
-    }
-
-    .A_NavLink {
-      height: var(--header-h);
-      padding-inline: var(--space-2-5);
-    }
-
-    .A_ButtonPrimary {
-      flex: 0 0 auto;
+      width: calc(var(--size-close) * 1.4142);
     }
   }
 
-  /* O_Hero — макет 2155:32383: белый блок с заголовком во всю ширину, под ним
-     сетка 2×2 в остаток экрана. Карточки стоят по диагонали — акцентная справа
-     сверху, NIA слева снизу, — а в двух пустых клетках видно подложку. */
-  .O_Hero {
-    display: flex;
+  .O_Menu {
+    position: fixed;
+    z-index: -2;
+    inset: 0;
     flex-direction: column;
-    min-height: 100svh;
+    gap: var(--space-5);
+    margin: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: calc(var(--size-header) + var(--space-2-5)) var(--grid-margin) var(--tile-pad);
+    background: var(--color-scrim);
+    color: var(--color-text-inverse);
+    backdrop-filter: blur(var(--blur-l));
 
-    /* заголовок и две карточки делят экран на три равные части: ряду
-       заголовка одна доля, сетке карточек две — а внутри неё две строки */
-    .W_HeroRow:not(.W_HeroRow--bottom) {
-      flex: 1;
-      height: auto;
-      margin-bottom: 0;
+    &:not([data-open]) {
+      display: none;
     }
 
-    .T_HeroTitle {
+    .M_MenuSections {
+      flex-direction: column;
+    }
+
+    .A_MenuSummary {
+      min-height: var(--height-menu-row);
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding-inline: 0;
+      color: inherit;
+    }
+
+    .M_MenuLinks {
       position: static;
-      grid-column: 1 / -1;
-
-      /* на десктопе карточка прижата к верху своего ряда, здесь она должна
-         занять его целиком — иначе треть достаётся ряду, а не блоку */
-      align-self: stretch;
-      width: 100%;
-      height: auto;
+      width: auto;
+      max-width: none;
+      margin-bottom: var(--space-1);
+      background: var(--color-white-08);
+      border-radius: var(--radius-m);
+      backdrop-filter: none;
     }
 
-    /* Прокрутка как на десктопе: обе карточки липнут к одной границе под
-       шапкой. Верхняя доезжает первой и встаёт, нижняя поднимается к ней и
-       выравнивается — дальше уезжают вместе. Запаса хода у секции нет,
-       поэтому всё, что ниже, едет одновременно с ними. */
-    .W_HeroRow--bottom {
-      display: grid;
-      flex: 2;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-      height: auto;
-
-      .T_Card--accent,
-      .T_CardPartner {
-        position: sticky;
-        top: var(--pin-top);
-        padding: var(--space-2-5);
-      }
-
-      .T_Card--accent {
-        grid-area: 1 / 2;
-      }
-
-      .T_CardPartner {
-        grid-area: 2 / 1;
-      }
+    .M_MenuActions {
+      flex: none;
+      flex-direction: column;
+      gap: var(--space-1);
     }
 
-    /* логотип партнёра тянется по ширине карточки */
-    .A_PartnerLogo img {
-      width: 100%;
-      height: auto;
+    /* в панели Contact Us — белая кнопка, как в макете */
+    .A_Button--accent {
+      flex: none;
+      background: var(--color-surface);
+      color: var(--color-accent-deep);
+      border-radius: var(--radius-s);
     }
-  }
-
-  /* ряды складываются: одна колонка, блоки во всю ширину */
-  .W_Row {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .W_Row > * {
-    grid-column: 1 / -1;
-  }
-
-  /* блоки теперь соседи по вертикали, а не по горизонтали: перекрытие обводок
-     разворачивается на 90°, иначе на каждом стыке выходит двойная линия */
-  .W_Row > * + *,
-  .O_Numbers > * + * {
-    margin-left: 0;
-    margin-top: calc(-1 * var(--hairline));
-  }
-
-  /* ряд сложился в столбик: разделитель у знака переезжает с левой грани
-     на верхнюю */
-  .T_Card--mark {
-    border-top: var(--hairline) solid var(--color-line);
-    border-left: 0;
-  }
-
-  /* внутри About подсетки больше нет — метка встаёт над текстом */
-  .O_About {
-    grid-template-columns: minmax(0, 1fr);
-
-    .M_AboutLabel,
-    .M_AboutBody {
-      grid-column: 1 / -1;
-    }
-  }
-
-  /* цифры выпрямляются в столбик: метка по содержимому, наложения нет */
-  .O_Numbers {
-    grid-template-columns: minmax(0, 1fr);
-
-    > * {
-      grid-column: 1 / -1;
-    }
-  }
-
-  .T_NumberLabel {
-    height: auto;
-  }
-
-  /* лесенка и прилипание снимаются: карточки идут обычным столбиком.
-     Ступеньку гасим переменной, а не margin-top: это же поле держит
-     перекрытие обводок, и обнуление возвращало бы двойные линии. */
-  .T_Stat {
-    --step: 0;
-
-    position: static;
-    height: auto;
-    min-height: var(--stat-h);
-  }
-
-  /* новые секции — в одну колонку */
-  .M_MaterialGrid,
-  .M_ProjectFacts,
-  .M_RequestForm {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .M_FooterNav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  /* O_Solutions — одна колонка, заголовок перестаёт прилипать */
-  .O_Solutions {
-    grid-template-columns: minmax(0, 1fr);
-
-    .M_SolutionsIntro {
-      position: static;
-    }
-  }
-
-  /* Поля внутри блоков на узком экране одинаковые — 20. Перечисление явное:
-     блоки разные, а отступ у них общий, и держать его одним значением проще,
-     чем ловить по секциям. */
-  .T_HeroTitle,
-  .T_Card,
-  .T_CardPartner,
-  .T_NumberLabel,
-  .T_Stat,
-  .T_Material,
-  .T_Project,
-  .M_RequestForm,
-  .M_AboutLabel,
-  .M_AboutBody,
-  .M_SolutionsIntro,
-  .T_Service,
-  .O_Materials,
-  .O_Projects,
-  .O_Contact,
-  .O_Footer {
-    padding: var(--space-2-5);
   }
 }
 
-/* ===== мобильный ===== */
-@media (max-width: 480px) {
-  .M_FooterNav {
+/* ===== телефон ===== */
+@media (max-width: 768px) {
+  /* Сетка складывается в одну колонку с полями 16. Каждая плитка теперь
+     крайняя с обеих сторон: заливка дотянута до краёв окна, поле страницы
+     уходит внутрь плитки. Поле плитки по вертикали остаётся 30. */
+  :root {
+    --grid-margin: var(--space-2);
+    --color-glass: var(--color-glass-m);
+  }
+
+  .W_Grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* :nth-child(n) поднимает вес до уровня вложенных правил секций.
+     Фоновые слои не трогаем: абсолютный ребёнок сетки с назначенными
+     колонками сжался бы до области сетки без полей страницы. Исключение —
+     в :where(), чтобы не добавлять веса и не перебивать точечные правила. */
+  .W_Grid > :nth-child(n):where(:not(.U_Layer)) {
+    grid-column: 1 / -1;
+  }
+
+  .U_BleedStart,
+  .U_BleedEnd,
+  .U_BleedSm {
+    margin-inline: calc(-1 * var(--grid-margin));
+    padding-inline: var(--grid-margin);
+  }
+
+  .U_ExtendEnd {
+    margin-inline: calc(-1 * var(--grid-margin));
+  }
+
+  /* ----- O_Hero (2414:3434): стекло, окно со снимком 2:1, карточка ----- */
+  .O_Hero {
+    height: auto;
+    grid-template-rows: auto auto;
+  }
+
+  .T_HeroTitle {
+    gap: var(--space-5);
+    padding: var(--space-2-5) var(--grid-margin) var(--tile-pad);
+
+    .A_Button {
+      align-self: stretch;
+      border-radius: var(--radius-s);
+    }
+  }
+
+  .T_Card--accent {
+    align-items: stretch;
+    min-height: 0;
+    margin-top: 50vw;
+    gap: var(--space-5);
+  }
+
+  /* ----- O_About (2414:3669): текст на всю ширину, монограмма фоном ----- */
+  .O_About {
+    position: relative;
+    isolation: isolate;
+    row-gap: var(--space-2);
+    overflow: hidden;
+    padding-block: var(--space-6-25);
+
+    .M_AboutLabel,
+    .M_AboutBody {
+      color: var(--color-accent-deep);
+    }
+
+    .M_AboutBody {
+      gap: var(--space-5);
+      padding-right: 0;
+    }
+
+    /* В макете знак 334 × 333 лежит фоном и выходит за правый край на 35.
+       На телефоне он становится слоем, поэтому колонки сетки снимаем —
+       иначе рамкой ему была бы область без полей, а не вся секция. */
+    .A_Mark {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: -9%;
+      grid-column: auto;
+      width: 85%;
+      background: var(--color-mark-m);
+    }
+  }
+
+  /* ----- O_Numbers (2414:3693): метка и сетка 2 × 2 во всю ширину ----- */
+  .O_Numbers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    padding: var(--space-6-25) 0;
+    background: var(--color-surface-soft);
+
+    .T_NumberLabel {
+      height: auto;
+      margin: 0 0 var(--space-4);
+      padding: 0 var(--grid-margin);
+      background: none;
+      color: var(--color-text-strong);
+    }
+
+    > .T_Stat {
+      position: static;
+      grid-column: auto;
+      height: var(--height-stat-m);
+      min-height: 0;
+      justify-content: space-between;
+      gap: 0;
+      margin: 0;
+      padding: var(--space-2);
+      color: var(--color-accent-dark);
+    }
+
+    .T_Stat--m-white {
+      background: var(--color-surface);
+    }
+  }
+
+  /* ----- O_Clients (2414:3753): заголовок, лента, ссылка под ней ----- */
+  .O_Clients {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-1-5);
+    padding: var(--space-6-25) var(--grid-margin);
+
+    .M_ClientsTitle {
+      padding-block: var(--space-2);
+    }
+
+    .W_Marquee {
+      order: 1;
+      margin: 0 calc(-1 * var(--grid-margin));
+    }
+
+    .M_ClientsLink {
+      order: 2;
+      padding-top: var(--space-1);
+    }
+  }
+
+  /* ----- O_Solutions (2414:3799 + 2414:3807) ----- */
+  .O_Solutions .M_SolutionsIntro {
+    position: static;
+    padding: var(--grid-margin) 0;
+  }
+
+  .T_Service {
+    min-height: 0;
+  }
+
+  /* ----- O_Training (2414:3866 + 2414:3844): шапка, ниже текст и тёмная
+     плитка с фото в две колонки — в макете 233 и 160 из 393 ----- */
+  .O_Training {
+    grid-template-columns: minmax(0, 233fr) minmax(0, 160fr);
+    min-height: 0;
+    padding-inline: 0;
+
+    > .T_TrainingHead {
+      gap: var(--space-3);
+      margin-inline: 0;
+      padding: var(--grid-margin);
+    }
+
+    > .M_TrainingBody {
+      grid-column: 1;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: var(--space-4);
+      padding: var(--grid-margin);
+    }
+
+    /* фото — заливка плитки поверх тёмной бирюзы: свой кадр, прижат к
+       низу и обрезан по краям плитки, высоту задаёт колонка текста */
+    > .T_TrainingPhoto {
+      position: relative;
+      grid-column: 2;
+      overflow: hidden;
+      margin-inline: 0;
+      padding: 0;
+
+      img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center bottom;
+      }
+    }
+
+    .A_Badge--dark {
+      background: var(--color-ink-10);
+    }
+
+    .A_LinkLine {
+      gap: var(--space-half);
+      padding-inline: 0;
+
+      &::after {
+        margin-inline: 0;
+      }
+    }
+  }
+
+  /* ----- O_Materials (2414:3875): шапка, под ней плитки столбиком во всю
+     ширину — две стеклянные и плитка продуктов ----- */
+  .O_Materials .M_SectionHead {
+    padding-block: var(--tile-pad);
+    padding-right: 0;
+  }
+
+  .T_SupplyFact {
+    height: var(--height-tile-m);
+    padding-inline: var(--grid-margin);
+  }
+
+  .W_Marquee--partners {
+    margin-inline: calc(-1 * var(--grid-margin));
+  }
+
+  /* продукты — ряд всегда раскрыт и листается, плюса нет */
+  .T_Products {
+    height: auto;
+    gap: var(--space-5);
+    padding: var(--tile-pad) var(--grid-margin);
+
+    .M_ProductStack {
+      margin-right: calc(-1 * var(--grid-margin));
+    }
+
+    .A_Product {
+      opacity: 1;
+      transform: translateX(calc(var(--i) * (var(--size-product) + var(--space-1-5))));
+    }
+
+    .A_StackMore {
+      display: none;
+    }
+  }
+
+  /* ----- O_Social (2414:4177): все карточки раскрыты, первая бирюзовая ----- */
+  .T_SocialCard {
+    --social-shift: 0px;
+    --line-color: var(--color-ink-08);
+
+    height: auto;
+    gap: var(--space-2-5);
+    padding-block: var(--tile-pad) var(--space-2);
+
+    &:last-child {
+      padding-bottom: var(--space-6-25);
+    }
+
+    .M_CardHead {
+      grid-template-rows: auto 1fr;
+    }
+
+    .A_CardLead {
+      opacity: 0.6;
+    }
+
+    .A_LinkLine {
+      opacity: 1;
+      transform: none;
+      color: var(--color-ink-strong);
+    }
+
+    .A_Icon {
+      --icon: url('../images/icons/arrow-diagonal-s.svg');
+      --icon-size: var(--size-icon-xs);
+    }
+  }
+
+  .T_SocialCard:hover,
+  .T_SocialCard:focus-visible,
+  .M_SocialGrid:not(:has(.T_SocialCard:hover, .T_SocialCard:focus-visible))
+    .T_SocialCard:first-child {
+    --line-color: var(--color-white-30);
+
+    .A_LinkLine {
+      color: inherit;
+    }
+  }
+
+  /* ----- O_Contact (2414:4085): заголовок над формой, всё в столбик ----- */
+  .O_Contact {
+    row-gap: var(--space-5);
+    padding-block: var(--space-10);
+
+    .M_ContactLabel {
+      padding-block: 0;
+    }
+
+    .M_RequestForm {
+      gap: var(--space-5);
+      padding: 0 var(--grid-margin);
+    }
+
+    .M_FieldList {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .A_Field {
+      gap: 0;
+      color: var(--color-ink-strong);
+    }
+
+    .M_FormActions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-1);
+    }
+  }
+
+  /* ----- O_Footer (2338:22858): аккордеон, логотип, политика ----- */
+  .O_Footer {
+    gap: var(--space-5);
+    padding: var(--tile-pad) 0;
+
+    .M_FooterNav {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-2-5);
+      padding: 0 var(--grid-margin);
+    }
+
+    .M_FooterCol {
+      gap: var(--space-2);
+    }
+
+    .A_FooterSummary {
+      min-height: var(--height-accordion);
+      cursor: pointer;
+      pointer-events: auto;
+
+      .A_Icon {
+        display: block;
+      }
+    }
+
+    .M_FooterLinks {
+      gap: var(--space-1);
+    }
+
+    .A_FooterMark {
+      margin-inline: 0;
+    }
+
+    .A_Copyright {
+      position: static;
+      padding-inline: var(--grid-margin);
+    }
   }
 }
 
 /* ===== низкое окно ===== */
-/* В 500-600px высоты половина экрана не вмещает ни заголовок, ни карточки,
-   поэтому первый экран перестаёт делиться и прилипать. */
+/* В 500–600px высоты экран не вмещает панель заголовка и карточку, поэтому
+   первый экран растёт по содержимому. */
 @media (max-height: 600px) {
   .O_Hero {
-    min-height: auto;
-
-    .W_HeroRow {
-      position: static;
-      height: auto;
-      margin-bottom: 0;
-    }
-
-    .T_HeroTitle,
-    .T_Card--accent,
-    .T_CardPartner {
-      position: static;
-      height: auto;
-    }
+    height: auto;
+    min-height: var(--hero-h);
   }
 }
 

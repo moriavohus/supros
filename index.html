@@ -13,7 +13,6 @@
     <link rel="alternate" hreflang="en" href="https://supros.kz/index.html" />
     <link rel="alternate" hreflang="x-default" href="https://supros.kz/index.html" />
 
-    <link rel="preload" as="image" href="/top.webp" fetchpriority="high" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/google-sans-latin.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
 
@@ -27,683 +26,972 @@
 
   <body>
     <div class="W_Page">
-      <!-- Подложка всей страницы: секции проезжают над ней, тёмные панели
-           перекрывают её своей заливкой. Оба снимка сводит шейдер на канвасе
-           (backdrop.js); <img> под ним — статичный запасной кадр. -->
-      <span class="W_Backdrop" aria-hidden="true">
-        <img
-          class="A_BackdropPhoto"
-          src="/top.webp"
-          alt=""
-          width="2252"
-          height="1155"
-          fetchpriority="high"
-          decoding="async"
-        />
-        <canvas class="A_BackdropCanvas"></canvas>
-      </span>
-
-      <header class="O_Header">
+      <!-- Шапка и меню (мобильная версия — Figma 1Zd6…:1:1577). Меню одно на
+           все ширины: на десктопе разделы стоят в строку и раскрываются
+           выпадающими панелями, уже 1280 — та же разметка становится
+           полноэкранной панелью под бургером (nav.js).
+           TODO: адрес презентации и языковые версии /ru/ и /kz/. -->
+      <header class="O_Header W_Grid">
         <div class="M_Brand">
-          <a class="A_Logo" href="/" aria-label="SUPROS — home"></a>
-          <!-- TODO: сделать ссылкой на /ru/index.html, когда появится русская версия -->
-          <span class="A_Lang Body" aria-current="true">EN</span>
+          <a class="A_Logo U_BleedStart" href="/" aria-label="SUPROS — home"></a>
+          <details class="M_MenuGroup U_WideOnly">
+            <summary class="A_MenuSummary Lead" aria-label="Language: English">
+              EN
+              <span class="A_Chevron" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_MenuLinks">
+              <li><a class="A_MenuLink Lead" href="/ru/" hreflang="ru" lang="ru">RU</a></li>
+              <li><a class="A_MenuLink Lead" href="/kz/" hreflang="kk" lang="kk">KZ</a></li>
+            </ul>
+          </details>
         </div>
 
         <button
           class="A_NavToggle"
           type="button"
           aria-expanded="false"
-          aria-controls="main-nav"
+          aria-controls="site-menu"
           aria-label="Open menu"
         >
           <span class="A_Burger" aria-hidden="true"></span>
         </button>
 
-        <nav class="M_Nav" id="main-nav" aria-label="Main navigation">
-          <a class="A_NavLink Lead" href="/about.html">About</a>
-          <a class="A_NavLink Lead" href="/solutions.html">
-            Solutions
-            <span class="A_Chevron" aria-hidden="true"></span>
-          </a>
-          <a class="A_NavLink Lead" href="/projects.html">Projects</a>
-          <a class="A_NavLink Lead" href="/social-responsibility.html">Social Responsibility</a>
-          <a class="A_ButtonPrimary Lead" href="/contacts.html">Contact Us</a>
-        </nav>
+        <div class="O_Menu" id="site-menu">
+          <nav class="M_MenuSections" aria-label="Main navigation">
+          <details class="M_MenuGroup">
+            <summary class="A_MenuSummary Lead mSubtitle">
+              Solutions
+              <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
+              <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_MenuLinks">
+              <li><a class="A_MenuLink Lead mBody Strong" href="/solutions.html">Engineering</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/solutions.html">Thermal calculations</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/solutions.html">Material take-off (MTO) <span class="A_Tag A_Tag--inline Note mCaption">AI-powered</span></a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/solutions.html">Insulation audit</a></li>
+              <li><a class="A_MenuLink Lead mBody Strong" href="/solutions.html">Materials Supply</a></li>
+              <li><a class="A_MenuLink Lead mBody Strong" href="/solutions.html">Trainings</a></li>
+            </ul>
+          </details>
+          <a class="A_MenuSummary Lead mSubtitle" href="/projects.html">Projects</a>
+          <details class="M_MenuGroup">
+            <summary class="A_MenuSummary Lead mSubtitle">
+              About
+              <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
+              <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_MenuLinks">
+              <li><a class="A_MenuLink Lead mBody" href="/about.html">Company · mission</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/about.html">Team</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/about.html">Clients</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/about.html">Partners and memberships</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/about.html">Careers</a></li>
+            </ul>
+          </details>
+          <details class="M_MenuGroup">
+            <summary class="A_MenuSummary Lead mSubtitle">
+              Social Responsibility
+              <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
+              <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_MenuLinks">
+              <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Sustainability</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Cooperation with academic and sports institutions</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Idea Hub</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Internships</a></li>
+            </ul>
+          </details>
+          <details class="M_MenuGroup U_NarrowOnly">
+            <summary class="A_MenuSummary Lead mSubtitle">
+              Contact
+              <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
+              <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_MenuLinks">
+              <li><a class="A_MenuLink Lead mBody" href="#request">Write to an engineer</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="#request">Partnership proposal</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/contacts.html">Sales</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/contacts.html">Office</a></li>
+              <li><a class="A_MenuLink Lead mBody" href="/contacts.html">Warehouse</a></li>
+            </ul>
+          </details>
+          </nav>
+
+          <div class="M_MenuActions">
+            <a class="A_Button A_Button--accent Lead mSubtitle" href="/contacts.html">Contact Us</a>
+            <a class="A_Button A_Button--ghost Lead mSubtitle U_NarrowOnly" href="/supros-presentation.pdf" download>
+              Download presentation
+              <span class="A_Icon A_Icon--download" aria-hidden="true"></span>
+            </a>
+            <div class="M_LangSwitch U_NarrowOnly" role="group" aria-label="Language">
+            <a class="A_LangOption Lead mBody" href="/ru/" hreflang="ru" lang="ru">RU</a>
+            <span class="A_LangOption Lead mBody" aria-current="true">EN</span>
+            <a class="A_LangOption Lead mBody" href="/kz/" hreflang="kk" lang="kk">KZ</a>
+          </div>
+          </div>
+        </div>
       </header>
 
-      <section class="O_Hero">
-        <div class="W_HeroRow">
-          <div class="T_HeroTitle">
-            <h1 class="Display">Smarter Solutions for Industrial Services</h1>
-          </div>
+      <section class="O_Hero W_Grid">
+        <!-- снимки — фон всей секции: под левой панелью они размыты стеклом,
+             справа над карточкой видны как есть -->
+        <div class="M_HeroSlider U_Layer" aria-hidden="true">
+          <img
+            class="A_HeroSlide"
+            src="/src/images/hero/helmets.jpg"
+            alt=""
+            width="1920"
+            height="1280"
+            fetchpriority="high"
+            decoding="async"
+            data-active
+          />
+          <img
+            class="A_HeroSlide"
+            src="/src/images/hero/warehouse.jpg"
+            alt=""
+            width="1920"
+            height="1280"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            class="A_HeroSlide"
+            src="/src/images/hero/ducts.jpg"
+            alt=""
+            width="1024"
+            height="1024"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            class="A_HeroSlide"
+            src="/src/images/hero/pipes.jpg"
+            alt=""
+            width="1171"
+            height="843"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
 
-        <div class="W_HeroRow W_HeroRow--bottom">
-          <article class="T_Card T_Card--accent">
-            <div class="M_CardBody">
-              <h3 class="Title">Efficiency begins with calculations</h3>
-              <p class="Lead">
-                Specification review, thermal calculations and quantity take-off from&nbsp;drawings.
-              </p>
-            </div>
-            <a class="A_LinkArrow Label" href="/contacts.html">
-              Contact us
-              <span class="A_Chip" aria-hidden="true">
-                <span class="A_ChipIcon"></span>
-              </span>
-            </a>
-          </article>
-
-          <article class="T_CardPartner">
-            <h3 class="Title">Only NIA member in Kazakhstan</h3>
-            <span class="A_PartnerLogo">
-              <img
-                src="/src/images/logos/nia.png"
-                alt="National Insulation Association"
-                width="220"
-                height="68"
-                loading="lazy"
-                decoding="async"
-              />
-            </span>
-          </article>
-        </div>
-      </section>
-
-      <div class="W_Row">
-        <section class="O_About">
-          <p class="M_AboutLabel Label">About Supros</p>
-          <div class="M_AboutBody">
-            <h2 class="Title Measure">
-              Our mission is to help companies and communities move towards a&nbsp;more sustainable
-              future by adopting advanced technologies and upholding the highest standards of
-              quality.
-            </h2>
-            <a class="A_LinkArrow Label" href="/about.html">
-              Read more
-              <span class="A_Chip" aria-hidden="true">
-                <span class="A_ChipIcon"></span>
-              </span>
-            </a>
-          </div>
-        </section>
-
-        <article class="T_Card T_Card--mark">
-          <span class="A_Mark" aria-hidden="true"></span>
-        </article>
-      </div>
-
-      <!-- Цифры: карточки стоят на разной высоте и по очереди прилипают под
-           шапкой. Первая встаёт и ждёт, вторая доезжает до её уровня, следом
-           третья — к концу секции все три стоят в одну линию. -->
-      <section class="O_Numbers">
-        <p class="T_NumberLabel Label">SUPROS in numbers</p>
-
-        <article class="T_Stat T_Stat--pale">
-          <span class="Display">300+</span>
-          <span class="A_StatCaption Caption">Completed projects</span>
-        </article>
-
-        <article class="T_Stat">
-          <span class="Display">40+</span>
-          <span class="A_StatCaption Caption">Qualified specialists</span>
-        </article>
-
-        <article class="T_Stat T_Stat--pale">
-          <span class="Display">20M&nbsp;$</span>
-          <span class="A_StatCaption Caption">Annual turnover</span>
-        </article>
-      </section>
-
-      <!-- TODO: названия услуг свои, а лид и перечень пока во всех трёх
-           плашках от MTO — дождаться реальных описаний от студента -->
-      <section class="O_Solutions">
-        <div class="M_SolutionsIntro">
-          <h2 class="Display">Engineering Solutions</h2>
-          <p class="A_SolutionsLead Title">
-            We provide services in engineering, material supply, and training
-          </p>
-        </div>
-
-        <div class="M_SolutionCards">
-          <article class="T_Service T_Service--accent T_Service--thermal">
-            <div class="M_ServiceBody">
-              <div class="M_ServiceHead">
-                <h3 class="Heading">Thermal calculations</h3>
-                <p class="Body">
-                  Quantities extracted directly from ISO drawings — materials list ready
-                  for procurement.
-                </p>
-              </div>
-
-              <ul class="M_ServiceList">
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Full scope: insulation, cladding, fixings and accessories
-                </li>
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Procurement-ready format — Excel or your ERP template
-                </li>
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Updated with every drawing revision
-                </li>
-              </ul>
-            </div>
-
-            <span class="A_ServiceMark" aria-hidden="true"></span>
-          </article>
-
-          <article class="T_Service T_Service--mto">
-            <div class="M_ServiceBody">
-              <div class="M_ServiceHead">
-                <h3 class="Heading">Material take-off (MTO)
-                  <span class="A_Tag Body">AI-powered</span></h3>
-                <p class="Body">
-                  Quantities extracted directly from ISO drawings — materials list ready
-                  for procurement.
-                </p>
-              </div>
-
-              <ul class="M_ServiceList">
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Full scope: insulation, cladding, fixings and accessories
-                </li>
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Procurement-ready format — Excel or your ERP template
-                </li>
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Updated with every drawing revision
-                </li>
-              </ul>
-            </div>
-
-            <span class="A_ServiceMark" aria-hidden="true"></span>
-          </article>
-
-          <article class="T_Service T_Service--accent T_Service--audit">
-            <div class="M_ServiceBody">
-              <div class="M_ServiceHead">
-                <h3 class="Heading">Insulation audit</h3>
-                <p class="Body">
-                  Quantities extracted directly from ISO drawings — materials list ready
-                  for procurement.
-                </p>
-              </div>
-
-              <ul class="M_ServiceList">
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Full scope: insulation, cladding, fixings and accessories
-                </li>
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Procurement-ready format — Excel or your ERP template
-                </li>
-                <li class="A_ServiceItem Body">
-                  <span class="A_Marker" aria-hidden="true"></span>
-                  Updated with every drawing revision
-                </li>
-              </ul>
-            </div>
-
-            <span class="A_ServiceMark" aria-hidden="true"></span>
-          </article>
-        </div>
-      </section>
-
-      <!-- TODO: тексты материалов, кейсов и контактов — рыба под структуру из
-           ИА (Figma 2130:39768), заменить на реальные данные SUPROS -->
-      <section class="O_Materials" id="materials">
-        <div class="M_MaterialsIntro">
+        <div class="T_Card T_HeroTitle U_BleedStart">
           <div class="M_SectionHead">
-            <h2 class="Display">Materials Supply</h2>
-            <p class="A_MaterialsLead Body">
-              We offer a wide range of insulation materials to meet all the needs of industrial
-              projects
+            <h1 class="Display Display--m">Smarter Engineering <br />for Industry</h1>
+            <p class="Body Body--l mBody">
+              Engineering, digital technologies and advanced insulation solutions for safer, more
+              energy-efficient industrial operations
             </p>
           </div>
-
-          <figure class="W_PipeScheme" aria-label="Insulated pipe cross-section">
-            <span class="A_Ring" data-layer="4" style="--x: 0.0%; --s: 100.0%">
-              <img src="/src/images/materials/ring-4.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
-            </span>
-            <span class="A_Ring" data-layer="3" style="--x: 2.334%; --s: 95.33%">
-              <img src="/src/images/materials/ring-3.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
-            </span>
-            <span class="A_Ring" data-layer="2" style="--x: 29.334%; --s: 41.33%">
-              <img src="/src/images/materials/ring-2.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
-            </span>
-            <span class="A_Ring" data-layer="1" style="--x: 32.001%; --s: 36.0%">
-              <img src="/src/images/materials/ring-1.svg" alt="" width="328" height="328" loading="lazy" decoding="async" />
-            </span>
-            <figcaption class="A_SchemeLabel Small">
-              <span>300&nbsp;°C</span>
-              <span>steam, Ø219</span>
-            </figcaption>
-          </figure>
+          <a class="A_Button A_Button--light Lead mSubtitle" href="/solutions.html">Explore solutions</a>
         </div>
 
-        <ul class="M_LayerList">
-          <li class="T_Layer" data-layer="1" data-open="true">
-            <h3 class="A_LayerHead">
-              <button
-                class="A_LayerToggle Subhead"
-                type="button"
-                aria-expanded="true"
-                aria-controls="layer-1"
-              >
-                Layer 1 — Thermal Insulation
-              </button>
-            </h3>
-            <div class="M_LayerBody" id="layer-1">
-              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
-            </div>
-          </li>
-          <li class="T_Layer" data-layer="2">
-            <!-- TODO: своя копия слоя; в макете заполнен только Layer 1 -->
-            <h3 class="A_LayerHead">
-              <button
-                class="A_LayerToggle Subhead"
-                type="button"
-                aria-expanded="false"
-                aria-controls="layer-2"
-              >
-                Layer 2 — Thermal Insulation
-              </button>
-            </h3>
-            <div class="M_LayerBody" id="layer-2">
-              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
-            </div>
-          </li>
-          <li class="T_Layer" data-layer="3">
-            <!-- TODO: своя копия слоя; в макете заполнен только Layer 1 -->
-            <h3 class="A_LayerHead">
-              <button
-                class="A_LayerToggle Subhead"
-                type="button"
-                aria-expanded="false"
-                aria-controls="layer-3"
-              >
-                Layer 3 — Thermal Insulation
-              </button>
-            </h3>
-            <div class="M_LayerBody" id="layer-3">
-              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
-            </div>
-          </li>
-          <li class="T_Layer" data-layer="4">
-            <!-- TODO: своя копия слоя; в макете заполнен только Layer 1 -->
-            <h3 class="A_LayerHead">
-              <button
-                class="A_LayerToggle Subhead"
-                type="button"
-                aria-expanded="false"
-                aria-controls="layer-4"
-              >
-                Layer 4 — Thermal Insulation
-              </button>
-            </h3>
-            <div class="M_LayerBody" id="layer-4">
-              <p class="Body">Maintains temperature and prevents the outer surface from reaching dangerous temperatures. Thickness depends on medium, dew point and fire protection requirements.</p>
-            </div>
-          </li>
-        </ul>
+        <article class="T_Card T_Card--accent U_BleedEnd">
+          <span class="A_SlideProgress" aria-hidden="true">
+            <span class="A_SlideProgressFill"></span>
+          </span>
+          <h3 class="Title Title--l">Efficiency begins with calculations</h3>
+          <a class="A_LinkLine Subtitle" href="/solutions.html">
+            <span class="U_DesktopOnly">Explore solutions</span>
+            <span class="U_MobileOnly">Explore material take-off</span>
+          </a>
+        </article>
       </section>
 
-      <section class="O_Training" id="training">
-        <div class="M_TrainingLabel">
-          <p class="Label">We train the industry</p>
-        </div>
-
-        <div class="M_TrainingBody">
-          <p class="Subhead">
+      <section class="O_About W_Grid">
+        <p class="M_AboutLabel Label">About Supros</p>
+        <div class="M_AboutBody">
+          <h2 class="Subhead Subhead--regular mBody">
             Our mission is to help companies and communities move towards a&nbsp;more sustainable
             future by adopting advanced technologies and upholding the highest standards of
             quality.
-          </p>
+          </h2>
+          <a class="A_LinkLine Subtitle" href="/about.html">Read more</a>
+        </div>
+        <span class="A_Mark" aria-hidden="true"></span>
+      </section>
 
-          <a class="A_LinkArrow Label" href="/about.html">
-            Read more
-            <span class="A_Chip" aria-hidden="true">
-              <span class="A_ChipIcon"></span>
-            </span>
-          </a>
+      <!-- Цифры. Десктоп: первая карточка стоит выше метки, вторая вровень с
+           ней, третья у нижнего края; все прилипают под шапкой и к концу
+           секции съезжаются к низу. Телефон (Figma 2414:3693): сетка 2 × 2 со
+           своим набором — NIA и склад только там, оборот только на десктопе. -->
+      <section class="O_Numbers W_Grid">
+        <h2 class="T_Card T_NumberLabel U_BleedStart Title Title--l mLabel">Supros <br />in numbers</h2>
+
+        <article class="T_Card T_Stat T_Stat--pale U_MobileOnly">
+          <span class="Display mHeading">NIA</span>
+          <span class="Subtitle mCaption">Only member in Kazakhstan</span>
+        </article>
+
+        <article class="T_Card T_Stat T_Stat--pale T_Stat--m-white U_BleedSm">
+          <span class="Display mHeading">300+</span>
+          <span class="Subtitle mCaption">Completed projects</span>
+        </article>
+
+        <article class="T_Card T_Stat T_Stat--mid T_Stat--m-white U_BleedSm">
+          <span class="Display mHeading">40+</span>
+          <span class="Subtitle mCaption">Qualified specialists</span>
+        </article>
+
+        <article class="T_Card T_Stat T_Stat--pale U_MobileOnly">
+          <span class="Display mHeading">826&nbsp;m²</span>
+          <span class="Subtitle mCaption">Warehouse in Atyrau</span>
+        </article>
+
+        <article class="T_Card T_Stat T_Stat--pale T_Stat--low U_BleedEnd U_DesktopOnly">
+          <span class="Display mHeading">20M&nbsp;$</span>
+          <span class="Subtitle mCaption">Annual turnover</span>
+        </article>
+      </section>
+
+      <!-- They trust us (Figma 2392:2856): заголовок и ссылка над лентой
+           логотипов; на телефоне ссылка уходит под ленту -->
+      <section class="O_Clients" id="clients">
+        <h2 class="M_ClientsTitle Title Title--l">They trust us</h2>
+        <a class="M_ClientsLink A_LinkLine Subtitle" href="/about.html">
+          See clients and letters of gratitude
+        </a>
+
+        <!-- TODO: подписать alt именами клиентов — в макете логотипы без названий.
+             Второй список — копия для бесшовной склейки ленты. -->
+        <div class="W_Marquee W_Marquee--clients">
+        <ul class="M_MarqueeList" aria-label="Clients">
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-01.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-02.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-03.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-04.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-05.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-06.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-07.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-08.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-09.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-10.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-11.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-12.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-13.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-14.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-15.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-16.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-17.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-18.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-19.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-20.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-21.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-22.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-23.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-24.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+        </ul>
+        <ul class="M_MarqueeList" aria-hidden="true">
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-01.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-02.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-03.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-04.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-05.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-06.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-07.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-08.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-09.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-10.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-11.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-12.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-13.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-14.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-15.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-16.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-17.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-18.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-19.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-20.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-21.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-22.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-23.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+          <li class="A_ClientLogo">
+            <img src="/src/images/clients/client-24.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
+          </li>
+        </ul>
         </div>
       </section>
 
-      <section class="O_Clients" id="clients">
-        <div class="M_ClientsLabel">
-          <p class="Label">Our clients</p>
+      <!-- Our service areas (Figma 2392:2861) -->
+      <section class="O_Band">
+        <h2 class="Display Display--m">Our service areas</h2>
+      </section>
+
+      <!-- TODO: описания плашек пока одинаковые (от MTO) — в макете рыба -->
+      <section class="O_Solutions W_Grid">
+        <div class="M_SectionHead M_SolutionsIntro">
+          <span class="A_Badge A_Badge--accent Subtitle">1</span>
+          <h2 class="Display Display--m">Engineering <br />solutions</h2>
+          <p class="Subtitle mBody">We provide services in engineering, material supply, and training</p>
         </div>
 
-        <!-- TODO: подписать alt именами клиентов — в макете логотипы без названий -->
-        <div class="W_ClientsTrack">
-        <ul class="M_ClientLogos" aria-label="Clients">
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-01.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-02.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-03.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-04.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-05.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-06.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-07.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-08.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-09.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-10.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-11.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-12.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-13.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-14.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-15.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-16.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-17.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-18.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-19.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-20.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-21.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-22.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-23.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-24.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-        </ul>
-        <ul class="M_ClientLogos" aria-hidden="true">
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-01.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-02.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-03.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-04.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-05.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-06.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-07.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-08.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-09.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-10.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-11.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-12.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-13.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-14.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-15.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-16.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-17.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-18.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-19.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-20.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-21.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-22.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-23.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-          <li class="A_ClientLogo">
-            <img src="/src/images/clients/client-24.png" alt="" width="100" height="100" loading="lazy" decoding="async" />
-          </li>
-        </ul>
+        <div class="M_SolutionCards U_ExtendEnd">
+          <article class="T_Card T_Service">
+            <div class="M_CardHead">
+              <h3 class="Title Title--xl mHeading">Thermal calculations</h3>
+              <p class="A_CardLead Subtitle">Quantities extracted directly from ISO drawings — materials list ready for procurement.</p>
+            </div>
+            <a class="A_LinkLine A_LinkLine--wide Subtitle" href="/solutions.html">
+              Learn more
+              <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
+            </a>
+          </article>
+
+          <article class="T_Card T_Service T_Service--pale">
+            <div class="M_CardHead">
+              <h3 class="Title Title--xl mHeading">Insulation audit</h3>
+              <p class="A_CardLead Subtitle">Quantities extracted directly from ISO drawings — materials list ready for procurement.</p>
+            </div>
+            <a class="A_LinkLine A_LinkLine--wide Subtitle" href="/solutions.html">
+              Learn more
+              <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
+            </a>
+          </article>
+
+          <article class="T_Card T_Service T_Service--bright">
+            <div class="M_CardHead">
+              <h3 class="Title Title--xl mHeading">Material take-off (MTO)</h3>
+              <p class="A_CardLead Subtitle">Quantities extracted directly from ISO drawings — materials list ready for procurement.</p>
+              <span class="A_Tag Note">AI-powered</span>
+            </div>
+            <a class="A_LinkLine A_LinkLine--wide Subtitle" href="/solutions.html">
+              Learn more
+              <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <!-- We train the industry (Figma 2373:24443, телефон 2414:3866 + 2414:3844).
+           Текст наш — в макете на его месте рыба. -->
+      <section class="O_Training W_Grid" id="training">
+        <div class="T_Card T_TrainingHead U_BleedStart">
+          <span class="A_Badge A_Badge--dark Subtitle">2</span>
+          <h2 class="Title Title--l mTitle">We train <br />the industry</h2>
+        </div>
+
+        <div class="M_TrainingBody">
+          <p class="Title Title--l mHeading">
+            Our lead thermal insulation engineer runs training for industry specialists and
+            university students — on structural calculation, material selection and typical
+            installation errors.
+          </p>
+          <a class="A_LinkLine Subtitle" href="/about.html">Learn more</a>
+        </div>
+
+        <!-- плитка — div, а picture внутри только выбирает кадр: на телефоне фото —
+             заливка узкой плитки со своим кадром (Figma 2414:3856) -->
+        <div class="T_TrainingPhoto U_BleedEnd">
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="/src/images/training/engineer-m.png"
+              width="160"
+              height="358"
+            />
+            <img
+              src="/src/images/training/engineer.png"
+              alt="SUPROS engineer in a hard hat and safety vest"
+              width="345"
+              height="400"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
+      </section>
+
+      <!-- Materials Supply (Figma 2414:4192, телефон 2414:3875): фото склада
+           фоном, поверх шапка секции и плитки. Названия в стопке продуктов
+           пока из макета, там часть повторяется — дождаться списка групп. -->
+      <section class="O_Materials W_Grid" id="materials">
+        <img
+          class="A_SupplyPhoto U_Layer"
+          src="/src/images/supply/warehouse.jpg"
+          alt=""
+          width="2400"
+          height="1171"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <div class="M_SectionHead">
+          <span class="A_Badge Subtitle">3</span>
+          <h2 class="Display Display--m">Materials Supply</h2>
+          <p class="Subtitle mBody">
+            Supply of materials from our own warehouse to ensure your uninterrupted operations.
+          </p>
+        </div>
+
+        <!-- плитки — правая половина секции до края окна, столбиком -->
+        <div class="M_SupplyTiles U_ExtendEnd">
+          <article class="T_Card T_SupplyFact">
+            <p class="Title Title--xl mHeading">826&nbsp;m²</p>
+            <p class="Body Body--l mCaption">Warehouse in Atyrau</p>
+          </article>
+
+          <article class="T_Card T_SupplyFact">
+            <p class="Title Title--xl mHeading">10</p>
+            <!-- бегущая строка: второй и третий списки — копии для бесшовной
+                 склейки на широкой плитке, скрыты от скринридера -->
+            <div class="W_Marquee W_Marquee--partners">
+              <ul class="M_MarqueeList" aria-label="Partner manufacturers">
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/rockwool.png"
+                    alt="ROCKWOOL"
+                    width="80"
+                    height="15"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/paroc.png"
+                    alt="PAROC"
+                    width="80"
+                    height="16"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/saint-gobain.png"
+                    alt="Saint-Gobain"
+                    width="59"
+                    height="25"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/foamglas.png"
+                    alt="FOAMGLAS"
+                    width="80"
+                    height="11"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+              </ul>
+              <ul class="M_MarqueeList" aria-hidden="true">
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/rockwool.png"
+                    alt=""
+                    width="80"
+                    height="15"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/paroc.png"
+                    alt=""
+                    width="80"
+                    height="16"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/saint-gobain.png"
+                    alt=""
+                    width="59"
+                    height="25"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/foamglas.png"
+                    alt=""
+                    width="80"
+                    height="11"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+              </ul>
+              <ul class="M_MarqueeList" aria-hidden="true">
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/rockwool.png"
+                    alt=""
+                    width="80"
+                    height="15"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/paroc.png"
+                    alt=""
+                    width="80"
+                    height="16"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/saint-gobain.png"
+                    alt=""
+                    width="59"
+                    height="25"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+                <li class="A_PartnerChip">
+                  <img
+                    src="/src/images/supply/foamglas.png"
+                    alt=""
+                    width="80"
+                    height="11"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+              </ul>
+            </div>
+            <p class="Body Body--l mCaption">Partner manufacturers</p>
+          </article>
+
+          <article class="T_Card T_Products">
+            <h3 class="Title Title--l">100+ products</h3>
+            <ul class="M_ProductStack" tabindex="0" aria-label="Product groups">
+              <li class="A_Product" style="--i: 0">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Mineral Wool</span>
+              </li>
+              <li class="A_Product" style="--i: 1">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Mineral Wool</span>
+              </li>
+              <li class="A_Product" style="--i: 2">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Fiberglass</span>
+              </li>
+              <li class="A_Product" style="--i: 3">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Cotton Batts</span>
+              </li>
+              <li class="A_Product" style="--i: 4">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Spray Foam</span>
+              </li>
+              <li class="A_Product" style="--i: 5">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Mineral Wool</span>
+              </li>
+              <li class="A_Product" style="--i: 6">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Mineral Wool</span>
+              </li>
+              <li class="A_Product" style="--i: 7">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Cellulose</span>
+              </li>
+              <li class="A_Product" style="--i: 8">
+                <img
+                  src="/src/images/supply/mineral-wool.png"
+                  alt=""
+                  width="70"
+                  height="67"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="Lead">Mineral Wool</span>
+              </li>
+              <li class="A_Icon A_Icon--plus A_StackMore" aria-hidden="true"></li>
+            </ul>
+            <a class="A_LinkLine A_LinkLine--wide Subtitle U_MobileOnly" href="/solutions.html">
+              Go to catalog
+              <span class="A_Icon A_Icon--diagonal-s" aria-hidden="true"></span>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <!-- Social responsibility (Figma 2399:3329, телефон 2414:4177). TODO:
+           описания карточек наши — в макете на их месте рыба -->
+      <section class="O_Social" id="social">
+        <div class="M_SectionHead">
+          <h2 class="Display Display--m">Social responsibility <br />is our work, not a programme</h2>
+        </div>
+
+        <div class="M_SocialGrid W_Grid">
+          <a class="T_Card T_SocialCard U_BleedStart" href="/social-responsibility.html">
+            <div class="M_CardHead">
+              <h3 class="Title Title--l mHeading">ESG</h3>
+              <p class="A_CardLead Body Body--l mBody">Environmental and safety standards on every site.</p>
+            </div>
+            <span class="A_LinkLine A_LinkLine--wide Subtitle">
+              Learn more
+              <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
+            </span>
+          </a>
+          <a class="T_Card T_SocialCard U_BleedSm" href="/social-responsibility.html">
+            <div class="M_CardHead">
+              <h3 class="Title Title--l mHeading">Internships</h3>
+              <p class="A_CardLead Body Body--l mBody">Places for students of technical universities.</p>
+            </div>
+            <span class="A_LinkLine A_LinkLine--wide Subtitle">
+              Learn more
+              <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
+            </span>
+          </a>
+          <a class="T_Card T_SocialCard U_BleedSm" href="/social-responsibility.html">
+            <div class="M_CardHead">
+              <h3 class="Title Title--l mHeading">Idea Hub</h3>
+              <p class="A_CardLead Body Body--l mBody">Ideas from the team go straight into production.</p>
+            </div>
+            <span class="A_LinkLine A_LinkLine--wide Subtitle">
+              Learn more
+              <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
+            </span>
+          </a>
+          <a class="T_Card T_SocialCard U_BleedEnd" href="/social-responsibility.html">
+            <div class="M_CardHead">
+              <h3 class="Title Title--l mHeading">Partnership: science and sports</h3>
+              <p class="A_CardLead Body Body--l mBody">We support university labs and local teams.</p>
+            </div>
+            <span class="A_LinkLine A_LinkLine--wide Subtitle">
+              Learn more
+              <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
+            </span>
+          </a>
         </div>
       </section>
 
       <section class="O_Projects" hidden>
         <div class="M_SectionHead">
           <h2 class="Display">Projects</h2>
-          <p class="A_SectionLead Title">
+          <p class="Title">
             Selected cases: what the client asked for, what we did and what came out of it.
           </p>
         </div>
 
         <div class="M_ProjectList">
-          <article class="T_Project">
+          <article class="T_Card T_Project">
             <h3 class="Title">Gas processing plant, Atyrau region</h3>
             <dl class="M_ProjectFacts">
-            <div class="A_Fact">
-              <dt class="Small">Task</dt>
-              <dd class="Body">Thermal calculation and take-off for steam tracing lines.</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Scope</dt>
-              <dd class="Body">12 km of piping, hot insulation with aluminium cladding.</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Result</dt>
-              <dd class="Body">Heat loss cut by a quarter, materials shipped from stock.</dd>
-            </div>
+              <div class="A_Fact">
+                <dt class="Small">Task</dt>
+                <dd class="Body">Thermal calculation and take-off for steam tracing lines.</dd>
+              </div>
+              <div class="A_Fact">
+                <dt class="Small">Scope</dt>
+                <dd class="Body">12 km of piping, hot insulation with aluminium cladding.</dd>
+              </div>
+              <div class="A_Fact">
+                <dt class="Small">Result</dt>
+                <dd class="Body">Heat loss cut by a quarter, materials shipped from stock.</dd>
+              </div>
             </dl>
           </article>
-          <article class="T_Project">
+          <article class="T_Card T_Project">
             <h3 class="Title">Cryogenic storage, Caspian coast</h3>
             <dl class="M_ProjectFacts">
-            <div class="A_Fact">
-              <dt class="Small">Task</dt>
-              <dd class="Body">Cold service insulation for LNG receiving equipment.</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Scope</dt>
-              <dd class="Body">Cellular glass with vapour barrier, 1 800 m² of surface.</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Result</dt>
-              <dd class="Body">No condensation on the cold bridges after the first winter.</dd>
-            </div>
+              <div class="A_Fact">
+                <dt class="Small">Task</dt>
+                <dd class="Body">Cold service insulation for LNG receiving equipment.</dd>
+              </div>
+              <div class="A_Fact">
+                <dt class="Small">Scope</dt>
+                <dd class="Body">Cellular glass with vapour barrier, 1 800 m² of surface.</dd>
+              </div>
+              <div class="A_Fact">
+                <dt class="Small">Result</dt>
+                <dd class="Body">No condensation on the cold bridges after the first winter.</dd>
+              </div>
             </dl>
           </article>
-          <article class="T_Project">
+          <article class="T_Card T_Project">
             <h3 class="Title">Refinery furnace section, West Kazakhstan</h3>
             <dl class="M_ProjectFacts">
-            <div class="A_Fact">
-              <dt class="Small">Task</dt>
-              <dd class="Body">Insulation audit and replacement schedule under revamp.</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Scope</dt>
-              <dd class="Body">Survey of 340 positions, take-off and procurement package.</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Result</dt>
-              <dd class="Body">Repair scope planned without stopping the neighbouring unit.</dd>
-            </div>
+              <div class="A_Fact">
+                <dt class="Small">Task</dt>
+                <dd class="Body">Insulation audit and replacement schedule under revamp.</dd>
+              </div>
+              <div class="A_Fact">
+                <dt class="Small">Scope</dt>
+                <dd class="Body">Survey of 340 positions, take-off and procurement package.</dd>
+              </div>
+              <div class="A_Fact">
+                <dt class="Small">Result</dt>
+                <dd class="Body">Repair scope planned without stopping the neighbouring unit.</dd>
+              </div>
             </dl>
           </article>
         </div>
       </section>
 
-      <section class="O_Contact" hidden id="request">
-        <div class="M_ContactIntro">
-          <h2 class="Display">Talk to an engineer</h2>
-          <p class="Title">
-            Send drawings or a specification — we come back with a thermal calculation, take-off
-            and a quote.
-          </p>
-
-          <dl class="M_ContactList">
-            <div class="A_Fact">
-              <dt class="Small">Sales</dt>
-              <dd class="Body">sales@supros.kz</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Office</dt>
-              <dd class="Body">Atyrau, Kazakhstan</dd>
-            </div>
-            <div class="A_Fact">
-              <dt class="Small">Warehouse</dt>
-              <dd class="Body">Atyrau, dispatch from stock</dd>
-            </div>
-          </dl>
+      <!-- Contact (Figma 2373:24494, телефон 2414:4085) -->
+      <section class="O_Contact W_Grid" id="request">
+        <div class="M_ContactLabel">
+          <h2 class="Display Display--m">Contact Us</h2>
         </div>
 
         <!-- TODO: форма без обработчика — приёмник появится вместе с бэком -->
-        <form class="M_RequestForm" method="post" action="/contacts.html">
-          <label class="A_Field">
-            <span class="Small">Name</span>
-            <input class="A_Input Body" type="text" name="name" autocomplete="name" required />
-          </label>
+        <form class="M_RequestForm U_ExtendEnd" method="post" action="/contacts.html">
+          <div class="M_FieldList">
+            <label class="A_Field">
+              <span class="Body mSubtitle">Name</span>
+              <input class="A_Input Body" type="text" name="name" autocomplete="name" required />
+            </label>
 
-          <label class="A_Field">
-            <span class="Small">Company</span>
-            <input class="A_Input Body" type="text" name="company" autocomplete="organization" />
-          </label>
+            <label class="A_Field">
+              <span class="Body mSubtitle">Company</span>
+              <input class="A_Input Body" type="text" name="company" autocomplete="organization" />
+            </label>
 
-          <label class="A_Field">
-            <span class="Small">Email</span>
-            <input class="A_Input Body" type="email" name="email" autocomplete="email" required />
-          </label>
+            <label class="A_Field A_Field--wide">
+              <span class="Body mSubtitle">Email</span>
+              <input class="A_Input Body" type="email" name="email" autocomplete="email" required />
+            </label>
 
-          <label class="A_Field A_Field--wide">
-            <span class="Small">Task</span>
-            <textarea class="A_Input Body" name="task" rows="3"></textarea>
-          </label>
+            <label class="A_Field A_Field--wide">
+              <span class="Body mSubtitle">Request type</span>
+              <input class="A_Input Body" type="text" name="request" />
+            </label>
+          </div>
 
-          <button class="A_ButtonPrimary Small" type="submit">Send request</button>
+          <div class="M_FormActions">
+            <button class="A_Button A_Button--accent Lead mSubtitle" type="submit">Send</button>
 
-          <p class="A_FormNote Body">
-            By sending the form you agree to the
-            <a href="/privacy.html">privacy policy</a>.
-          </p>
+            <label class="A_Consent">
+              <input class="A_Checkbox" type="checkbox" name="consent" required />
+              <span class="Body">I consent to the processing of personal data</span>
+            </label>
+          </div>
         </form>
       </section>
 
-      <footer class="O_Footer" hidden>
+      <!-- Footer (Figma 2392:2786, телефон 2338:22858): на десктопе четыре
+           колонки, на телефоне аккордеон — открыта первая (footer.js) -->
+      <footer class="O_Footer">
         <nav class="M_FooterNav" aria-label="Footer">
-          <div class="M_FooterCol">
-            <p class="Label">Solutions</p>
-            <a class="Body" href="/solutions.html">Engineering</a>
-            <a class="Body" href="/solutions.html">Trainings</a>
-            <a class="Body" href="/solutions.html">Materials supply</a>
-          </div>
-
-          <div class="M_FooterCol">
-            <p class="Label">Projects</p>
-            <a class="Body" href="/projects.html">Cases</a>
-          </div>
-
-          <div class="M_FooterCol">
-            <p class="Label">About</p>
-            <a class="Body" href="/about.html">Company</a>
-            <a class="Body" href="/about.html">Team</a>
-            <a class="Body" href="/about.html">Clients</a>
-            <a class="Body" href="/about.html">Partners and memberships</a>
-            <a class="Body" href="/about.html">Careers</a>
-          </div>
-
-          <div class="M_FooterCol">
-            <p class="Label">Social responsibility</p>
-            <a class="Body" href="/social-responsibility.html">Sustainability</a>
-            <a class="Body" href="/social-responsibility.html">Academic and sports programmes</a>
-            <a class="Body" href="/social-responsibility.html">Idea Hub</a>
-            <a class="Body" href="/social-responsibility.html">Internships</a>
-          </div>
-
-          <div class="M_FooterCol">
-            <p class="Label">Contact</p>
-            <a class="Body" href="#request">Write to an engineer</a>
-            <a class="Body" href="#request">Partnership proposal</a>
-            <a class="Body" href="/contacts.html">Sales, office and warehouse</a>
-          </div>
+          <details class="M_FooterCol" open>
+            <summary class="A_FooterSummary Subtitle">
+              Solutions
+              <span class="A_Icon A_Icon--toggle" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_FooterLinks">
+              <li><a class="Note" href="/solutions.html">Engineering</a></li>
+              <li><a class="Note" href="/solutions.html">Materials Supply</a></li>
+              <li><a class="Note" href="/solutions.html">Trainings</a></li>
+            </ul>
+          </details>
+          <details class="M_FooterCol" open>
+            <summary class="A_FooterSummary Subtitle">
+              About
+              <span class="A_Icon A_Icon--toggle" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_FooterLinks">
+              <li><a class="Note" href="/about.html">Company · mission</a></li>
+              <li><a class="Note" href="/about.html">Team</a></li>
+              <li><a class="Note" href="/about.html">Clients</a></li>
+              <li><a class="Note" href="/about.html">Partners and memberships</a></li>
+              <li><a class="Note" href="/projects.html">Projects</a></li>
+              <li><a class="Note" href="/about.html">Careers</a></li>
+            </ul>
+          </details>
+          <details class="M_FooterCol" open>
+            <summary class="A_FooterSummary Subtitle">
+              Social Responsibility
+              <span class="A_Icon A_Icon--toggle" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_FooterLinks">
+              <li><a class="Note" href="/social-responsibility.html">Sustainability</a></li>
+              <li><a class="Note" href="/social-responsibility.html">Cooperation with academic and sports institutions</a></li>
+              <li><a class="Note" href="/social-responsibility.html">Idea Hub</a></li>
+              <li><a class="Note" href="/social-responsibility.html">Internships</a></li>
+            </ul>
+          </details>
+          <details class="M_FooterCol" open>
+            <summary class="A_FooterSummary Subtitle">
+              Contact
+              <span class="A_Icon A_Icon--toggle" aria-hidden="true"></span>
+            </summary>
+            <ul class="M_FooterLinks">
+              <li><a class="Note" href="#request">Write to an engineer</a></li>
+              <li><a class="Note" href="#request">Partnership proposal</a></li>
+              <li><a class="Note" href="/contacts.html">Sales</a></li>
+              <li><a class="Note" href="/contacts.html">Office</a></li>
+              <li><a class="Note" href="/contacts.html">Warehouse</a></li>
+            </ul>
+          </details>
         </nav>
 
-        <div class="M_FooterBottom">
-          <p class="Body">© 2026 SUPROS</p>
-          <!-- TODO: языки станут ссылками, когда появятся /ru/ и /kz/ -->
-          <p class="M_Langs Small"><span aria-current="true">EN</span> RU KZ</p>
-          <a class="Body" href="/privacy.html">Privacy policy</a>
-        </div>
+        <span class="A_FooterMark" aria-hidden="true"></span>
+
+        <p class="A_Copyright Note Inter mBody">
+          <a href="/privacy.html">Privacy policy</a>
+        </p>
       </footer>
     </div>
 
     <script type="module" src="/src/javascript/nav.js"></script>
-    <script type="module" src="/src/javascript/materials.js"></script>
-    <script type="module" src="/src/javascript/scroll.js"></script>
-    <script type="module" src="/src/javascript/backdrop.js"></script>
+    <script type="module" src="/src/javascript/hero.js"></script>
+    <script type="module" src="/src/javascript/footer.js"></script>
   </body>
 </html>

@@ -1,4 +1,10 @@
-/* ===== base ===== */
+/* ===== компоненты главной ===== */
+/* Порядок файла: основа → сетка → атомы (A_) → молекулы (M_) → плитки (T_) →
+   секции (O_) → утилиты (U_). Значения — только токены из vars.css, кегли —
+   только классы из typekit.css. Один и тот же элемент на странице — один
+   компонент: модификатор меняет роль, а не копирует разметку стилей. */
+
+/* ===== основа ===== */
 
 body {
   background: var(--color-bg);
@@ -11,49 +17,11 @@ body {
 }
 
 :focus-visible {
-  outline: var(--hairline) solid var(--color-accent-text);
-  outline-offset: 2px;
-}
-
-/* ===== W_Backdrop ===== */
-/* Снимок первого экрана закреплён во вьюпорте и служит подложкой всей
-   страницы: секции идут над ним, ничего под ними не заливаем. Уводить его
-   вниз незачем — тёмная SOLUTIONS перекрывает подложку своей заливкой. */
-
-.W_Backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  display: block;
-}
-
-.A_BackdropPhoto {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Канвас сводит оба снимка шейдером и ложится поверх запасного <img>.
-   Проявляется, только когда шейдер поднялся: иначе на экране остаётся
-   статичный верхний кадр. */
-.A_BackdropCanvas {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-
-  &[data-ready] {
-    opacity: 1;
-  }
+  outline: var(--hairline) solid var(--color-accent);
+  outline-offset: var(--focus-offset);
 }
 
 /* ===== W_Page ===== */
-/* Сетка встык: блоки без полей и скруглений, между ними волосок. */
 
 .W_Page {
   display: flex;
@@ -62,162 +30,864 @@ body {
   margin-inline: auto;
 }
 
-/* Ряд — макетная сетка: 12 тянущихся колонок, поля 0. Блоки занимают колонки
-   спанами, собственной ширины у них нет. Обводка по макету у самого ряда:
-   внутри неё текстовый блок остаётся без рамки, а разделителем служит левая
-   грань блока с логотипом. */
-.W_Row {
+/* ===== W_Grid ===== */
+/* Макетная сетка: 4 тянущиеся колонки, поля страницы --grid-margin, блоки
+   встык. Правило одно: всё начинается с левого края колонки. Плитка держит
+   внутри поле --tile-pad; текст сплошного блока стоит на кромке колонки.
+   Крайние плитки дотягиваются до края окна утилитами U_Bleed* в конце файла. */
+
+.W_Grid {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  position: relative;
-  align-items: stretch;
+  column-gap: var(--grid-gap);
+  padding-inline: var(--grid-margin);
+}
 
-  /* Рамка ряда — отдельным слоем поверх содержимого. Ни border, ни outline
-     тут не годятся: дети занимают ряд целиком и закрывают кромку, по которой
-     те рисуются, — блок с логотипом вдобавок сдвинут на неё отрицательными
-     полями. Псевдоэлемент лежит выше детей и кликам не мешает. */
-  &::after {
-    content: '';
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    border: var(--hairline) solid var(--color-line);
-    pointer-events: none;
+/* ================================================================
+   АТОМЫ
+   ================================================================ */
+
+/* ===== A_Button ===== */
+/* Кнопка: поля 16 / 28 из макета, текст стилем Lead. Заливка — модификатором. */
+
+.A_Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-3-5);
+  border: 0;
+  border-radius: var(--radius-s);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition-base);
+}
+
+/* бирюзовая: Contact Us в шапке, Send в форме */
+.A_Button--accent {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-accent-strong);
   }
 }
 
-/* ===== линии сетки ===== */
-/* Обводка в макете — признак белой плашки: очерчены только они (девять нод на
-   всю страницу), а блоки с заливкой акцентом или бледной бирюзой отделяет от
-   соседей сама заливка. Поэтому линию рисует не «каждый блок», а конкретные
-   белые.
+/* полупрозрачная на тёмном: «Download presentation» в меню */
+.A_Button--ghost {
+  gap: var(--space-1);
+  background: var(--color-white-10);
+  color: var(--color-text-inverse);
 
-   В Figma обводка стоит по центру границы и у соседей сходится в одну линию.
-   В CSS она всегда внутренняя, поэтому две смежные дали бы двойную толщину —
-   соседей сдвигаем друг на друга на толщину линии, и общие грани совпадают. */
-
-.T_HeroTitle,
-.T_Card--accent,
-.T_CardPartner,
-.T_NumberLabel,
-.T_Stat,
-.T_Service:not(.T_Service--accent),
-.O_Solutions {
-  border: var(--hairline) solid var(--color-line);
+  &:hover,
+  &:focus-visible {
+    background: var(--color-white-20);
+  }
 }
 
-/* соседи по горизонтали — внутри ряда */
-.W_Row > * + *,
-.W_HeroRow > * + *,
-.O_Numbers > * + * {
-  margin-left: calc(-1 * var(--hairline));
+/* белая на снимке первого экрана (Figma 2373:24324) */
+.A_Button--light {
+  background: var(--color-surface);
+  color: var(--color-accent-deep);
+  border-radius: var(--radius-m);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-accent-soft);
+  }
 }
 
-/* соседи по вертикали — ряды первого экрана, плашки услуг и секции страницы.
-   Первый экран сдвигается под шапку: её нижняя грань становится его верхней. */
-.W_HeroRow + .W_HeroRow,
-.M_SolutionCards > * + *,
-.O_Hero,
-.O_Hero ~ * {
-  margin-top: calc(-1 * var(--hairline));
+/* ===== A_Icon ===== */
+/* Иконка — svg из макета маской, красится текущим цветом текста. Подложку
+   на 10% svg несёт сам (прямоугольник с прозрачностью), поэтому один файл
+   работает на любой заливке. Модификатор задаёт файл и размер. */
+
+.A_Icon {
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background: currentcolor;
+  mask: var(--icon) no-repeat center / contain;
+  transition: transform var(--transition-fast);
 }
+
+.A_Icon--plus {
+  --icon: url('./images/icons/plus.svg');
+  --icon-size: var(--size-icon-s);
+}
+
+.A_Icon--diagonal-s {
+  --icon: url('./images/icons/arrow-diagonal-s.svg');
+  --icon-size: var(--size-icon-xs);
+}
+
+.A_Icon--diagonal-l {
+  --icon: url('./images/icons/arrow-diagonal-l.svg');
+  --icon-size: var(--size-icon-l);
+}
+
+.A_Icon--download {
+  --icon: url('./images/icons/download.svg');
+  --icon-size: var(--size-icon-glyph);
+}
+
+/* раздел меню: закрытый — плюс в квадрате 32, открытый — минус 24 */
+.A_Icon--menu-toggle {
+  --icon: url('./images/icons/plus-box.svg');
+  --icon-size: var(--size-icon-xs);
+
+  [open] > summary > & {
+    --icon: url('./images/icons/minus-line.svg');
+    --icon-size: var(--size-icon-s);
+  }
+}
+
+/* плюс аккордеона; у открытой строки — минус */
+.A_Icon--toggle {
+  --icon: url('./images/icons/plus-line.svg');
+  --icon-size: var(--size-icon-s);
+
+  [open] > summary > & {
+    --icon: url('./images/icons/minus-line.svg');
+  }
+}
+
+/* ===== A_LinkLine ===== */
+/* Ссылка с полоской под ней (Figma 2377:2461, 2392:2654) — единственный вид
+   текстовой ссылки-кнопки на странице, всегда стилем «Supros/Subtitle 20».
+   Короткая — текст отбит от краёв полоски на 12. Широкая (--wide) — во всю
+   плитку: текст слева, стрелка справа, полоска под обоими. При наведении
+   полоска набирает полный цвет. Текст переносится: длинная подпись на узком экране
+   не должна распирать страницу. Цвет полоски — переменная --line-color: по умолчанию белая,
+   на светлом фоне секция задаёт тёмную. */
+
+.A_LinkLine {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-inline: var(--space-1-5);
+  color: inherit;
+
+  &::after {
+    content: '';
+    height: var(--stroke);
+    margin-inline: calc(-1 * var(--space-1-5));
+    background: var(--line-color, var(--color-white-30));
+    border-radius: var(--radius-pill);
+    transition: background var(--transition-fast);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    background: currentcolor;
+  }
+}
+
+.A_LinkLine--wide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-1-5);
+  padding: var(--space-1-5) 0 0;
+
+  &::after {
+    grid-column: 1 / -1;
+    margin-inline: 0;
+  }
+}
+
+/* ===== A_Tag ===== */
+/* Белый ярлык в правом верхнем углу плашки услуги (Figma 2380:2564). */
+
+.A_Tag {
+  position: absolute;
+  top: var(--tile-pad);
+  right: var(--grid-margin);
+  padding: var(--space-0-375) var(--space-1);
+  background: var(--color-surface);
+  color: var(--tag-color, var(--color-accent-deep));
+  border-radius: var(--radius-s);
+  white-space: nowrap;
+}
+
+/* ярлык в строке текста — пункт меню: в потоке, текст тёмной бирюзой */
+.A_Tag--inline {
+  position: static;
+  padding: var(--space-quarter) var(--space-1);
+  color: var(--color-accent-dark);
+}
+
+/* ===== A_Badge ===== */
+/* Номер секции на плашке 44 × 44. */
+
+.A_Badge {
+  display: grid;
+  width: var(--size-icon-l);
+  height: var(--size-icon-l);
+  place-items: center;
+  background: var(--color-white-10);
+  border-radius: var(--radius-s);
+}
+
+/* на светлом фоне: тёмная подложка на 4% */
+.A_Badge--dark {
+  background: var(--color-ink-04);
+}
+
+/* бирюзовый: подложка и цифра цветом заголовка секции */
+.A_Badge--accent {
+  background: var(--color-accent-10);
+  color: var(--color-accent-deep);
+}
+
+/* ===== A_Mark ===== */
+/* Монограмма SUPROS градиентом из макета: от серого в правом верхнем углу
+   к белому. */
+
+.A_Mark {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(221deg, var(--color-mark), var(--color-surface));
+  mask: url('./images/logos/monogram.svg') no-repeat center / contain;
+}
+
+/* ===== A_HeroSlide / A_SlideProgress ===== */
+/* Снимки слайдера лежат стопкой и проявляются по очереди (hero.js). Полоса
+   прогресса видна, только пока слайдер идёт: без скрипта и при
+   prefers-reduced-motion кадр один и отмерять нечего. */
+
+.A_HeroSlide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+
+  &[data-active] {
+    opacity: 1;
+  }
+}
+
+.A_SlideProgress {
+  position: absolute;
+  inset: 0 0 auto;
+  display: none;
+  height: var(--stroke-bold);
+  overflow: hidden;
+  background: var(--color-white-12);
+
+  [data-run] & {
+    display: block;
+  }
+}
+
+.A_SlideProgressFill {
+  display: block;
+  height: 100%;
+  background: var(--color-surface);
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  [data-run] & {
+    animation: slide-progress var(--slide-time) linear infinite;
+  }
+}
+
+@keyframes slide-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ===== A_PartnerChip / A_ClientLogo ===== */
+/* Элементы бегущих строк: логотип партнёра на стеклянной плашке и логотип
+   клиента квадратом 100. Плашка обрезает содержимое по скруглению: в Safari
+   размытие фона иначе рисуется прямоугольником поверх углов. */
+
+.A_PartnerChip {
+  display: flex;
+  flex-shrink: 0;
+  height: var(--size-icon-l);
+  align-items: center;
+  overflow: hidden;
+  padding-inline: var(--space-1);
+  background: var(--color-white-32);
+  border-radius: var(--radius-s);
+  backdrop-filter: blur(var(--blur-s));
+
+  img {
+    display: block;
+  }
+}
+
+.A_ClientLogo {
+  flex-shrink: 0;
+
+  img {
+    width: var(--size-client-logo);
+    height: var(--size-client-logo);
+    object-fit: contain;
+  }
+}
+
+/* ===== A_Product ===== */
+/* Карточка группы материалов в стопке. Ложится по своему номеру --i: в
+   сложенной стопке видны первые три со сдвигом 28, остальные спрятаны под
+   третьей; в раскрытой — все в ряд с шагом 124 + 12. Верхняя — первая,
+   поэтому z-index убывает с номером. */
+
+.A_Product {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: calc(10 - var(--i));
+  display: flex;
+  width: var(--size-product);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1-25);
+  padding-block: var(--space-1-25);
+  background: var(--color-white-24);
+  border-radius: var(--radius-s);
+  backdrop-filter: blur(var(--blur-m));
+  transform: translateX(calc(min(var(--i), 2) * var(--space-3-5)));
+  transition:
+    transform var(--smart-animate) ease-out,
+    opacity var(--smart-animate) ease-out;
+
+  img {
+    width: var(--size-product-image);
+    aspect-ratio: 70 / 67;
+    object-fit: cover;
+  }
+
+  span {
+    padding-inline: var(--space-1-5);
+    white-space: nowrap;
+  }
+
+  &:nth-child(n + 4) {
+    opacity: 0;
+  }
+}
+
+/* ===== форма: A_Field, A_Input, A_Consent, A_Checkbox ===== */
+/* Поле — подпись и строка ввода с одной нижней линией 2px (Figma
+   2373:24502): рамки и фона нет. */
+
+.A_Field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.A_Input {
+  width: 100%;
+  padding: var(--space-2-5) 0;
+  background: transparent;
+  border: 0;
+  border-bottom: var(--stroke) solid var(--color-surface-muted);
+  border-radius: 0;
+  color: inherit;
+  transition: border-color var(--transition-fast);
+
+  &::placeholder {
+    color: var(--color-text-placeholder);
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-accent);
+    outline: 0;
+  }
+}
+
+.A_Consent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding-inline: var(--space-1-5);
+}
+
+/* галочку рисуем не глифом, а просветом: внутренняя тень оставляет
+   белую рамку вокруг залитого квадрата */
+.A_Checkbox {
+  width: var(--size-control);
+  height: var(--size-control);
+  flex-shrink: 0;
+  appearance: none;
+  background: var(--color-surface);
+  border: var(--hairline) solid var(--color-control-line);
+  border-radius: var(--radius-xs);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:checked {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: inset 0 0 0 var(--stroke) var(--color-surface);
+  }
+}
+
+/* ===== A_Fact ===== */
+/* Пара «метка → значение» в кейсах. */
+
+.A_Fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-half);
+
+  dt {
+    color: var(--color-text-muted);
+  }
+}
+
+/* ================================================================
+   МОЛЕКУЛЫ
+   ================================================================ */
+
+/* ===== M_SectionHead ===== */
+/* Шапка секции: необязательный номер, заголовок, лид. Шаг между ними 24,
+   у первого экрана — 20 (переменная --head-gap). */
+
+.M_SectionHead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--head-gap, var(--space-3));
+
+  p {
+    max-width: var(--size-measure);
+  }
+}
+
+/* ===== M_CardHead ===== */
+/* Название карточки и описание под ним; описание тем же цветом на 60%. */
+
+.M_CardHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.A_CardLead {
+  opacity: 0.6;
+}
+
+/* ===== W_Marquee ===== */
+/* Бегущая строка. Лента из нескольких одинаковых списков: каждый уезжает
+   влево ровно на свою ширину, на место первого встаёт копия, и цикл
+   склеивается без шва. Копии скрыты от скринридера в разметке. Шаг между
+   элементами — он же хвост каждого списка, иначе на стыке копий зазор
+   пропал бы. Шаг и скорость задаёт модификатор. При наведении лента стоит. */
+
+/* лента не ужимается: в плитке фиксированной высоты её сжатие обрезало бы
+   элементы сверху и снизу */
+.W_Marquee {
+  display: flex;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.M_MarqueeList {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--marquee-gap);
+  margin: 0;
+  padding: 0 var(--marquee-gap) 0 0;
+  list-style: none;
+  animation: marquee var(--marquee-time) linear infinite;
+
+  .W_Marquee:hover & {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* логотипы партнёров — от края до края плитки */
+.W_Marquee--partners {
+  --marquee-gap: var(--space-half);
+  --marquee-time: var(--marquee-fast);
+
+  margin-inline: calc(-1 * var(--tile-pad));
+}
+
+/* клиенты — 24 логотипа по 100 не помещаются ни в одну ширину */
+.W_Marquee--clients {
+  --marquee-gap: var(--space-1);
+  --marquee-time: var(--marquee-slow);
+
+  height: var(--size-client-logo);
+}
+
+/* ===== M_ProductStack ===== */
+/* Компонент products (Figma 2399:3064), два варианта. Default — стопка из
+   трёх карточек с плюсом справа. Variant3 — все карточки в ряд; ряд шире
+   плитки и прокручивается по горизонтали, под ним тонкий скроллбар (инстанс
+   scroll: 2px, белый 20%). Переход по наведению или фокусу, Smart Animate
+   0.3s ease-out. Карточки лежат абсолютно и двигаются трансформом —
+   трансформ тоже растягивает прокручиваемую область, поэтому в сложенной
+   стопке прокручивать нечего, а в раскрытом ряду появляется полоса. */
+
+.M_ProductStack {
+  position: relative;
+  height: calc(var(--size-product-row) + var(--space-1) + var(--stroke));
+  margin: 0;
+  padding: 0 0 var(--space-1);
+  list-style: none;
+  overflow: auto hidden;
+  overscroll-behavior-x: contain;
+
+  &::-webkit-scrollbar {
+    height: var(--stroke);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-white-20);
+    border-radius: var(--radius-s);
+  }
+
+  &:hover,
+  &:focus-within {
+    .A_Product {
+      opacity: 1;
+      transform: translateX(calc(var(--i) * (var(--size-product) + var(--space-1-5))));
+    }
+
+    .A_StackMore {
+      opacity: 0;
+    }
+  }
+}
+
+/* Firefox не знает ::-webkit-scrollbar: ему — тонкая полоса тем же цветом.
+   Chrome при заданном scrollbar-color игнорирует webkit-правила, поэтому
+   свойство только за @supports. */
+@supports not selector(::-webkit-scrollbar) {
+  .M_ProductStack {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-white-20) transparent;
+  }
+}
+
+/* плюс справа от стопки: два сдвига карточки, её ширина и 5 */
+.A_StackMore {
+  position: absolute;
+  top: calc(var(--size-product-row) / 2);
+  left: calc(var(--size-product) + 2 * var(--space-3-5) + var(--space-half) + var(--hairline));
+  translate: 0 -50%;
+  transition: opacity var(--smart-animate) ease-out;
+}
+
+/* ================================================================
+   ПЛИТКИ
+   ================================================================ */
+
+/* ===== T_Card ===== */
+/* Основа всех плиток страницы: колонка, поле --tile-pad, содержимое
+   разнесено к верху и низу. Роль, заливку и высоту задаёт модификатор или
+   собственный класс плитки. */
+
+.T_Card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--tile-pad);
+}
+
+/* Акцентная карточка первого экрана: две правые колонки, прижата к низу
+   секции. Сверху полоса прогресса слайдера и заголовок, снизу ссылка. */
+.T_Card--accent {
+  position: relative;
+  grid-column: 3 / span 2;
+  align-self: end;
+  align-items: flex-start;
+  min-height: var(--height-card);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+/* ===== T_HeroTitle ===== */
+/* Стеклянная панель первого экрана: бледная бирюза на 30% и размытие 20.
+   Поля — поля страницы, текст стоит на кромке первой колонки. */
+
+.T_HeroTitle {
+  --bleed-pad: 0px;
+  --head-gap: var(--space-2-5);
+
+  grid-column: span 2;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding: var(--grid-margin);
+  background: var(--color-glass);
+  color: var(--color-text-inverse);
+  backdrop-filter: blur(var(--blur-l));
+}
+
+/* ===== T_NumberLabel / T_Stat ===== */
+/* Метка блока цифр и карточки цифр. Карточка — число и подпись с шагом 10. */
+
+/* метка — сам заголовок с переносом строки, поэтому блочная, а не flex */
+.T_NumberLabel {
+  display: block;
+  grid-column: span 1;
+  height: var(--height-block);
+  margin-top: var(--height-stat);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.T_Stat {
+  position: sticky;
+  top: var(--pin-top);
+  grid-column: span 1;
+  min-height: var(--height-stat);
+  justify-content: flex-start;
+  gap: var(--space-1-25);
+  background: var(--color-surface);
+  color: var(--color-accent-deep);
+}
+
+.T_Stat--pale {
+  background: var(--color-accent-soft);
+}
+
+/* ===== T_Service ===== */
+/* Плашка услуги (Figma 2380:2552): название и описание сверху, ссылка со
+   стрелкой и полоской снизу. Плашка стоит у правого края окна, поэтому
+   справа у неё поле страницы. Заливка — модификатором, цвет полоски и
+   ярлыка — переменными плашки. */
+
+.T_Service {
+  position: relative;
+  min-height: var(--height-block);
+  padding-right: var(--grid-margin);
+  background: var(--color-accent-dark);
+  color: var(--color-text-inverse);
+}
+
+/* светлая: текст тёмной бирюзой, полоска бирюзовая */
+.T_Service--pale {
+  --line-color: var(--color-accent-30);
+
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+}
+
+/* яркая: ярлык набран цветом заливки */
+.T_Service--bright {
+  --tag-color: var(--color-accent-bright);
+
+  background: var(--color-accent-bright);
+}
+
+/* ===== T_SupplyFact / T_Products ===== */
+/* Плитки Materials Supply без скруглений. Стеклянная — белый 12% с
+   размытием 20: значение сверху, подпись снизу, у партнёров между ними
+   бегущая строка логотипов. Акцентная — яркая бирюза со стопкой продуктов. */
+
+/* в макете содержимое разнесено по высоте без промежутков — шаг минимальный,
+   иначе значение, лента и подпись не помещаются в плитку */
+.T_SupplyFact {
+  gap: var(--space-1);
+  height: var(--height-fact);
+  background: var(--color-white-12);
+  color: var(--color-text-inverse);
+  backdrop-filter: blur(var(--blur-l));
+}
+
+.T_Products {
+  height: var(--height-products);
+  overflow: hidden;
+  padding-bottom: var(--space-2-5);
+  background: var(--color-accent-bright);
+  color: var(--color-text-inverse);
+}
+
+/* ===== T_SocialCard ===== */
+/* Карточка направления (компонент 2392:2648), два варианта. Default —
+   светлая, название внизу. Variant2 — бирюзовая: сверху название и
+   описание, снизу ссылка со стрелкой. Активна первая карточка, а при
+   наведении или фокусе — та, что под курсором.
+
+   Переход: бирюзовая заливка поднимается снизу (подложка ::before
+   масштабируется от нижнего края — анимация на композиторе, раскладку не
+   дёргает), заголовок едет вместе с ней снизу наверх, описание раскрывается
+   под ним, ссылка проявляется последней.
+
+   Заголовок всегда стоит наверху раскладки, а в светлом варианте опущен
+   трансформом на высоту карточки без полей минус собственную высоту.
+   Описание свёрнуто строкой сетки 0fr, поэтому в светлом варианте высота
+   блока — ровно заголовок, и он ложится точно на нижнее поле. */
+
+.T_SocialCard {
+  --social-shift: calc(var(--height-block) - 2 * var(--tile-pad) - 100%);
+
+  position: relative;
+  isolation: isolate;
+  grid-column: span 1;
+  height: var(--height-block);
+  overflow: hidden;
+  background: var(--color-surface-soft);
+  color: var(--color-ink);
+  transition: color var(--transition-base);
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: var(--color-accent-deep);
+    transform: scaleY(0);
+    transform-origin: center bottom;
+    transition: transform var(--transition-base);
+  }
+
+  .M_CardHead {
+    display: grid;
+    grid-template-rows: auto 0fr;
+    gap: 0;
+    transform: translateY(var(--social-shift));
+    transition:
+      transform var(--transition-base),
+      grid-template-rows var(--transition-base);
+  }
+
+  .A_CardLead {
+    min-height: 0;
+    overflow: hidden;
+    padding-top: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .A_LinkLine {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+    transition:
+      opacity var(--transition-base),
+      transform var(--transition-base);
+  }
+}
+
+.T_SocialCard:hover,
+.T_SocialCard:focus-visible,
+.M_SocialGrid:not(:has(.T_SocialCard:hover, .T_SocialCard:focus-visible))
+  .T_SocialCard:first-child {
+  color: var(--color-text-inverse);
+
+  &::before {
+    transform: scaleY(1);
+  }
+
+  .M_CardHead {
+    grid-template-rows: auto 1fr;
+    transform: translateY(0);
+  }
+
+  .A_CardLead {
+    opacity: 0.6;
+  }
+
+  /* ссылка появляется, когда заливка уже поднялась */
+  .A_LinkLine {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: var(--delay-follow);
+  }
+}
+
+/* ===== T_Project ===== */
+
+.T_Project {
+  justify-content: flex-start;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* ================================================================
+   СЕКЦИИ
+   ================================================================ */
 
 /* ===== O_Header ===== */
-/* Шапка по макету 2136:41124: стекло — белый на 90% с размытием, поэтому
-   подложка сквозь неё просвечивает. Вне потока, лежит поверх первого экрана
-   и не уезжает при скролле; ширину держит контейнер страницы, чтобы на широких
-   мониторах шапка стояла в той же сетке. Высоту шапки компенсирует своим
-   верхним полем первая секция — сейчас это O_Hero.
+/* Шапка (Figma 2136:41124): стекло — белый на 90% с размытием. Вне потока,
+   лежит поверх первого экрана и не уезжает при скролле; ширину держит
+   контейнер страницы. Бренд и меню занимают по две колонки, поэтому разделы
+   начинаются с той же вертикали, что и блоки под шапкой.
 
-   Отрицательные поля перекрытия обводок на шапку не распространяются: она
-   позиционирована, и поле сдвинуло бы её относительно окна, открывая полосу
-   подложки под ней. */
+   Стекло нарисовано псевдоэлементом, а центрируется шапка полями, без
+   transform: и backdrop-filter, и transform на самой шапке сделали бы её
+   рамкой для фиксированных потомков, и полноэкранное меню на узких экранах
+   сжалось бы до высоты шапки. */
 
 .O_Header {
   position: fixed;
   top: 0;
-  left: 50%;
+  right: 0;
+  left: 0;
   z-index: 10;
-
-  /* шапка стоит на той же сетке, что и страница: бренд и разделы занимают
-     по шесть колонок, поэтому их граница совпадает с вертикалью блоков под
-     ними. На процентах она не совпадала — половина шапки и шесть колонок
-     дают разные числа, когда у шапки есть собственная обводка. */
-  display: grid;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   align-items: center;
   width: min(100%, var(--container-max));
-  height: var(--header-h);
-  transform: translateX(-50%);
-  overflow: hidden;
-  background: rgb(255 255 255 / 90%);
-  border: var(--hairline) solid var(--color-line);
-  backdrop-filter: blur(20px);
+  height: var(--size-header);
+  margin-inline: auto;
 
-  /* левый бокс: плитка с логотипом вплотную к краю, за ней язык */
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: var(--color-header-glass);
+    backdrop-filter: blur(var(--blur-l));
+  }
+
   .M_Brand {
     display: flex;
-    grid-column: span 6;
+    grid-column: span 2;
     align-self: stretch;
     align-items: center;
     gap: var(--space-2-5);
-    padding-right: var(--space-2-5);
+
+    /* выбор языка — во всю высоту шапки, панель раскрывается от её кромки */
+    .M_MenuGroup {
+      align-self: stretch;
+    }
   }
 
-  /* логотип сидит на акцентной плитке во всю высоту шапки, сам знак белый */
+  /* знак сидит на акцентной плитке во всю высоту шапки, сам он белый */
   .A_Logo {
+    --bleed-pad: 0px;
+
     display: grid;
     place-items: center;
     align-self: stretch;
-    padding-inline: var(--space-2-5);
+    padding-right: var(--space-2-5);
     background: var(--color-accent);
 
     &::before {
       content: '';
-      width: 82px;
+      width: var(--size-logo);
       aspect-ratio: 120 / 25;
       background: var(--color-surface);
       mask: url('./images/logos/supros.svg') no-repeat center / contain;
-    }
-  }
-
-  /* переключатель языка — единственное место с Inter */
-  .A_Lang {
-    font-family: var(--font-nav);
-    letter-spacing: -0.01em;
-    color: var(--color-accent);
-  }
-
-  /* Правый бокс с разделами — шесть колонок. Обводка полная и сдвинута
-     перекрытием по всем четырём граням, как у блоков страницы: сверху, справа
-     и снизу она ложится на грани самой шапки, слева — на ту же вертикаль,
-     по которой проходит линия блоков под шапкой.
-
-     Сдвиг слева обязателен: обводка в CSS внутренняя, и без него линия шапки
-     шла бы по правому краю колонки, а линия блоков — по левому. Те же шесть
-     колонок, но вертикали разные на пиксель. */
-  .M_Nav {
-    display: flex;
-    grid-column: span 6;
-    align-self: stretch;
-    align-items: center;
-    margin: calc(-1 * var(--hairline));
-    border: var(--hairline) solid var(--color-line);
-  }
-
-  .A_NavLink {
-    display: flex;
-    align-items: center;
-    gap: var(--space-half);
-    height: 100%;
-    padding: var(--space-1-5) 22px;
-    color: var(--color-accent-deep);
-    white-space: nowrap;
-    transition: color var(--transition-fast);
-
-    &:hover,
-    &:focus-visible {
-      color: var(--color-accent);
     }
   }
 
@@ -225,29 +895,33 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-    width: var(--header-h);
-    height: var(--header-h);
+    width: var(--size-header);
+    height: var(--size-header);
     color: var(--color-accent-deep);
 
     &[aria-expanded='true'] .A_Burger {
       background: transparent;
 
       &::before {
-        transform: translateY(6px) rotate(45deg);
+        transform: translateY(var(--burger-step)) rotate(45deg);
       }
 
       &::after {
-        transform: translateY(-6px) rotate(-45deg);
+        transform: translateY(calc(-1 * var(--burger-step))) rotate(-45deg);
       }
     }
   }
 
+  /* три полосы толщиной 2 с шагом --burger-step; крест — из тех же полос */
   .A_Burger {
+    --burger-step: calc(3 * var(--stroke));
+
     position: relative;
     display: block;
-    width: 18px;
-    height: 2px;
+    width: var(--size-burger);
+    height: var(--stroke);
     background: currentcolor;
+    transition: width var(--transition-base);
 
     &::before,
     &::after {
@@ -261,544 +935,335 @@ body {
     }
 
     &::before {
-      top: -6px;
+      top: calc(-1 * var(--burger-step));
     }
 
     &::after {
-      top: 6px;
+      top: var(--burger-step);
     }
   }
 
   .A_Chevron {
-    width: 9px;
-    height: 9px;
-    border-right: 2px solid currentcolor;
-    border-bottom: 2px solid currentcolor;
-    transform: translateY(-2px) rotate(45deg);
-  }
-}
-
-/* ===== A_ButtonPrimary ===== */
-
-.A_ButtonPrimary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-2) var(--space-4);
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-  border-radius: var(--radius-s);
-  white-space: nowrap;
-  transition: background var(--transition-base);
-
-  &:hover,
-  &:focus-visible {
-    background: var(--color-accent-strong);
-  }
-}
-
-.O_Header .A_ButtonPrimary {
-  flex: 1 0 0;
-  align-self: stretch;
-  padding: var(--space-2) 28px; /* 16 / 28 из макета */
-  border-radius: 0;
-}
-
-/* ===== A_LinkArrow ===== */
-/* Текстовая ссылка со стрелкой. Подложка иконки — токен с альфой.
-   Сама стрелка — svg-экспорт из Figma; в макете это иконка arrow-up,
-   повёрнутая на 90°, поэтому её и крутим, а не берём другой глиф. */
-
-.A_LinkArrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  color: inherit;
-
-  .A_Chip {
-    display: grid;
-    place-items: center;
-    width: var(--chip);
-    height: var(--chip);
-    background: var(--color-chip-on-light);
-    border-radius: var(--radius-s);
+    width: var(--size-chevron);
+    height: var(--size-chevron);
+    border-right: var(--stroke) solid currentcolor;
+    border-bottom: var(--stroke) solid currentcolor;
+    transform: translateY(calc(-1 * var(--stroke))) rotate(45deg);
     transition: transform var(--transition-fast);
   }
-
-  .A_ChipIcon {
-    width: 13.6px;
-    height: 16.7px;
-    background: currentcolor;
-    mask: url('./images/icons/arrow-up.svg') no-repeat center / contain;
-    rotate: 90deg;
-  }
-
-  &:hover .A_Chip,
-  &:focus-visible .A_Chip {
-    transform: translateX(var(--space-half));
-  }
 }
 
-/* ===== O_Hero ===== */
-/* Первый экран ровно во вьюпорт: два ряда по половине, карточки лежат на
-   подложке, в пустых колонках видно фото.
+/* ===== M_LangSwitch ===== */
+/* Переключатель языка в полноэкранном меню — сегменты на дорожке, текущий
+   язык белой плашкой. В шапке на десктопе язык — выпадающий M_MenuGroup. */
 
-   Прокрутка — приём с aspensearch.com, но без запаса хода у секции. Запас
-   отодвигал бы вниз всё, что идёт после первого экрана, и низ страницы
-   трогался бы с места только после карточек. Вместо этого приклеен один
-   заголовок: ряд под ним выше своей половины ровно на путь нижнего ряда,
-   столько карточка и держится. Ряд кончился — заголовок отлип и поехал
-   вместе со страницей, то есть карточки и все секции ниже поднимаются
-   одновременно, как на мобильном. */
-
-.O_Hero {
-  position: relative;
-  min-height: 100svh;
-
-  /* верхний отступ равен высоте шапки — под ней ровно ноль */
-  padding-top: var(--hero-top);
-
-
-  /* clip, а не hidden: hidden сделал бы секцию скролл-контейнером и убил
-     бы прилипание заголовка. */
-  overflow: clip;
-
-  .W_HeroRow {
-    display: grid;
-    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-    height: var(--hero-row-h);
-    align-items: stretch;
-  }
-
-  /* ряд заголовка выше своей половины на путь нижнего ряда, лишнее съедает
-     отрицательное поле — раскладка от этого не разъезжается */
-  .W_HeroRow:not(.W_HeroRow--bottom) {
-    height: calc(var(--hero-row-h) * 2 + var(--seam));
-    margin-bottom: calc(-1 * (var(--hero-row-h) + var(--seam)));
-  }
-
-  /* нижний ряд: слева шесть пустых колонок — там видно подложку */
-  .W_HeroRow--bottom .T_Card--accent {
-    grid-column: 7 / span 3;
-  }
-}
-
-/* ===== T_HeroTitle ===== */
-
-.T_HeroTitle {
-  position: sticky;
-  top: var(--pin-top);
+.M_LangSwitch {
   display: flex;
-  grid-column: span 6;
-  height: var(--hero-row-h);
-  align-self: start;
-  align-items: center;
-  padding: var(--space-4);
-  background: var(--color-surface);
+  background: var(--color-segment);
+  border-radius: var(--radius-s);
 
-  /* в макете у этой карточки радиус 10, но по просьбе держим общий
-     карточный радиус — так первый экран собирается в одну сетку */
-  border-radius: var(--radius-l);
-
-  h1 {
-    color: var(--color-accent-deep);
-  }
-}
-
-/* ===== T_Card ===== */
-/* Плоская карточка мозаики. Модификатором задаётся роль. */
-
-.T_Card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  grid-column: span 3;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background: var(--color-surface);
-  color: var(--color-text-heading);
-  border-radius: var(--radius-l);
-
-  h3 {
-    color: inherit;
-  }
-}
-
-.T_Card--accent {
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-
-  .M_CardBody {
+  .A_LangOption {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-1-5);
-  }
-
-  .M_CardBody p {
-    color: var(--color-text-inverse-soft);
-  }
-
-  .A_Chip {
-    background: var(--color-chip-on-accent);
-  }
-}
-
-/* Карточка со знаком: монограмма во всю клетку, заливка серой. Внешний контур
-   рисует сам ряд, поэтому карточке нужна одна грань — та, что делит ряд
-   на текст и знак. */
-.T_Card--mark {
-  align-items: center;
-  justify-content: center;
-  border-left: var(--hairline) solid var(--color-line);
-
-  .A_Mark {
-    width: 100%;
-    max-width: 240px;
-    aspect-ratio: 1;
-    background: var(--color-surface-muted);
-    mask: url('./images/logos/monogram.svg') no-repeat center / contain;
-  }
-}
-
-/* ===== O_Numbers ===== */
-/* Карточки цифр стоят лесенкой: каждая ниже предыдущей на свою высоту.
-   Все прилипают к одной границе под шапкой, поэтому при прокрутке первая
-   встаёт и ждёт, вторая доезжает до её уровня, следом третья — к концу
-   секции все три стоят в линию.
-
-   Высота секции равна трём карточкам: столько и длится сведение. Запаса
-   сверх этого нет, значит секции ниже трогаются с места сразу, а не ждут,
-   пока лесенка сложится. */
-
-.O_Numbers {
-  --stat-h: 200px; /* высота карточки цифры из макета */
-
-  display: grid;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  align-items: start;
-  background: var(--color-surface-muted);
-}
-
-.T_NumberLabel {
-  grid-column: span 3;
-  height: calc(var(--stat-h) * 3);
-  padding: var(--space-4);
-  background: var(--color-surface);
-  color: var(--color-text-heading);
-}
-
-.T_Stat {
-  position: sticky;
-  top: var(--pin-top);
-  display: flex;
-  grid-column: span 3;
-  height: var(--stat-h);
-  flex-direction: column;
-  justify-content: space-between;
-
-  /* ступенька: каждая следующая начинает на карточку ниже */
-  margin-top: calc(var(--stat-h) * var(--step, 0));
-  padding: var(--space-4);
-  background: var(--color-surface);
-  color: var(--color-accent-deep);
-}
-
-
-.T_Stat:nth-of-type(2) {
-  --step: 1;
-}
-
-.T_Stat:nth-of-type(3) {
-  --step: 2;
-}
-
-.T_Stat--pale {
-  background: var(--color-accent-soft);
-}
-
-/* ===== T_CardPartner ===== */
-/* Форма карточки — svg-экспорт ноды Union из макета: радиус 20 по двум углам,
-   два противоположных срезаны. Маска тянется по размеру карточки. */
-
-.T_CardPartner {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  grid-column: span 3;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background: var(--color-surface-muted);
-  color: var(--color-text-heading);
-
-  .A_PartnerLogo {
-    display: inline-flex;
-    align-self: flex-start;
-    padding: var(--space-half);
-    background: var(--color-surface);
+    flex: 1;
+    min-height: var(--height-accordion);
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--space-1-5);
+    color: inherit;
     border-radius: var(--radius-s);
+    transition: color var(--transition-fast);
 
-    img {
-      width: 220px;
-      height: auto;
+    &[aria-current] {
+      background: var(--color-surface);
+      color: var(--color-accent-deep);
     }
   }
 }
 
-/* ===== O_About ===== */
+/* ===== M_MenuGroup ===== */
+/* Раздел меню в шапке — <details>: строка с названием и стрелкой, по
+   наведению или клику под ней раскрывается панель в стиле мобильного меню —
+   затемнение с размытием, пункты по 48. Так устроены разделы O_Menu и выбор
+   языка у логотипа; ссылка без подпунктов оформлена той же строкой. */
 
-/* Девять колонок ряда; внутри — подсетка, чтобы метка и текст стояли
-   на тех же направляющих, что и остальные блоки страницы. */
+.M_MenuGroup {
+  position: relative;
+}
+
+.A_MenuSummary {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: var(--space-1);
+  padding-inline: var(--space-2-75);
+  color: var(--color-accent-deep);
+  white-space: nowrap;
+  list-style: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-accent);
+  }
+}
+
+/* у открытого раздела стрелка смотрит вверх */
+.M_MenuGroup[open] > .A_MenuSummary .A_Chevron {
+  transform: translateY(var(--stroke)) rotate(-135deg);
+}
+
+.M_MenuLinks {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: max-content;
+  min-width: 100%;
+  max-width: var(--size-dropdown);
+  margin: 0;
+  padding: var(--space-1) var(--space-2);
+  list-style: none;
+  background: var(--color-scrim);
+  color: var(--color-text-inverse);
+  border-radius: 0 0 var(--radius-m) var(--radius-m);
+  backdrop-filter: blur(var(--blur-l));
+}
+
+.A_MenuLink {
+  display: flex;
+  min-height: var(--height-accordion);
+  align-items: center;
+  gap: var(--space-1);
+  color: inherit;
+  transition: opacity var(--transition-fast);
+
+  &:hover,
+  &:focus-visible {
+    opacity: 0.7;
+  }
+}
+
+/* ===== O_Menu ===== */
+/* Меню сайта. Разделы с подпунктами — M_MenuGroup, раздел без подпунктов
+   (Projects) — ссылка той же строкой. На десктопе стоят в строку шапки и
+   раскрываются выпадающими панелями (жирные направления, ярлык AI-powered);
+   кнопка Contact Us — до края окна. Уже 1280 та же разметка становится
+   полноэкранной панелью под бургером (responsive.css). */
+
+.O_Menu {
+  display: flex;
+  grid-column: span 2;
+  align-self: stretch;
+  margin-right: calc(-1 * var(--grid-margin));
+
+  .M_MenuSections {
+    display: flex;
+  }
+
+  .M_MenuActions {
+    display: flex;
+    flex: 1 0 auto;
+  }
+
+  /* кнопка — до края окна во всю высоту шапки */
+  .A_Button--accent {
+    flex: 1 0 auto;
+    align-self: stretch;
+    border-radius: 0;
+  }
+}
+
+/* пока полноэкранное меню открыто, страница под ним не прокручивается */
+html[data-menu-open] {
+  overflow: hidden;
+}
+
+/* ===== O_Hero ===== */
+/* Первый экран (Figma 2373:24319): ровно вьюпорт под шапкой. Фон секции —
+   слайдер снимков. Слева на две колонки стеклянная панель с заголовком,
+   справа снимок виден как есть, у нижнего края — акцентная карточка. */
+
+.O_Hero {
+  position: relative;
+  isolation: isolate;
+  box-sizing: content-box;
+  height: var(--hero-h);
+  align-items: stretch;
+  padding-top: var(--hero-top);
+
+  /* clip, а не hidden: hidden сделал бы секцию скролл-контейнером */
+  overflow: clip;
+
+  /* слой снимков начинается под шапкой */
+  .M_HeroSlider {
+    top: var(--hero-top);
+    background: var(--color-surface-muted);
+  }
+}
+
+/* ===== O_About ===== */
+/* Белая плашка на все четыре колонки (Figma 2373:24344): метка в первой,
+   миссия со второй, монограмма занимает четвёртую. Текст стоит на кромке
+   колонки, ссылка прижата к низу — высоту ряда даёт монограмма. */
+
 .O_About {
-  display: grid;
-  grid-column: span 9;
-  grid-template-columns: subgrid;
-  align-items: start;
+  padding-block: var(--grid-margin);
   background: var(--color-surface);
 
   .M_AboutLabel {
-    grid-column: span 3;
-    padding: var(--space-4);
-    color: var(--color-text-heading);
+    grid-column: span 1;
+    color: var(--color-text-label);
   }
 
   .M_AboutBody {
+    --line-color: var(--color-deep-30);
+
     display: flex;
-    grid-column: span 6;
+    grid-column: span 2;
     min-width: 0;
     flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-4);
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-8);
+
+    /* до монограммы в макете 60 */
+    padding-right: var(--grid-margin);
+    color: var(--color-text-deep);
+  }
+}
+
+/* ===== O_Numbers ===== */
+/* Цифры (Figma 2373:24356 + 2373:24376). Карточки стоят лесенкой: первая —
+   в самом верху секции, вторая вровень с белой меткой, третья — у нижнего
+   края. Все прилипают под шапкой и при прокрутке съезжаются к низу секции.
+   Высота секции — карточка плюс метка, запаса сверх этого нет. */
+
+.O_Numbers {
+  align-items: start;
+  background: var(--color-surface-muted);
+
+  .T_Stat--mid {
+    margin-top: var(--height-stat);
   }
 
-  h2 {
-    color: var(--color-accent-deep);
-  }
-
-  .A_LinkArrow {
-    color: var(--color-accent-text);
+  .T_Stat--low {
+    margin-top: var(--height-block);
   }
 }
 
 /* ===== O_Solutions ===== */
-/* Светлая панель в две колонки (Figma 2088:1046): слева заголовок, справа
-   плашки услуг. Заголовок липкий — стоит под шапкой, пока мимо него едут
-   плашки; align-self: start обязателен, иначе колонка растянулась бы на всю
-   высоту панели и прилипать было бы нечему.
-   В макете панель ровно 700px и плашки из неё торчат — это её «окно»
-   прокрутки. У нас панель растёт по содержимому, а роль окна играет вьюпорт:
-   так скролл остаётся один, без вложенной полосы. */
+/* Белая панель (Figma 2380:2543): слева шапка секции, справа плашки услуг.
+   Шапка липкая — стоит под шапкой сайта, пока мимо едут плашки;
+   align-self: start обязателен, иначе прилипать было бы нечему. */
 
 .O_Solutions {
-  display: grid;
-
-  /* колонки те же, что у страницы: половины панели ложатся на направляющие
-     сетки, а не делят её ширину пополам сами по себе */
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  gap: var(--seam);
-  background: var(--color-surface-muted);
-  color: var(--color-text);
-  border: var(--hairline) solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-accent-deep);
 
   .M_SolutionsIntro {
-    grid-column: span 6;
     position: sticky;
     top: var(--pin-top);
+    grid-column: span 2;
     align-self: start;
+    padding-block: var(--grid-margin);
+    padding-right: var(--grid-margin);
+  }
+
+  .M_SolutionCards {
     display: flex;
+    grid-column: span 2;
     flex-direction: column;
-    gap: var(--space-1);
-    padding: var(--space-8) var(--space-4);
-  }
-
-  .A_SolutionsLead {
-    max-width: 659px;
-    color: var(--color-text-soft);
-  }
-}
-
-/* ===== M_SolutionCards ===== */
-/* Правая колонка: её высота и даёт секции ход прокрутки. */
-
-.M_SolutionCards {
-  grid-column: span 6;
-  display: flex;
-  margin: calc(-1 * var(--hairline));
-  flex-direction: column;
-  gap: var(--seam);
-}
-
-/* ===== T_Service ===== */
-/* Плашка услуги по макету 2136:41029 — один компонент на три карточки.
-   Инстансы отличаются тремя вещами и только ими: заливкой, текстом и знаком.
-   Знак приходит переменной --service-mark, цвет знака и маркеров — --service-ink,
-   поэтому добавить четвёртую услугу = строка в разметке и одна строка стилей.
-
-   Карточка делится ровно пополам: слева текст, справа знак. Половины совпадают
-   с колонками сетки — карточка занимает шесть, значит на каждую половину
-   приходится по три. */
-
-.T_Service {
-  --service-ink: var(--color-accent);
-
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  min-height: 441px;
-  padding: 50px var(--space-5); /* 50 / 40 из макета */
-  background: var(--color-surface);
-  color: var(--color-text);
-
-  .M_ServiceBody {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .M_ServiceHead {
-    display: flex;
-    flex-direction: column;
-    gap: 14px; /* шаг из макета, вне восьмёрочной шкалы */
-  }
-
-  .M_ServiceList {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1-5);
-  }
-
-  .A_ServiceItem {
-    display: flex;
-    gap: var(--space-1);
-    align-items: flex-start;
-  }
-
-  .A_Marker {
-    flex: none;
-    width: 10px;
-    height: 10px;
-    margin-top: 3px; /* по центру первой строки */
-    background: var(--service-ink);
-    border-radius: 2px;
-  }
-
-  /* знак прижат к низу правой половины и красится маской, поэтому один файл
-     работает и на бирюзовой заливке, и на белой */
-  .A_ServiceMark {
-    align-self: end;
-    justify-self: end;
-    width: 50%; /* 168.25 из 336.5 — половина колонки знака */
-    aspect-ratio: 428 / 419;
-    background: var(--service-ink);
-    mask: var(--service-mark) no-repeat center / contain;
-  }
-}
-
-/* бирюзовая заливка: на ней знак и маркеры светлые */
-.T_Service--accent {
-  --service-ink: var(--color-accent-soft);
-
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-}
-
-/* у каждой услуги свой знак */
-.T_Service--thermal {
-  --service-mark: url('./images/shapes/mark-thermal.png');
-}
-
-.T_Service--mto {
-  --service-mark: url('./images/shapes/mark-mto.png');
-}
-
-.T_Service--audit {
-  --service-mark: url('./images/shapes/mark-audit.png');
-}
-
-/* ===== A_Tag ===== */
-/* Плашка-ярлык у названия услуги (Figma 2129:39223). Идёт в строке заголовка,
-   поэтому набрана мелким стилем и выровнена по середине строки. */
-
-.A_Tag {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-half) 14px;
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-  border-radius: 30px;
-  white-space: nowrap;
-  vertical-align: middle;
-}
-
-/* ===== M_SectionHead ===== */
-/* Общая шапка секции: крупный заголовок и лид под ним. */
-
-.M_SectionHead {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  max-width: 726px;
-}
-
-.A_SectionLead {
-  color: var(--color-text-soft);
-}
-
-/* ===== A_Fact ===== */
-/* Пара «метка → значение»: кейсы и контакты набраны одинаково. */
-
-.A_Fact {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-half);
-
-  dt {
-    color: var(--color-text-muted);
   }
 }
 
 /* ===== O_Materials ===== */
-/* Две колонки встык: слева заголовок и разрез трубы, справа аккордеон слоёв.
-   Раскрытый слой подсвечивает своё кольцо на схеме, остальные гаснут. */
+/* Materials Supply (Figma 2414:4192): фото склада на всю секцию. Слева на
+   две колонки шапка секции, справа на две колонки, до края окна, столбиком
+   стоят плитки: две стеклянные с цифрами и бирюзовая с продуктами. Высоту
+   секции задают плитки. Фото в макете отзеркалено и баннер SUPROS читался
+   задом наперёд — в файле оно развёрнуто обратно, затемнение 20% в снимке. */
 
 .O_Materials {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-top: var(--hairline) solid var(--color-ink);
-}
-
-.M_MaterialsIntro {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-8);
-  padding: var(--space-4);
-  background: var(--color-surface-raised);
-}
-
-.A_MaterialsLead {
-  max-width: 400px;
-  margin-top: var(--space-1-5);
-  color: var(--color-ink);
-}
-
-/* ===== W_PipeScheme ===== */
-/* Кольца лежат концентрически: доли габарита группы из макета
-   приходят в --x и --s, поэтому схема тянется без пересчёта. */
-
-.W_PipeScheme {
   position: relative;
-  width: 100%;
-  max-width: var(--scheme-max);
-  margin: 0;
-  aspect-ratio: 1;
+  isolation: isolate;
+  align-items: start;
+  overflow: clip;
+  color: var(--color-text-inverse);
+
+  .A_SupplyPhoto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+  }
+
+  .M_SectionHead {
+    grid-column: span 2;
+    padding-block: var(--grid-margin);
+    padding-right: var(--grid-margin);
+  }
+
+  .M_SupplyTiles {
+    display: flex;
+    grid-column: span 2;
+    flex-direction: column;
+  }
 }
 
-.A_Ring {
-  position: absolute;
-  top: var(--x);
-  left: var(--x);
-  width: var(--s);
-  opacity: 1;
-  transition: opacity var(--transition-base);
+/* ===== O_Training ===== */
+/* We train the industry (Figma 2373:24443): светлая полоса высотой 400.
+   В первой колонке белая плашка с номером и заголовком, во второй-третьей —
+   текст и ссылка, в четвёртой — тёмная плитка с фото инженера по нижнему
+   краю. Крайние плашки дотянуты до краёв окна. */
+
+.O_Training {
+  --line-color: var(--color-ink-30);
+
+  min-height: var(--height-block);
+  background: var(--color-surface-soft);
+  color: var(--color-ink);
+
+  .M_TrainingBody {
+    display: flex;
+    grid-column: span 2;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-5);
+    padding: var(--grid-margin) var(--grid-margin) var(--tile-pad) var(--tile-pad);
+  }
+}
+
+.T_TrainingHead {
+  --bleed-pad: 0px;
+
+  grid-column: span 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding-block: var(--grid-margin);
+  background: var(--color-surface);
+}
+
+/* Фото без фона прижато к низу и левому краю колонки. Плитка — div, а не
+   picture: WebKit не растягивает picture по ширине ячейки сетки, и плитка не
+   доходила бы до края окна. picture только выбирает кадр и в раскладке не
+   участвует. */
+.T_TrainingPhoto {
+  --bleed-pad: 0px;
+
+  display: flex;
+  grid-column: span 1;
+  align-items: flex-end;
+  background: var(--color-accent-dark);
+
+  picture {
+    display: contents;
+  }
 
   img {
     display: block;
@@ -807,379 +1272,241 @@ body {
   }
 }
 
-/* когда слой выбран — гаснут все кольца, кроме его собственного */
-.O_Materials[data-active] .A_Ring {
-  opacity: var(--dim);
-}
+/* ===== O_Clients ===== */
+/* They trust us (Figma 2392:2856): заголовок слева, ссылка справа, под ними
+   лента логотипов во всю ширину окна. */
 
-.O_Materials[data-active='1'] .A_Ring[data-layer='1'],
-.O_Materials[data-active='2'] .A_Ring[data-layer='2'],
-.O_Materials[data-active='3'] .A_Ring[data-layer='3'],
-.O_Materials[data-active='4'] .A_Ring[data-layer='4'] {
-  opacity: 1;
-}
+.O_Clients {
+  --line-color: var(--color-deep-30);
 
-/* Метка стоит в центре разреза. В макете у неё фиксированные 77px под
-   «пар, Ø219»; английское «steam» длиннее и ломалось на три строки,
-   поэтому ширину отдаём содержимому и центруем по обеим осям. */
-.A_SchemeLabel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  color: var(--color-accent-text);
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  text-align: center;
-  white-space: nowrap;
-  transform: translate(-50%, -50%);
-}
-
-/* ===== M_LayerList ===== */
-
-.M_LayerList {
   display: grid;
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-3);
+  padding: var(--grid-margin) var(--grid-margin) var(--grid-margin);
   background: var(--color-surface);
-}
+  color: var(--color-ink);
 
-.T_Layer {
-  display: flex;
-  min-height: 0;
-  flex-direction: column;
-  justify-content: flex-end;
-  border-top: var(--hairline) solid var(--color-ink);
-  transition:
-    background var(--transition-base),
-    color var(--transition-base);
+  .M_ClientsLink {
+    color: var(--color-text-deep);
+  }
 
-  &:first-child {
-    border-top: 0;
+  .W_Marquee {
+    grid-column: 1 / -1;
+    margin: var(--tile-pad) calc(-1 * var(--grid-margin)) 0;
   }
 }
 
-.T_Layer[data-open='true'] {
-  background: var(--color-ink);
+/* ===== O_Band ===== */
+/* Полоса-заголовок раздела (Figma 2392:2861): яркая бирюза, крупный белый
+   заголовок на полях страницы. */
+
+.O_Band {
+  padding: var(--grid-margin);
+  background: var(--color-accent-bright);
   color: var(--color-text-inverse);
 }
 
-.A_LayerHead {
-  margin: 0;
-}
+/* ===== O_Social ===== */
+/* Social responsibility (Figma 2399:3329): белая полоса заголовка, под ней
+   четыре карточки направлений по колонкам. */
 
-/* Сбрасываем только семейство и цвет: шорткат font: inherit затирал бы
-   кегль и начертание, заданные классом шкалы, и кнопка падала в дефолт h3. */
-.A_LayerToggle {
-  display: block;
-  width: 100%;
-  padding: var(--space-1-5);
-  border: 0;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-  font-family: inherit;
-  text-align: left;
-}
-
-/* Тело раскрывается сеткой 0fr → 1fr: высота анимируется без магических
-   чисел, а свёрнутый текст не занимает места. */
-.M_LayerBody {
-  display: grid;
-  grid-template-rows: 0fr;
-  padding-inline: var(--space-1-5);
-  transition:
-    grid-template-rows var(--transition-base),
-    padding-bottom var(--transition-base);
-
-  p {
-    overflow: hidden;
-    max-width: 480px;
-    opacity: 0;
-    transition: opacity var(--transition-base);
-  }
-}
-
-.T_Layer[data-open='true'] .M_LayerBody {
-  grid-template-rows: 1fr;
-  padding-bottom: var(--space-1-5);
-
-  p {
-    opacity: 1;
-  }
-}
-
-/* ===== O_Training ===== */
-
-.O_Training {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  border-top: var(--hairline) solid var(--color-line);
+.O_Social {
   background: var(--color-surface);
-}
 
-.M_TrainingLabel {
-  display: flex;
-  align-items: flex-start;
-  padding: var(--space-4);
-  border-right: var(--hairline) solid var(--color-line);
-  color: var(--color-ink);
-}
-
-.M_TrainingBody {
-  display: flex;
-  min-height: 400px;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-8);
-  padding: var(--space-4);
-  color: var(--color-ink);
-
-  .A_LinkArrow {
-    color: var(--color-ink);
-  }
-}
-
-/* ===== O_Clients ===== */
-
-.O_Clients {
-  border-top: var(--hairline) solid var(--color-line);
-  background: var(--color-surface);
-}
-
-.M_ClientsLabel {
-  padding: var(--space-4);
-  color: var(--color-text);
-}
-
-/* Лента едет: 24 логотипа по 100px не помещаются ни в одну ширину,
-   поэтому крутим их бегущей строкой. Второй список — копия для бесшовной
-   склейки, он скрыт от скринридера. */
-.W_ClientsTrack {
-  display: flex;
-  overflow: hidden;
-  width: 100%;
-  height: 100px;
-}
-
-.M_ClientLogos {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: var(--space-1);
-  margin: 0;
-  padding: 0 var(--space-half) 0 0;
-  animation: client-marquee 60s linear infinite;
-  list-style: none;
-}
-
-.W_ClientsTrack:hover .M_ClientLogos {
-  animation-play-state: paused;
-}
-
-.A_ClientLogo {
-  flex-shrink: 0;
-
-  img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-  }
-}
-
-@keyframes client-marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-100%);
+  .M_SectionHead {
+    padding: var(--grid-margin);
+    color: var(--color-accent-deep);
   }
 }
 
 /* ===== O_Projects ===== */
-/* Тёмная панель, кейсы — белыми карточками мозаики. */
+/* Тёмная панель кейсов; сейчас скрыта — в макете главной её нет. */
 
 .O_Projects {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  padding: var(--space-8) var(--space-4);
+  padding: var(--space-8) var(--grid-margin);
   background: var(--color-bg-inverse);
   color: var(--color-text-inverse);
-  border-radius: var(--radius-l);
 
-  .A_SectionLead {
+  .M_SectionHead p {
     color: var(--color-text-inverse-muted);
   }
-}
 
-.M_ProjectList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--seam);
-}
+  .M_ProjectList {
+    display: flex;
+    flex-direction: column;
+  }
 
-.T_Project {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-4);
-  background: var(--color-surface);
-  color: var(--color-text);
-  border-radius: var(--radius-l);
-}
-
-.M_ProjectFacts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
+  .M_ProjectFacts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
 }
 
 /* ===== O_Contact ===== */
-/* Акцентная панель: слева приглашение и контакты, справа форма заявки. */
+/* Contact (Figma 2373:24494): слева заголовок, справа форма — поля в две
+   колонки, под ними кнопка и согласие. Форма дотянута до края окна и держит
+   от него 80, как в макете. */
 
 .O_Contact {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--seam);
-  padding: var(--space-8) var(--space-4);
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-  border-radius: var(--radius-l);
-}
-
-.M_ContactIntro {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  max-width: 560px;
-
-  p {
-    color: var(--color-text-inverse-soft);
-  }
-}
-
-.M_ContactList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin-top: auto;
-  padding-top: var(--space-4);
-
-  .A_Fact dt {
-    color: var(--color-text-inverse-muted);
-  }
-}
-
-/* ===== M_RequestForm ===== */
-
-.M_RequestForm {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
-  align-content: start;
-  padding: var(--space-4);
   background: var(--color-surface);
-  color: var(--color-text);
-  border-radius: var(--radius-l);
+  color: var(--color-ink);
 
-  .A_ButtonPrimary {
-    justify-self: start;
+  .M_ContactLabel {
+    grid-column: span 2;
+    padding-block: var(--space-10);
+    color: var(--color-accent-deep);
   }
-}
 
-.A_Field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-
-  span {
-    color: var(--color-text-muted);
+  .M_RequestForm {
+    display: flex;
+    grid-column: span 2;
+    flex-direction: column;
+    gap: var(--space-3-75);
+    padding-block: var(--space-10);
+    padding-right: var(--space-10);
   }
-}
 
-.A_Field--wide {
-  grid-column: 1 / -1;
-}
-
-textarea.A_Input {
-  resize: vertical; /* тянуть вбок нечего — колонка фиксированная */
-}
-
-.A_Input {
-  width: 100%;
-  padding: var(--space-2);
-  color: inherit;
-  background: var(--color-surface-muted);
-  border: var(--hairline) solid transparent;
-  border-radius: var(--radius-s);
-  font: inherit;
-  transition: border-color var(--transition-fast);
-
-  &:hover,
-  &:focus-visible {
-    border-color: var(--color-accent);
+  .M_FieldList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2-5);
   }
-}
 
-.A_FormNote {
-  grid-column: 1 / -1;
-  color: var(--color-text-muted);
+  /* почта и тип запроса — во всю ширину формы */
+  .A_Field--wide {
+    grid-column: 1 / -1;
+  }
 
-  a {
-    color: var(--color-accent-text);
-    text-decoration: underline;
+  .M_FormActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2-5);
   }
 }
 
 /* ===== O_Footer ===== */
+/* Футер (Figma 2392:2786): бирюзовая плашка, четыре колонки ссылок по сетке,
+   под ними логотип SUPROS во всю ширину бледной подложкой, поверх его низа —
+   копирайт. */
 
 .O_Footer {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
-  padding: var(--space-8) var(--space-4);
-  background: var(--color-bg-inverse);
+  gap: var(--space-5);
+  overflow: hidden;
+  padding: var(--space-2-5) var(--grid-margin) 0;
+  background: var(--color-accent-deep);
   color: var(--color-text-inverse);
-  border-radius: var(--radius-l);
 
   a {
-    color: var(--color-text-inverse-muted);
-    transition: color var(--transition-fast);
+    color: inherit;
+    transition: opacity var(--transition-fast);
 
     &:hover,
     &:focus-visible {
-      color: var(--color-text-inverse);
+      opacity: 0.7;
     }
   }
-}
 
-.M_FooterNav {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-
-.M_FooterCol {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.M_FooterBottom {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--space-4);
-  border-top: var(--hairline) solid var(--color-text-inverse-muted);
-  color: var(--color-text-inverse-muted);
-
-  .M_Langs span {
-    color: var(--color-text-inverse);
+  .M_FooterNav {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+    padding-block: var(--tile-pad);
   }
+
+  .M_FooterCol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  /* заголовок колонки — summary аккордеона; на десктопе колонка всегда
+     открыта, поэтому строка не кликается и плюс скрыт */
+  .A_FooterSummary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    list-style: none;
+    pointer-events: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    .A_Icon {
+      display: none;
+    }
+  }
+
+  .M_FooterLinks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-half);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* логотип — та же маска, что в шапке, растянутая на всю ширину */
+  .A_FooterMark {
+    display: block;
+    margin-inline: calc(-1 * var(--grid-margin));
+    aspect-ratio: 120 / 25;
+    background: var(--color-footer-mark);
+    mask: url('./images/logos/supros.svg') no-repeat center / 100% 100%;
+  }
+
+  .A_Copyright {
+    position: absolute;
+    bottom: var(--space-2-5);
+    left: var(--grid-margin);
+  }
+}
+
+/* ================================================================
+   УТИЛИТЫ
+   ================================================================ */
+
+/* ===== U_Bleed / U_Extend ===== */
+/* Плитка в первой или последней колонке дотягивается заливкой до края окна,
+   а содержимое остаётся на месте: поле страницы переезжает внутрь плитки
+   (U_Bleed*). Контейнер, чьи дети сами держат поля, только раздвигается
+   (U_Extend*). На телефоне сетка в одну колонку и крайними становятся все —
+   отсюда U_BleedSm для плиток, которые на десктопе стоят в середине.
+   Утилиты в конце файла, чтобы шорткат padding у компонентов их не затирал. */
+
+.U_BleedStart {
+  margin-left: calc(-1 * var(--grid-margin));
+  padding-left: calc(var(--grid-margin) + var(--bleed-pad, var(--tile-pad)));
+}
+
+.U_BleedEnd {
+  margin-right: calc(-1 * var(--grid-margin));
+  padding-right: calc(var(--grid-margin) + var(--bleed-pad, var(--tile-pad)));
+}
+
+.U_ExtendEnd {
+  margin-right: calc(-1 * var(--grid-margin));
+}
+
+/* ===== U_Layer ===== */
+/* Фоновый слой секции (снимки, фото): лежит под содержимым на всю секцию,
+   вместе с полями страницы. Секция должна быть position: relative и
+   isolation: isolate. В раскладке сетки слой не участвует: если назначить
+   абсолютному ребёнку сетки линии колонок, его рамкой станет область сетки
+   без полей, а не вся секция, — поэтому правила сетки его обходят. */
+
+.U_Layer {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
 }

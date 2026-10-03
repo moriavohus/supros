@@ -1,7 +1,8 @@
 /**
- * Materials Supply: аккордеон слоёв изоляции.
- * Раскрытый слой подсвечивает своё кольцо на разрезе трубы слева —
- * остальные кольца гаснут до --dim. Открыт всегда ровно один слой.
+ * Materials Supply: слои изоляции.
+ * Слой раскрывается по наведению: подсвечивает своё кольцо на разрезе слева,
+ * остальные гаснут до --dim, а сама карточка заливается слева направо.
+ * Открыт всегда ровно один слой. Клик и фокус работают для тача и клавиатуры.
  */
 
 const section = document.querySelector('.O_Materials');
@@ -20,7 +21,11 @@ if (section) {
   };
 
   for (const layer of layers) {
-    layer.querySelector('.A_LayerToggle').addEventListener('click', () => open(layer));
+    const toggle = layer.querySelector('.A_LayerToggle');
+    // наведение — основной сценарий; клик оставлен для тача, фокус для клавиатуры
+    layer.addEventListener('mouseenter', () => open(layer));
+    toggle.addEventListener('focus', () => open(layer));
+    toggle.addEventListener('click', () => open(layer));
   }
 
   // клавиатура: стрелки ходят по слоям, как в обычном аккордеоне

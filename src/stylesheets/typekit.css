@@ -1,96 +1,195 @@
 /* ===== typography ===== */
-/* Шкала макета 2136:40975. Кегль задаётся только здесь, мобильные значения —
-   в responsive.css. Трекинг переведён из px в em, межстрочный — в проценты
-   того же кегля, поэтому размеры можно менять, не пересчитывая всё заново. */
+/* Шкала стилей макета («Supros/…» в Figma). Кегль, интерлиньяж, трекинг и
+   начертание задаются только здесь, кегли — токенами из vars.css. Компоненты
+   типографику не трогают: стиль выбирается классом в разметке.
+   Трекинг переведён из px в em, интерлиньяж — в проценты того же кегля. */
 
 body {
   font-family: var(--font-base);
   font-optical-sizing: auto;
   font-weight: 400;
-  font-size: 16px;
+  font-size: var(--font-size-16);
   line-height: 120%;
 }
 
-/* заголовки экранов, названия секций, цифры */
+/* «Supros/Display 80» — цифры и крупные заголовки */
 .Display {
-  font-size: 80px;
+  font-size: var(--font-size-80);
   line-height: 100%;
   letter-spacing: -0.02em;
   font-weight: 400;
 }
 
-/* заголовки карточек услуг */
-.Heading {
-  font-size: 38px;
-  line-height: 100%;
-  letter-spacing: -0.04em;
-  font-weight: 400;
+/* тот же стиль, в макете ужатый до 64: заголовки секций */
+.Display--m {
+  font-size: var(--font-size-64);
 }
 
-/* заголовки слоёв и миссия: шаг 31 из макета (--font-size/31) */
+/* текст обучения: шаг 31 из макета, 34 межстрочный, Medium */
 .Subhead {
-  font-size: 31px;
-  line-height: 110%; /* 34px из макета */
-  letter-spacing: -0.02em; /* −0.62px */
+  font-size: var(--font-size-31);
+  line-height: 110%;
+  letter-spacing: -0.02em;
   font-weight: 500;
 }
 
-/* миссия, лиды секций */
+/* миссия в About — тот же шаг обычного начертания */
+.Subhead--regular {
+  font-weight: 400;
+}
+
+/* заголовки кейсов */
 .Title {
-  font-size: 26px;
+  font-size: var(--font-size-26);
   line-height: 115%;
   letter-spacing: 0.018em;
   font-weight: 400;
 }
 
-/* подписи под цифрами */
-.Caption {
-  font-size: 24px;
-  line-height: 120%;
-  letter-spacing: -0.02em;
-  font-weight: 500;
+/* «Supros/Title 28» — заголовки карточек и плиток */
+.Title--l {
+  font-size: var(--font-size-28);
+  letter-spacing: 0;
 }
 
-/* метки секций и текстовые ссылки: ABOUT SUPROS, CONTACT US, READ MORE */
+/* «Supros/Title 40» — названия услуг */
+.Title--xl {
+  font-size: var(--font-size-40);
+  letter-spacing: 0;
+}
+
+/* «Supros/Subtitle 20» — лиды секций, подписи цифр, ссылки плашек */
+.Subtitle {
+  font-size: var(--font-size-20);
+  line-height: 140%;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+/* метки секций и текстовые ссылки: ABOUT SUPROS, READ MORE */
 .Label {
-  font-size: 20px;
+  font-size: var(--font-size-20);
   line-height: 140%;
   letter-spacing: -0.03em;
   font-weight: 500;
   text-transform: uppercase;
 }
 
-/* лид под заголовком карточки */
+/* кнопки, навигация, подписи карточек — 17 / 120% */
 .Lead {
-  font-size: 17px;
+  font-size: var(--font-size-17);
   line-height: 120%;
+  letter-spacing: 0;
   font-weight: 400;
 }
 
-/* наборный текст и навигация */
+/* наборный текст: поля формы, подписи */
 p,
 .Body {
-  font-size: 16px;
+  font-size: var(--font-size-16);
   line-height: 120%;
   letter-spacing: -0.02em;
   font-weight: 400;
 }
 
-/* мелкие метки: пункты перечней в плашках услуг */
+/* «Supros/Body 16» — лид первого экрана, описания карточек */
+.Body--l {
+  line-height: 150%;
+  letter-spacing: 0;
+}
+
+/* «Supros/Body 14» — ярлык, ссылки футера */
+.Note {
+  font-size: var(--font-size-14);
+  line-height: 150%;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+/* мелкие метки кейсов: TASK, SCOPE, RESULT */
 .Small {
-  font-size: 14px;
+  font-size: var(--font-size-14);
   line-height: 120%;
   letter-spacing: -0.02em;
   font-weight: 400;
   text-transform: uppercase;
 }
 
-/* ===== модификаторы ===== */
-
-.Muted {
-  color: var(--color-text-muted);
+/* жирные пункты меню — названия направлений */
+.Strong {
+  font-weight: 700;
 }
 
-.Measure {
-  max-width: 62ch;
+/* Inter — переключатель языка и копирайт */
+.Inter {
+  font-family: var(--font-inter);
+  line-height: normal;
+  letter-spacing: -0.01em;
+}
+
+/* ===== мобильная шкала ===== */
+/* На телефоне в макете своя шкала «Supros/Mobile/…». Общие стили меняются
+   здесь целиком (Display--m, Label), а там, где один и тот же десктопный
+   стиль на телефоне уходит в разные роли, элемент несёт второй класс-
+   модификатор с префиксом m: он действует только на телефоне и перекрывает
+   десктопный стиль, потому что объявлен позже. */
+
+@media (max-width: 1024px) {
+  /* название услуги на узкой плашке уступает место ярлыку */
+  .Title--xl {
+    font-size: var(--font-size-31);
+  }
+}
+
+@media (max-width: 768px) {
+  /* «Supros/Mobile/Title» — 44 / 46 */
+  .Display--m,
+  .mTitle {
+    font-size: var(--font-size-44);
+    line-height: 104.5%;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  /* «Supros/Mobile/Label» — метки и ссылки капсом, 18 / 26 */
+  .Label,
+  .mLabel {
+    font-size: var(--font-size-18);
+    line-height: 144.5%;
+    letter-spacing: 0;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* «Supros/Mobile/Heading» — 22 / 26 */
+  .mHeading {
+    font-size: var(--font-size-22);
+    line-height: 118%;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  /* «Supros/Subtitle 20» на телефоне — подписи полей и кнопка формы */
+  .mSubtitle {
+    font-size: var(--font-size-20);
+    line-height: 140%;
+    letter-spacing: 0;
+  }
+
+  /* «Supros/Mobile/Body» — 17 / 22 */
+  .mBody {
+    font-size: var(--font-size-17);
+    line-height: 129.5%;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  /* «Supros/Mobile/Caption» — 13 / 18 */
+  .mCaption {
+    font-size: var(--font-size-13);
+    line-height: 138.5%;
+    letter-spacing: 0;
+    font-weight: 400;
+    text-transform: none;
+  }
 }

@@ -1,38 +1,86 @@
 /**
- * Мобильное меню: бургер разворачивает M_Nav панелью под шапкой.
- * Состояние держим на aria-expanded и data-open, отрисовка — в CSS.
+ * Меню сайта — одна разметка на все ширины (O_Menu в шапке, разделы —
+ * <details>). Отрисовку держит CSS, скрипт только раскладывает состояние.
+ *
+ * Шире 1280 разделы стоят в строку шапки и раскрываются выпадающими
+ * панелями — по наведению и по клику. Уже 1280 бургер открывает меню
+ * полноэкранной панелью (Figma 1Zd6…:1:1577): data-open на меню,
+ * aria-expanded на кнопке, страница под панелью не прокручивается
+ * (data-menu-open на <html>), по умолчанию раскрыт первый раздел.
+ *
+ * Выбор языка у логотипа — такой же раскрывающийся раздел.
+ *
+ * Везде открыт не больше чем один раздел. Esc, клик по ссылке, клик мимо
+ * меню и смена раскладки всё сворачивают.
  */
 
 const toggle = document.querySelector('.A_NavToggle');
-const nav = document.querySelector('.M_Nav');
+const menu = document.querySelector('.O_Menu');
 
-if (toggle && nav) {
-  const desktop = window.matchMedia('(min-width: 769px)');
+if (toggle && menu) {
+  const narrow = window.matchMedia('(max-width: 1279px)');
+  const header = toggle.closest('.O_Header');
+  const groups = [...header.querySelectorAll('.M_MenuGroup')];
+  const sections = groups.filter((group) => menu.contains(group));
+
+  const closeGroups = (except) => {
+    groups.forEach((group) => {
+      if (group !== except) group.open = false;
+    });
+  };
+
+  const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
 
   const setOpen = (open) => {
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    nav.dataset.open = String(open);
+    menu.toggleAttribute('data-open', open);
+    document.documentElement.toggleAttribute('data-menu-open', open);
+    if (open && !sections.some((group) => group.open)) sections[0].open = true;
   };
 
-  setOpen(false);
+  const reset = () => {
+    setOpen(false);
+    closeGroups();
+  };
 
-  toggle.addEventListener('click', () => {
-    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  reset();
+
+  toggle.addEventListener('click', () => setOpen(!isOpen()));
+
+  // раскрытие одного раздела сворачивает остальные
+  groups.forEach((group) => {
+    group.addEventListener('toggle', () => {
+      if (group.open) closeGroups(group);
+    });
+
+    // на десктопе раздел раскрывается и наведением
+    group.addEventListener('mouseenter', () => {
+      if (!narrow.matches) group.open = true;
+    });
+
+    group.addEventListener('mouseleave', () => {
+      if (!narrow.matches) group.open = false;
+    });
   });
 
-  nav.addEventListener('click', (event) => {
-    if (event.target.closest('a')) setOpen(false);
+  menu.addEventListener('click', (event) => {
+    if (event.target.closest('a')) reset();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!narrow.matches && !header.contains(event.target)) closeGroups();
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+    if (event.key !== 'Escape') return;
+    if (isOpen()) {
       setOpen(false);
       toggle.focus();
+    } else {
+      closeGroups();
     }
   });
 
-  desktop.addEventListener('change', (event) => {
-    if (event.matches) setOpen(false);
-  });
+  narrow.addEventListener('change', reset);
 }
