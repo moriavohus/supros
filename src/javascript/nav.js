@@ -6,13 +6,16 @@
  * панелями — по наведению и по клику. Уже 1280 бургер открывает меню
  * полноэкранной панелью (Figma 1Zd6…:1:1577): data-open на меню,
  * aria-expanded на кнопке, страница под панелью не прокручивается
- * (data-menu-open на <html>), по умолчанию раскрыт первый раздел.
+ * (data-menu-open на <html>), все разделы по умолчанию свёрнуты и
+ * раскрываются плавно — тем же аккордеоном, что футер (accordion.js).
  *
  * Выбор языка у логотипа — такой же раскрывающийся раздел.
  *
  * Везде открыт не больше чем один раздел. Esc, клик по ссылке, клик мимо
  * меню и смена раскладки всё сворачивают.
  */
+
+import { accordion, isOpening } from './accordion.js';
 
 const toggle = document.querySelector('.A_NavToggle');
 const menu = document.querySelector('.O_Menu');
@@ -22,10 +25,13 @@ if (toggle && menu) {
   const header = toggle.closest('.O_Header');
   const groups = [...header.querySelectorAll('.M_MenuGroup')];
   const sections = groups.filter((group) => menu.contains(group));
+  const panel = accordion(sections, () => narrow.matches);
 
   const closeGroups = (except) => {
     groups.forEach((group) => {
-      if (group !== except) group.open = false;
+      if (group === except || !group.open) return;
+      if (sections.includes(group)) panel.set(group, false);
+      else group.open = false;
     });
   };
 
@@ -36,22 +42,28 @@ if (toggle && menu) {
     toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     menu.toggleAttribute('data-open', open);
     document.documentElement.toggleAttribute('data-menu-open', open);
-    if (open && !sections.some((group) => group.open)) sections[0].open = true;
   };
 
+  // закрытое меню сворачивает разделы сразу, без анимации
   const reset = () => {
     setOpen(false);
-    closeGroups();
+    panel.reset();
+    groups.forEach((group) => {
+      if (!sections.includes(group)) group.open = false;
+    });
   };
 
   reset();
 
-  toggle.addEventListener('click', () => setOpen(!isOpen()));
+  toggle.addEventListener('click', () => {
+    if (isOpen()) reset();
+    else setOpen(true);
+  });
 
   // раскрытие одного раздела сворачивает остальные
   groups.forEach((group) => {
     group.addEventListener('toggle', () => {
-      if (group.open) closeGroups(group);
+      if (isOpening(group)) closeGroups(group);
     });
 
     // на десктопе раздел раскрывается и наведением

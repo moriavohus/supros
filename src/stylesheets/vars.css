@@ -63,6 +63,8 @@
   --space-quarter: 2px; /* вертикальное поле ярлыка в меню */
   --space-0-375: 3px; /* вертикальное поле ярлыка */
   --space-half: 4px;
+  --space-0-75: 6px; /* верхнее поле строки согласия на телефоне */
+  --space-0-875: 7px; /* нижнее поле строки согласия на телефоне */
   --space-1: 8px;
   --space-1-25: 10px;
   --space-1-5: 12px;
@@ -112,7 +114,7 @@
   --height-products: 300px; /* плитка «100+ products» */
   --height-block: 400px; /* плашки услуг, Social, метка цифр, обучение */
   --height-stat-m: 100px; /* карточка цифры на телефоне */
-  --height-tile-m: 196px; /* плитки Materials Supply на телефоне */
+  --height-tile-m: 164px; /* плитки Materials Supply на телефоне — две в ряд */
   --height-accordion: 48px; /* строка аккордеона футера, пункт меню */
   --height-menu-row: 56px; /* раздел мобильного меню */
 

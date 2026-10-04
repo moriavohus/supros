@@ -1,21 +1,21 @@
 /**
- * Футер: на десктопе четыре колонки ссылок, на телефоне — аккордеон
- * (Figma 2338:22858). Колонки размечены <details>, поэтому без скрипта они
- * просто открыты. Скрипт только раскладывает состояние под ширину экрана:
- * на десктопе открыты все, на телефоне — первая.
+ * Футер: на десктопе разделы колонками, уже 1280 — тот же аккордеон
+ * разделов, что в раскрытом меню (accordion.js, Figma 1Zd6…:1:2183).
+ * Колонки размечены <details>, поэтому без скрипта они просто открыты.
+ * Скрипт раскладывает состояние под ширину экрана: на десктопе открыты все,
+ * в аккордеоне, как в меню, все свёрнуты.
  */
 
-const columns = [...document.querySelectorAll('.M_FooterCol')];
+import { accordion } from './accordion.js';
+
+const columns = [...document.querySelectorAll('.O_Footer .M_MenuGroup')];
 
 if (columns.length) {
-  const mobile = window.matchMedia('(max-width: 768px)');
+  const narrow = window.matchMedia('(max-width: 1279px)');
+  const footer = accordion(columns, () => narrow.matches);
 
-  const sync = () => {
-    columns.forEach((column, index) => {
-      column.open = !mobile.matches || index === 0;
-    });
-  };
+  const sync = () => footer.reset(() => !narrow.matches);
 
-  mobile.addEventListener('change', sync);
+  narrow.addEventListener('change', sync);
   sync();
 }

@@ -161,6 +161,21 @@ p,
     text-transform: uppercase;
   }
 
+  /* «Supros/Title 28» на телефоне — цифры плиток Materials Supply */
+  .mTitleL {
+    font-size: var(--font-size-28);
+    line-height: 115%;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  /* поля формы и согласие — 16 / 20.8, трекинг −4% */
+  .mInput {
+    font-size: var(--font-size-16);
+    line-height: 130%;
+    letter-spacing: -0.04em;
+  }
+
   /* «Supros/Mobile/Heading» — 22 / 26 */
   .mHeading {
     font-size: var(--font-size-22);

@@ -131,24 +131,14 @@ body {
   --icon-size: var(--size-icon-glyph);
 }
 
-/* раздел меню: закрытый — плюс в квадрате 32, открытый — минус 24 */
+/* раздел меню и колонка футера на телефоне: плюс и минус в одинаковом
+   квадрате 32; пока раздел сворачивается (data-closing), уже показан плюс */
 .A_Icon--menu-toggle {
   --icon: url('./images/icons/plus-box.svg');
   --icon-size: var(--size-icon-xs);
 
-  [open] > summary > & {
-    --icon: url('./images/icons/minus-line.svg');
-    --icon-size: var(--size-icon-s);
-  }
-}
-
-/* плюс аккордеона; у открытой строки — минус */
-.A_Icon--toggle {
-  --icon: url('./images/icons/plus-line.svg');
-  --icon-size: var(--size-icon-s);
-
-  [open] > summary > & {
-    --icon: url('./images/icons/minus-line.svg');
+  [open]:not([data-closing]) > summary > & {
+    --icon: url('./images/icons/minus-box.svg');
   }
 }
 
@@ -1391,9 +1381,11 @@ html[data-menu-open] {
 }
 
 /* ===== O_Footer ===== */
-/* Футер (Figma 2392:2786): бирюзовая плашка, четыре колонки ссылок по сетке,
-   под ними логотип SUPROS во всю ширину бледной подложкой, поверх его низа —
-   копирайт. */
+/* Футер (Figma 2392:2786): бирюзовая плашка, сверху разделы сайта, под
+   ними логотип SUPROS во всю ширину бледной подложкой, поверх его низа —
+   копирайт. Разделы — тот же компонент M_MenuSections, что в меню шапки, с
+   тем же содержимым. Вариант десктопа — колонки, все разделы открыты;
+   вариант уже 1280 — аккордеон раскрытого меню (responsive.css). */
 
 .O_Footer {
   position: relative;
@@ -1415,45 +1407,54 @@ html[data-menu-open] {
     }
   }
 
-  .M_FooterNav {
+  /* разделы в ряд колонками; Projects — колонка из одной строки */
+  .M_MenuSections {
     display: grid;
-    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-    column-gap: var(--grid-gap);
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    column-gap: var(--space-3);
     padding-block: var(--tile-pad);
   }
 
-  .M_FooterCol {
+  /* раздел всегда открыт и стоит колонкой: строка-заголовок не кликается,
+     стрелки выпадающей панели нет, подпункты — в потоке, без панели */
+  .M_MenuGroup {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
   }
 
-  /* заголовок колонки — summary аккордеона; на десктопе колонка всегда
-     открыта, поэтому строка не кликается и плюс скрыт */
-  .A_FooterSummary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-    list-style: none;
-    pointer-events: none;
-
-    &::-webkit-details-marker {
-      display: none;
-    }
-
-    .A_Icon {
-      display: none;
-    }
+  .A_MenuSummary {
+    height: auto;
+    align-self: flex-start;
+    padding-inline: 0;
+    color: inherit;
+    white-space: normal;
   }
 
-  .M_FooterLinks {
+  summary.A_MenuSummary {
+    pointer-events: none;
+  }
+
+  .A_Chevron {
+    display: none;
+  }
+
+  .M_MenuLinks {
+    position: static;
     display: flex;
     flex-direction: column;
     gap: var(--space-half);
-    margin: 0;
+    width: auto;
+    max-width: none;
     padding: 0;
-    list-style: none;
+    background: none;
+    border-radius: 0;
+    backdrop-filter: none;
+  }
+
+  .A_MenuLink {
+    min-height: 0;
   }
 
   /* логотип — та же маска, что в шапке, растянутая на всю ширину */

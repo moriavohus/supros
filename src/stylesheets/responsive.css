@@ -12,6 +12,12 @@
   .U_NarrowOnly {
     display: none !important;
   }
+
+  /* в шапке десктопа Contact — кнопка Contact Us, раздела нет; в футере
+     тот же раздел остаётся колонкой */
+  .O_Header .M_MenuGroup--contact {
+    display: none;
+  }
 }
 
 @media (max-width: 1279px) {
@@ -121,24 +127,6 @@
       flex-direction: column;
     }
 
-    .A_MenuSummary {
-      min-height: var(--height-menu-row);
-      justify-content: space-between;
-      gap: var(--space-2);
-      padding-inline: 0;
-      color: inherit;
-    }
-
-    .M_MenuLinks {
-      position: static;
-      width: auto;
-      max-width: none;
-      margin-bottom: var(--space-1);
-      background: var(--color-white-08);
-      border-radius: var(--radius-m);
-      backdrop-filter: none;
-    }
-
     .M_MenuActions {
       flex: none;
       flex-direction: column;
@@ -153,16 +141,99 @@
       border-radius: var(--radius-s);
     }
   }
+
+  /* Аккордеон разделов — один и тот же в раскрытом меню и в футере: строка
+     раздела 56 с плюсом или минусом в квадрате, подпункты строками по 48 на
+     подложке со скруглением, под открытым разделом шаг 8. Раскрытие плавное
+     (accordion.js). height: 100% нужен строке шапки; в колонке Safari
+     считает его от высоты самого раздела, строка раздувается, а подпункты
+     вылезают поверх соседних разделов — поэтому auto. */
+  :is(.O_Menu, .O_Footer) {
+    .A_MenuSummary {
+      height: auto;
+      align-self: stretch;
+      min-height: var(--height-menu-row);
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding-inline: 0;
+      color: inherit;
+    }
+
+    .M_MenuLinks {
+      position: static;
+      display: block;
+      width: auto;
+      max-width: none;
+      margin-bottom: var(--space-1);
+      padding: var(--space-1) var(--space-2);
+      background: var(--color-white-08);
+      border-radius: var(--radius-m);
+      backdrop-filter: none;
+    }
+
+    .A_MenuLink {
+      min-height: var(--height-accordion);
+    }
+  }
+
+  /* футер: разделы одной колонкой, как в меню */
+  .O_Footer {
+    .M_MenuSections {
+      grid-auto-flow: row;
+      row-gap: 0;
+    }
+
+    /* строка раздела снова кликается — десктоп её выключает */
+    summary.A_MenuSummary {
+      pointer-events: auto;
+    }
+
+    .M_MenuGroup {
+      gap: 0;
+    }
+  }
 }
 
 /* ===== телефон ===== */
 @media (max-width: 768px) {
   /* Сетка складывается в одну колонку с полями 16. Каждая плитка теперь
      крайняя с обеих сторон: заливка дотянута до краёв окна, поле страницы
-     уходит внутрь плитки. Поле плитки по вертикали остаётся 30. */
+     уходит внутрь плитки. Поле плитки — тоже 16 (Figma 1Zd6…:1:1884), 30
+     остаётся только у панелей первого экрана. */
   :root {
     --grid-margin: var(--space-2);
+    --tile-pad: var(--space-2);
     --color-glass: var(--color-glass-m);
+  }
+
+  /* Ритм страницы: секции разделены белым промежутком 80. Полоса «Our
+     service areas» — шапка Engineering solutions, между ними промежутка нет. */
+  body {
+    background: var(--color-surface);
+  }
+
+  .W_Page > :is(section, footer) + :is(section, footer) {
+    margin-top: var(--space-10);
+  }
+
+  .W_Page > .O_Band + .O_Solutions {
+    margin-top: 0;
+  }
+
+  /* знак в шапке — 20 от краёв плитки с обеих сторон */
+  .O_Header .A_Logo {
+    padding-left: var(--space-2-5);
+  }
+
+  /* Короткая ссылка с полоской на телефоне во всю ширину блока: текст на
+     кромке, над ним поле 8. Шаг до полоски — 8, в About и обучении — 4. */
+  .A_LinkLine:not(.A_LinkLine--wide) {
+    align-self: stretch;
+    padding: var(--space-1) 0 0;
+
+    &::after {
+      margin-inline: 0;
+    }
   }
 
   .W_Grid {
@@ -196,7 +267,7 @@
 
   .T_HeroTitle {
     gap: var(--space-5);
-    padding: var(--space-2-5) var(--grid-margin) var(--tile-pad);
+    padding: var(--space-2-5) var(--grid-margin) var(--space-3-75);
 
     .A_Button {
       align-self: stretch;
@@ -209,6 +280,7 @@
     min-height: 0;
     margin-top: 50vw;
     gap: var(--space-5);
+    padding-block: var(--space-3-75);
   }
 
   /* ----- O_About (2414:3669): текст на всю ширину, монограмма фоном ----- */
@@ -227,6 +299,10 @@
     .M_AboutBody {
       gap: var(--space-5);
       padding-right: 0;
+
+      .A_LinkLine {
+        gap: var(--space-half);
+      }
     }
 
     /* В макете знак 334 × 333 лежит фоном и выходит за правый край на 35.
@@ -256,6 +332,11 @@
       padding: 0 var(--grid-margin);
       background: none;
       color: var(--color-text-strong);
+
+      /* в одну строку: «Supros in numbers» */
+      br {
+        display: none;
+      }
     }
 
     > .T_Stat {
@@ -292,7 +373,6 @@
 
     .M_ClientsLink {
       order: 2;
-      padding-top: var(--space-1);
     }
   }
 
@@ -352,23 +432,30 @@
 
     .A_LinkLine {
       gap: var(--space-half);
-      padding-inline: 0;
-
-      &::after {
-        margin-inline: 0;
-      }
+      padding: 0;
     }
   }
 
-  /* ----- O_Materials (2414:3875): шапка, под ней плитки столбиком во всю
-     ширину — две стеклянные и плитка продуктов ----- */
+  /* ----- O_Materials (1Zd6…:1:2000): шапка, под ней две стеклянные
+     плитки в ряд, ниже во всю ширину плитка продуктов ----- */
   .O_Materials .M_SectionHead {
     padding-block: var(--tile-pad);
     padding-right: 0;
+
+    /* лид прижат к заголовку: в макете они парой с шагом 8 */
+    p {
+      margin-top: calc(var(--space-1) - var(--space-3));
+    }
+  }
+
+  .O_Materials .M_SupplyTiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .T_SupplyFact {
     height: var(--height-tile-m);
+    overflow: hidden;
     padding-inline: var(--grid-margin);
   }
 
@@ -376,19 +463,23 @@
     margin-inline: calc(-1 * var(--grid-margin));
   }
 
-  /* продукты — ряд всегда раскрыт и листается, плюса нет */
+  /* продукты — ряд всегда раскрыт и листается, плюса нет; полоса прокрутки
+     ложится в нижние 2 строки ряда под карточками */
   .T_Products {
+    grid-column: 1 / -1;
     height: auto;
     gap: var(--space-5);
     padding: var(--tile-pad) var(--grid-margin);
 
     .M_ProductStack {
+      height: var(--size-product-row);
       margin-right: calc(-1 * var(--grid-margin));
+      padding-bottom: 0;
     }
 
     .A_Product {
       opacity: 1;
-      transform: translateX(calc(var(--i) * (var(--size-product) + var(--space-1-5))));
+      transform: translateX(calc(var(--i) * (var(--size-product) + var(--space-half))));
     }
 
     .A_StackMore {
@@ -396,18 +487,15 @@
     }
   }
 
-  /* ----- O_Social (2414:4177): все карточки раскрыты, первая бирюзовая ----- */
+  /* ----- O_Social (1Zd6…:1:2089): все карточки раскрыты, первая
+     бирюзовая ----- */
   .T_SocialCard {
     --social-shift: 0px;
     --line-color: var(--color-ink-08);
 
     height: auto;
     gap: var(--space-2-5);
-    padding-block: var(--tile-pad) var(--space-2);
-
-    &:last-child {
-      padding-bottom: var(--space-6-25);
-    }
+    padding-block: var(--tile-pad);
 
     .M_CardHead {
       grid-template-rows: auto 1fr;
@@ -443,7 +531,7 @@
   /* ----- O_Contact (2414:4085): заголовок над формой, всё в столбик ----- */
   .O_Contact {
     row-gap: var(--space-5);
-    padding-block: var(--space-10);
+    padding-block: 0;
 
     .M_ContactLabel {
       padding-block: 0;
@@ -468,35 +556,25 @@
       align-items: stretch;
       gap: var(--space-1);
     }
+
+    /* в макете нижняя линия лежит внутри поля 20 + 21 + 20 */
+    .A_Input {
+      padding-bottom: calc(var(--space-2-5) - var(--stroke));
+    }
+
+    .A_Consent {
+      padding-block: var(--space-0-75) var(--space-0-875);
+    }
   }
 
-  /* ----- O_Footer (2338:22858): аккордеон, логотип, политика ----- */
+  /* ----- O_Footer (1Zd6…:1:2183): аккордеон меню, ниже логотип и
+     политика с шагом 16 ----- */
   .O_Footer {
-    gap: var(--space-5);
-    padding: var(--tile-pad) 0;
+    gap: var(--space-2);
+    padding: var(--space-10) 0 var(--space-2);
 
-    .M_FooterNav {
-      grid-template-columns: minmax(0, 1fr);
-      row-gap: var(--space-2-5);
+    .M_MenuSections {
       padding: 0 var(--grid-margin);
-    }
-
-    .M_FooterCol {
-      gap: var(--space-2);
-    }
-
-    .A_FooterSummary {
-      min-height: var(--height-accordion);
-      cursor: pointer;
-      pointer-events: auto;
-
-      .A_Icon {
-        display: block;
-      }
-    }
-
-    .M_FooterLinks {
-      gap: var(--space-1);
     }
 
     .A_FooterMark {
