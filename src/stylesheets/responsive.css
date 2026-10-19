@@ -26,6 +26,13 @@
   }
 }
 
+/* только телефон: карточка NIA в цифрах */
+@media (min-width: 769px) {
+  .U_MobileOnly {
+    display: none !important;
+  }
+}
+
 /* ===== ноутбук ===== */
 /* Разделы с кнопкой занимают около 670px и в две колонки сетки влезают только
    от ~1460px. Уже этого шапка раскладывается по краям: логотип слева, меню
@@ -344,9 +351,9 @@
       color: var(--color-accent-dark);
     }
 
-    /* третья карточка — во всю ширину под первыми двумя */
-    .T_Stat--m-wide {
-      grid-column: 1 / -1;
+    /* шахматный порядок: бледная карточка десктопа на телефоне белая */
+    .T_Stat--m-white {
+      background: var(--color-surface);
     }
   }
 
@@ -482,15 +489,20 @@
     }
   }
 
-  /* ----- O_Social (1Zd6…:1:2089): все карточки раскрыты, первая
-     бирюзовая ----- */
+  /* ----- O_Social (1Zd6…:1:2089): наведения нет, поэтому все карточки
+     сразу в активном виде — бирюзовые, с описанием, фото и ссылкой ----- */
   .T_SocialCard {
     --social-shift: 0px;
-    --line-color: var(--color-ink-08);
+    --line-color: var(--color-white-30);
 
     height: auto;
     gap: var(--space-2-5);
     padding-block: var(--tile-pad);
+    color: var(--color-text-inverse);
+
+    &::before {
+      transform: scaleY(1);
+    }
 
     .M_CardHead {
       grid-template-rows: auto 1fr;
@@ -500,15 +512,9 @@
       opacity: 0.6;
     }
 
-    /* на телефоне фото у карточек нет — наведения тоже */
-    .A_SocialPhoto {
-      display: none;
-    }
-
     .A_LinkLine {
       opacity: 1;
       transform: none;
-      color: var(--color-ink-strong);
     }
 
     .A_Icon {
@@ -517,22 +523,14 @@
     }
   }
 
-  /* на телефоне первая карточка бирюзовая, как в макете */
-  .T_SocialCard:hover,
-  .T_SocialCard:focus-visible,
-  .M_SocialGrid:not(:has(.T_SocialCard:hover, .T_SocialCard:focus-visible))
-    .T_SocialCard:first-child {
-    --line-color: var(--color-white-30);
-
-    color: var(--color-text-inverse);
-
-    &::before {
-      transform: scaleY(1);
-    }
-
-    .A_LinkLine {
-      color: inherit;
-    }
+  /* фото во всю ширину карточки, высотой в половину ширины; место ему —
+     обычный шаг карточки */
+  .M_SocialGrid .T_SocialCard .A_SocialPhoto {
+    flex: none;
+    aspect-ratio: 2 / 1;
+    margin: 0 calc(-1 * var(--grid-margin));
+    opacity: 1;
+    clip-path: inset(0);
   }
 
   /* ----- O_Contact (2414:4085): заголовок над формой, всё в столбик ----- */

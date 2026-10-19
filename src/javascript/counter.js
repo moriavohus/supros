@@ -14,7 +14,9 @@ const items = [...document.querySelectorAll('[data-count]')];
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 if (items.length && !reducedMotion.matches) {
-  const duration =
+  // длительность читаем в момент счёта: в собранной версии скрипт может
+  // выполниться раньше, чем применились стили, и токен ещё пуст
+  const duration = () =>
     parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--count-time')) * 1000;
 
   // быстрый старт и долгий доезд к итоговому числу
@@ -37,9 +39,15 @@ if (items.length && !reducedMotion.matches) {
     .filter(Boolean);
 
   const run = ({ target, show }) => {
+    const time = duration();
+    if (!(time > 0)) {
+      show(target);
+      return;
+    }
+
     const start = performance.now();
     const step = (now) => {
-      const progress = Math.min(1, (now - start) / duration);
+      const progress = Math.min(1, Math.max(0, now - start) / time);
       show(Math.round(target * easeOut(progress)));
       if (progress < 1) requestAnimationFrame(step);
     };
