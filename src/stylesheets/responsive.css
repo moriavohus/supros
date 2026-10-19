@@ -283,6 +283,11 @@
     padding-block: var(--space-3-75);
   }
 
+  /* ссылка подписи — во всю ширину, как остальные на телефоне */
+  .M_HeroCaption .A_LinkLine {
+    justify-self: stretch;
+  }
+
   /* ----- O_About (2414:3669): текст на всю ширину, монограмма фоном ----- */
   .O_About {
     position: relative;
@@ -505,6 +510,11 @@
       opacity: 0.6;
     }
 
+    /* на телефоне фото у карточек нет — наведения тоже */
+    .A_SocialPhoto {
+      display: none;
+    }
+
     .A_LinkLine {
       opacity: 1;
       transform: none;
@@ -517,11 +527,18 @@
     }
   }
 
+  /* на телефоне первая карточка бирюзовая, как в макете */
   .T_SocialCard:hover,
   .T_SocialCard:focus-visible,
   .M_SocialGrid:not(:has(.T_SocialCard:hover, .T_SocialCard:focus-visible))
     .T_SocialCard:first-child {
     --line-color: var(--color-white-30);
+
+    color: var(--color-text-inverse);
+
+    &::before {
+      transform: scaleY(1);
+    }
 
     .A_LinkLine {
       color: inherit;
@@ -602,5 +619,10 @@
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;
+  }
+
+  /* без движения экрана загрузки нет, текст стоит сразу */
+  .O_Loader {
+    display: none;
   }
 }

@@ -25,6 +25,11 @@
   </head>
 
   <body>
+    <!-- экран загрузки (loader.js): уходит сам через 2 с -->
+    <div class="O_Loader" aria-hidden="true">
+      <span class="A_LoaderMark"><span></span></span>
+    </div>
+
     <div class="W_Page">
       <!-- Шапка и меню (мобильная версия — Figma 1Zd6…:1:1577). Меню одно на
            все ширины: на десктопе разделы стоят в строку и раскрываются
@@ -133,43 +138,34 @@
       </header>
 
       <section class="O_Hero W_Grid">
-        <!-- снимки — фон всей секции: под левой панелью они размыты стеклом,
-             справа над карточкой видны как есть -->
+        <!-- снимки — фон всей секции (Figma 1Zd6…:132:1170): под левой
+             панелью они размыты стеклом, справа над карточкой видны как есть -->
         <div class="M_HeroSlider U_Layer" aria-hidden="true">
           <img
             class="A_HeroSlide"
-            src="/src/images/hero/helmets.jpg"
+            src="/src/images/hero/pipe-closeup.jpg"
             alt=""
-            width="1920"
-            height="1280"
+            width="1376"
+            height="768"
             fetchpriority="high"
             decoding="async"
             data-active
           />
           <img
             class="A_HeroSlide"
-            src="/src/images/hero/warehouse.jpg"
+            src="/src/images/hero/plant-pipes.jpg"
             alt=""
-            width="1920"
-            height="1280"
+            width="1376"
+            height="768"
             loading="lazy"
             decoding="async"
           />
           <img
             class="A_HeroSlide"
-            src="/src/images/hero/ducts.jpg"
+            src="/src/images/hero/air-ducts.jpg"
             alt=""
-            width="1024"
-            height="1024"
-            loading="lazy"
-            decoding="async"
-          />
-          <img
-            class="A_HeroSlide"
-            src="/src/images/hero/pipes.jpg"
-            alt=""
-            width="1171"
-            height="843"
+            width="975"
+            height="648"
             loading="lazy"
             decoding="async"
           />
@@ -177,8 +173,8 @@
 
         <div class="T_Card T_HeroTitle U_BleedStart">
           <div class="M_SectionHead">
-            <h1 class="Display Display--m">Smarter Engineering <br />for Industry</h1>
-            <p class="Body Body--l mBody">
+            <h1 class="Display Display--m" data-reveal>Smarter Engineering <br />for Industry</h1>
+            <p class="Body Body--l mBody" data-reveal>
               Engineering, digital technologies and advanced insulation solutions for safer, more
               energy-efficient industrial operations
             </p>
@@ -190,18 +186,32 @@
           <span class="A_SlideProgress" aria-hidden="true">
             <span class="A_SlideProgressFill"></span>
           </span>
-          <h3 class="Title Title--l">Efficiency begins with calculations</h3>
-          <a class="A_LinkLine Subtitle" href="/solutions.html">
-            <span class="U_DesktopOnly">Explore solutions</span>
-            <span class="U_MobileOnly">Explore material take-off</span>
-          </a>
+
+          <!-- подпись к каждому снимку слайдера, в том же порядке; меняется
+               вместе со снимком (hero.js). TODO: якоря появятся на странице
+               Solutions вместе с её разделами -->
+          <div class="M_HeroCaptions">
+            <div class="M_HeroCaption" data-active>
+              <h3 class="Title Title--l" data-reveal>Efficiency begins with calculations</h3>
+              <a class="A_LinkLine Subtitle" href="/solutions.html#thermal-calculations">Explore thermal calculations</a>
+            </div>
+            <div class="M_HeroCaption">
+              <h3 class="Title Title--l" data-reveal>Every metre of pipe, counted from the drawings</h3>
+              <span class="A_Tag Note mCaption">AI-powered</span>
+              <a class="A_LinkLine Subtitle" href="/solutions.html#material-take-off">Explore material take-off</a>
+            </div>
+            <div class="M_HeroCaption">
+              <h3 class="Title Title--l" data-reveal>Insulation from our own warehouse in Atyrau</h3>
+              <a class="A_LinkLine Subtitle" href="/solutions.html#materials-supply">Explore Materials Supply</a>
+            </div>
+          </div>
         </article>
       </section>
 
       <section class="O_About W_Grid">
         <p class="M_AboutLabel Label">About Supros</p>
         <div class="M_AboutBody">
-          <h2 class="Subhead Subhead--regular mBody">
+          <h2 class="Subhead Subhead--regular mBody" data-reveal>
             Our mission is to help companies and communities move towards a&nbsp;more sustainable
             future by adopting advanced technologies and upholding the highest standards of
             quality.
@@ -216,7 +226,7 @@
            секции съезжаются к низу. Телефон (Figma 2414:3693): сетка 2 × 2 со
            своим набором — NIA и склад только там, оборот только на десктопе. -->
       <section class="O_Numbers W_Grid">
-        <h2 class="T_Card T_NumberLabel U_BleedStart Title Title--l mLabel">Supros <br />in numbers</h2>
+        <h2 class="T_Card T_NumberLabel U_BleedStart Title Title--l mLabel" data-reveal>Supros <br />in numbers</h2>
 
         <article class="T_Card T_Stat T_Stat--pale U_MobileOnly">
           <span class="Display mHeading">NIA</span>
@@ -224,30 +234,30 @@
         </article>
 
         <article class="T_Card T_Stat T_Stat--pale T_Stat--m-white U_BleedSm">
-          <span class="Display mHeading">300+</span>
+          <span class="Display mHeading" data-count>300+</span>
           <span class="Subtitle mCaption">Completed projects</span>
         </article>
 
         <article class="T_Card T_Stat T_Stat--mid T_Stat--m-white U_BleedSm">
-          <span class="Display mHeading">40+</span>
+          <span class="Display mHeading" data-count>40+</span>
           <span class="Subtitle mCaption">Qualified specialists</span>
         </article>
 
         <article class="T_Card T_Stat T_Stat--pale U_MobileOnly">
-          <span class="Display mHeading">826&nbsp;m²</span>
+          <span class="Display mHeading" data-count>826&nbsp;m²</span>
           <span class="Subtitle mCaption">Warehouse in Atyrau</span>
         </article>
 
         <article class="T_Card T_Stat T_Stat--pale T_Stat--low U_BleedEnd U_DesktopOnly">
-          <span class="Display mHeading">20M&nbsp;$</span>
+          <span class="Display mHeading" data-count>20M&nbsp;$</span>
           <span class="Subtitle mCaption">Annual turnover</span>
         </article>
       </section>
 
-      <!-- They trust us (Figma 2392:2856): заголовок и ссылка над лентой
+      <!-- Trusted by (Figma 2392:2856): заголовок и ссылка над лентой
            логотипов; на телефоне ссылка уходит под ленту -->
       <section class="O_Clients" id="clients">
-        <h2 class="M_ClientsTitle Title Title--l mLabel">They trust us</h2>
+        <h2 class="M_ClientsTitle Title Title--l mLabel" data-reveal>Trusted by</h2>
         <a class="M_ClientsLink A_LinkLine Subtitle" href="/about.html">
           See clients and letters of gratitude
         </a>
@@ -408,15 +418,15 @@
 
       <!-- Our service areas (Figma 2392:2861) -->
       <section class="O_Band">
-        <h2 class="Display Display--m mLabel">Our service areas</h2>
+        <h2 class="Display Display--m mLabel" data-reveal>Our service areas</h2>
       </section>
 
       <!-- TODO: описания плашек пока одинаковые (от MTO) — в макете рыба -->
       <section class="O_Solutions W_Grid">
         <div class="M_SectionHead M_SolutionsIntro">
           <span class="A_Badge A_Badge--accent Subtitle">1</span>
-          <h2 class="Display Display--m">Engineering <br />solutions</h2>
-          <p class="Subtitle mBody">We provide services in engineering, material supply, and training</p>
+          <h2 class="Display Display--m" data-reveal>Engineering <br />solutions</h2>
+          <p class="Subtitle mBody" data-reveal>We provide services in engineering, material supply, and training</p>
         </div>
 
         <div class="M_SolutionCards U_ExtendEnd">
@@ -425,6 +435,7 @@
               <h3 class="Title Title--xl mHeading">Thermal calculations</h3>
               <p class="A_CardLead Subtitle">Quantities extracted directly from ISO drawings — materials list ready for procurement.</p>
             </div>
+            <span class="A_Icon A_Icon--thermal" aria-hidden="true"></span>
             <a class="A_LinkLine A_LinkLine--wide Subtitle" href="/solutions.html">
               Learn more
               <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
@@ -436,6 +447,7 @@
               <h3 class="Title Title--xl mHeading">Insulation audit</h3>
               <p class="A_CardLead Subtitle">Quantities extracted directly from ISO drawings — materials list ready for procurement.</p>
             </div>
+            <span class="A_Icon A_Icon--audit" aria-hidden="true"></span>
             <a class="A_LinkLine A_LinkLine--wide Subtitle" href="/solutions.html">
               Learn more
               <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
@@ -448,6 +460,7 @@
               <p class="A_CardLead Subtitle">Quantities extracted directly from ISO drawings — materials list ready for procurement.</p>
               <span class="A_Tag Note">AI-powered</span>
             </div>
+            <span class="A_Icon A_Icon--mto" aria-hidden="true"></span>
             <a class="A_LinkLine A_LinkLine--wide Subtitle" href="/solutions.html">
               Learn more
               <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
@@ -461,11 +474,11 @@
       <section class="O_Training W_Grid" id="training">
         <div class="T_Card T_TrainingHead U_BleedStart">
           <span class="A_Badge A_Badge--dark Subtitle">2</span>
-          <h2 class="Title Title--l mTitle">We train <br />the industry</h2>
+          <h2 class="Title Title--l mTitle" data-reveal>We train <br />the industry</h2>
         </div>
 
         <div class="M_TrainingBody">
-          <p class="Title Title--l mHeading">
+          <p class="Title Title--l mHeading" data-reveal>
             Our lead thermal insulation engineer runs training for industry specialists and
             university students — on structural calculation, material selection and typical
             installation errors.
@@ -511,8 +524,8 @@
 
         <div class="M_SectionHead">
           <span class="A_Badge Subtitle">3</span>
-          <h2 class="Display Display--m">Materials Supply</h2>
-          <p class="Subtitle mBody">
+          <h2 class="Display Display--m" data-reveal>Materials Supply</h2>
+          <p class="Subtitle mBody" data-reveal>
             Supply of materials from our own warehouse to ensure your uninterrupted operations.
           </p>
         </div>
@@ -520,12 +533,12 @@
         <!-- плитки — правая половина секции до края окна, столбиком -->
         <div class="M_SupplyTiles U_ExtendEnd">
           <article class="T_Card T_SupplyFact">
-            <p class="Title Title--xl mTitleL">826&nbsp;m²</p>
+            <p class="Title Title--xl mTitleL" data-count>826&nbsp;m²</p>
             <p class="Body Body--l mCaption">Warehouse in Atyrau</p>
           </article>
 
           <article class="T_Card T_SupplyFact">
-            <p class="Title Title--xl mTitleL">10</p>
+            <p class="Title Title--xl mTitleL" data-count>10</p>
             <!-- бегущая строка: второй и третий списки — копии для бесшовной
                  склейки на широкой плитке, скрыты от скринридера -->
             <div class="W_Marquee W_Marquee--partners">
@@ -660,7 +673,7 @@
           </article>
 
           <article class="T_Card T_Products">
-            <h3 class="Title Title--l">100+ products</h3>
+            <h3 class="Title Title--xl mTitleL" data-count>100+ products</h3>
             <ul class="M_ProductStack" tabindex="0" aria-label="Product groups">
               <li class="A_Product" style="--i: 0">
                 <img
@@ -771,11 +784,12 @@
         </div>
       </section>
 
-      <!-- Social responsibility (Figma 2399:3329, телефон 2414:4177). TODO:
+      <!-- Social responsibility (Figma 2399:3329 + 1Zd6…:1:2427, телефон 2414:4177).
+           Фото у карточки видно, только пока она активна. TODO:
            описания карточек наши — в макете на их месте рыба -->
       <section class="O_Social" id="social">
         <div class="M_SectionHead">
-          <h2 class="Display Display--m">Social responsibility <br />is our work, not a programme</h2>
+          <h2 class="Display Display--m" data-reveal>Social responsibility <br />is our work, not a programme</h2>
         </div>
 
         <div class="M_SocialGrid W_Grid">
@@ -784,6 +798,7 @@
               <h3 class="Title Title--l mHeading">ESG</h3>
               <p class="A_CardLead Body Body--l mBody">Environmental and safety standards on every site.</p>
             </div>
+            <span class="A_SocialPhoto"><img src="/src/images/social/esg.jpg" alt="" width="810" height="393" loading="lazy" decoding="async" /></span>
             <span class="A_LinkLine A_LinkLine--wide Subtitle">
               Learn more
               <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
@@ -794,6 +809,7 @@
               <h3 class="Title Title--l mHeading">Internships</h3>
               <p class="A_CardLead Body Body--l mBody">Places for students of technical universities.</p>
             </div>
+            <span class="A_SocialPhoto"><img src="/src/images/social/internships.jpg" alt="" width="810" height="540" loading="lazy" decoding="async" /></span>
             <span class="A_LinkLine A_LinkLine--wide Subtitle">
               Learn more
               <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
@@ -804,6 +820,7 @@
               <h3 class="Title Title--l mHeading">Idea Hub</h3>
               <p class="A_CardLead Body Body--l mBody">Ideas from the team go straight into production.</p>
             </div>
+            <span class="A_SocialPhoto"><img src="/src/images/social/idea-hub.jpg" alt="" width="753" height="394" loading="lazy" decoding="async" /></span>
             <span class="A_LinkLine A_LinkLine--wide Subtitle">
               Learn more
               <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
@@ -814,6 +831,7 @@
               <h3 class="Title Title--l mHeading">Partnership: science and sports</h3>
               <p class="A_CardLead Body Body--l mBody">We support university labs and local teams.</p>
             </div>
+            <span class="A_SocialPhoto"><img src="/src/images/social/science-sports.jpg" alt="" width="810" height="540" loading="lazy" decoding="async" /></span>
             <span class="A_LinkLine A_LinkLine--wide Subtitle">
               Learn more
               <span class="A_Icon A_Icon--diagonal-l" aria-hidden="true"></span>
@@ -888,7 +906,7 @@
       <!-- Contact (Figma 2373:24494, телефон 2414:4085) -->
       <section class="O_Contact W_Grid" id="request">
         <div class="M_ContactLabel">
-          <h2 class="Display Display--m">Contact Us</h2>
+          <h2 class="Display Display--m" data-reveal>Contact Us</h2>
         </div>
 
         <!-- TODO: форма без обработчика — приёмник появится вместе с бэком -->
@@ -932,60 +950,60 @@
       <footer class="O_Footer">
         <nav class="M_MenuSections" aria-label="Footer navigation">
         <details class="M_MenuGroup">
-          <summary class="A_MenuSummary Lead mSubtitle">
+          <summary class="A_MenuSummary Subtitle">
             Solutions
             <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
             <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
           </summary>
           <ul class="M_MenuLinks">
-            <li><a class="A_MenuLink Lead mBody Strong" href="/solutions.html">Engineering</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/solutions.html">Thermal calculations</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/solutions.html">Material take-off (MTO) <span class="A_Tag A_Tag--inline Note mCaption">AI-powered</span></a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/solutions.html">Insulation audit</a></li>
-            <li><a class="A_MenuLink Lead mBody Strong" href="/solutions.html">Materials Supply</a></li>
-            <li><a class="A_MenuLink Lead mBody Strong" href="/solutions.html">Trainings</a></li>
+            <li><a class="A_MenuLink Note mBody Strong" href="/solutions.html">Engineering</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/solutions.html">Thermal calculations</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/solutions.html">Material take-off (MTO) <span class="A_Tag A_Tag--inline Note mCaption">AI-powered</span></a></li>
+            <li><a class="A_MenuLink Note mBody" href="/solutions.html">Insulation audit</a></li>
+            <li><a class="A_MenuLink Note mBody Strong" href="/solutions.html">Materials Supply</a></li>
+            <li><a class="A_MenuLink Note mBody Strong" href="/solutions.html">Trainings</a></li>
           </ul>
         </details>
-        <a class="A_MenuSummary Lead mSubtitle" href="/projects.html">Projects</a>
         <details class="M_MenuGroup">
-          <summary class="A_MenuSummary Lead mSubtitle">
+          <summary class="A_MenuSummary Subtitle">
             About
             <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
             <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
           </summary>
           <ul class="M_MenuLinks">
-            <li><a class="A_MenuLink Lead mBody" href="/about.html">Company · mission</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/about.html">Team</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/about.html">Clients</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/about.html">Partners and memberships</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/about.html">Careers</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/about.html">Company · mission</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/about.html">Team</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/about.html">Clients</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/about.html">Partners and memberships</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/projects.html">Projects</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/about.html">Careers</a></li>
           </ul>
         </details>
         <details class="M_MenuGroup">
-          <summary class="A_MenuSummary Lead mSubtitle">
+          <summary class="A_MenuSummary Subtitle">
             Social Responsibility
             <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
             <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
           </summary>
           <ul class="M_MenuLinks">
-            <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Sustainability</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Cooperation with academic and sports institutions</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Idea Hub</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/social-responsibility.html">Internships</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/social-responsibility.html">Sustainability</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/social-responsibility.html">Cooperation with academic <br />and sports institutions</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/social-responsibility.html">Idea Hub</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/social-responsibility.html">Internships</a></li>
           </ul>
         </details>
         <details class="M_MenuGroup M_MenuGroup--contact">
-          <summary class="A_MenuSummary Lead mSubtitle">
+          <summary class="A_MenuSummary Subtitle">
             Contact
             <span class="A_Chevron U_WideOnly" aria-hidden="true"></span>
             <span class="A_Icon A_Icon--menu-toggle U_NarrowOnly" aria-hidden="true"></span>
           </summary>
           <ul class="M_MenuLinks">
-            <li><a class="A_MenuLink Lead mBody" href="#request">Write to an engineer</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="#request">Partnership proposal</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/contacts.html">Sales</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/contacts.html">Office</a></li>
-            <li><a class="A_MenuLink Lead mBody" href="/contacts.html">Warehouse</a></li>
+            <li><a class="A_MenuLink Note mBody" href="#request">Write to an engineer</a></li>
+            <li><a class="A_MenuLink Note mBody" href="#request">Partnership proposal</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/contacts.html">Sales</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/contacts.html">Office</a></li>
+            <li><a class="A_MenuLink Note mBody" href="/contacts.html">Warehouse</a></li>
           </ul>
         </details>
         </nav>
@@ -998,6 +1016,9 @@
       </footer>
     </div>
 
+    <script type="module" src="/src/javascript/loader.js"></script>
+    <script type="module" src="/src/javascript/reveal.js"></script>
+    <script type="module" src="/src/javascript/counter.js"></script>
     <script type="module" src="/src/javascript/nav.js"></script>
     <script type="module" src="/src/javascript/hero.js"></script>
     <script type="module" src="/src/javascript/footer.js"></script>

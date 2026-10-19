@@ -100,11 +100,12 @@ body {
 /* ===== A_Icon ===== */
 /* Иконка — svg из макета маской, красится текущим цветом текста. Подложку
    на 10% svg несёт сам (прямоугольник с прозрачностью), поэтому один файл
-   работает на любой заливке. Модификатор задаёт файл и размер. */
+   работает на любой заливке. Модификатор задаёт файл и размер; у
+   неквадратной иконки — ещё пропорцию --icon-ratio. */
 
 .A_Icon {
   flex: none;
-  width: var(--icon-size);
+  width: calc(var(--icon-size) * var(--icon-ratio, 1));
   height: var(--icon-size);
   background: currentcolor;
   mask: var(--icon) no-repeat center / contain;
@@ -129,6 +130,28 @@ body {
 .A_Icon--download {
   --icon: url('./images/icons/download.svg');
   --icon-size: var(--size-icon-glyph);
+}
+
+/* Рисунки плашек услуг (Figma 1Zd6…:1:2320): линейная графика из макета,
+   прозрачный PNG маской — линии берут цвет текста плашки, поэтому на тёмной
+   плашке светлые, на бледной тёмные, как в макете. 125 × 112. */
+.A_Icon--thermal,
+.A_Icon--audit,
+.A_Icon--mto {
+  --icon-size: var(--size-service-icon);
+  --icon-ratio: calc(125 / 112);
+}
+
+.A_Icon--thermal {
+  --icon: url('./images/services/thermal.png');
+}
+
+.A_Icon--audit {
+  --icon: url('./images/services/audit.png');
+}
+
+.A_Icon--mto {
+  --icon: url('./images/services/mto.png');
 }
 
 /* раздел меню и колонка футера на телефоне: плюс и минус в одинаковом
@@ -253,7 +276,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center bottom;
+  object-position: center;
   opacity: 0;
   transition: opacity var(--transition-slow);
 
@@ -424,6 +447,31 @@ body {
   }
 }
 
+/* ===== A_RevealLine ===== */
+/* Строка текста, которая появляется при прокрутке (reveal.js): маска во всю
+   строку и строка внутри неё. Маска режет только снизу и сверху и отпущена
+   на 0.25em, чтобы не обрезать выносные элементы букв. До показа строка
+   опущена на свою высоту и прозрачна. */
+
+.A_RevealLine {
+  display: block;
+  clip-path: inset(-0.25em 0);
+}
+
+.A_RevealLineText {
+  display: block;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/* ===== счётчик: [data-count] ===== */
+/* Число, которое набегает от нуля (counter.js). Цифры одной ширины, чтобы
+   во время счёта строка не дрожала. */
+
+[data-count] {
+  font-variant-numeric: tabular-nums;
+}
+
 /* ===== A_Fact ===== */
 /* Пара «метка → значение» в кейсах. */
 
@@ -467,6 +515,56 @@ body {
 
 .A_CardLead {
   opacity: 0.6;
+}
+
+/* ===== M_HeroCaptions ===== */
+/* Подписи акцентной карточки первого экрана — по одной на снимок слайдера,
+   в том же порядке. Лежат стопкой в одной ячейке, видна активная
+   (data-active, hero.js); смена — проявлением, с той же скоростью, что у
+   снимков. Подпись: заголовок, справа от него необязательный ярлык, внизу
+   ссылка. */
+
+.M_HeroCaptions {
+  display: grid;
+  flex: 1;
+  align-self: stretch;
+}
+
+.M_HeroCaption {
+  display: grid;
+  grid-area: 1 / 1;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  gap: var(--space-5) var(--space-3);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(var(--space-2));
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow),
+    visibility var(--transition-slow);
+
+  &[data-active] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* колонка под ярлык — только у подписи с ярлыком */
+  &:has(.A_Tag) {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .A_Tag {
+    position: static;
+  }
+
+  .A_LinkLine {
+    grid-column: 1 / -1;
+    align-self: end;
+    justify-self: start;
+  }
 }
 
 /* ===== W_Marquee ===== */
@@ -603,7 +701,8 @@ body {
 }
 
 /* Акцентная карточка первого экрана: две правые колонки, прижата к низу
-   секции. Сверху полоса прогресса слайдера и заголовок, снизу ссылка. */
+   секции. Сверху полоса прогресса слайдера, под ней подписи к снимкам
+   (M_HeroCaptions): заголовок и ссылка меняются вместе со слайдом. */
 .T_Card--accent {
   position: relative;
   grid-column: 3 / span 2;
@@ -715,13 +814,18 @@ body {
 /* ===== T_SocialCard ===== */
 /* Карточка направления (компонент 2392:2648), два варианта. Default —
    светлая, название внизу. Variant2 — бирюзовая: сверху название и
-   описание, снизу ссылка со стрелкой. Активна первая карточка, а при
-   наведении или фокусе — та, что под курсором.
+   описание, снизу ссылка со стрелкой. По умолчанию все карточки светлые,
+   бирюзовой становится та, что под курсором или в фокусе.
 
    Переход: бирюзовая заливка поднимается снизу (подложка ::before
    масштабируется от нижнего края — анимация на композиторе, раскладку не
    дёргает), заголовок едет вместе с ней снизу наверх, описание раскрывается
    под ним, ссылка проявляется последней.
+
+   Фото (1Zd6…:1:2427) видно только у активной карточки: стоит между
+   описанием и ссылкой во всю ширину карточки, до её краёв, и открывается
+   снизу вверх вслед за заливкой. В раскладке фото занимает всё место между
+   текстом и ссылкой, поэтому в светлом варианте оно просто скрыто.
 
    Заголовок всегда стоит наверху раскладки, а в светлом варианте опущен
    трансформом на высоту карточки без полей минус собственную высоту.
@@ -776,12 +880,44 @@ body {
       opacity var(--transition-base),
       transform var(--transition-base);
   }
+
+  /* шаг до описания 8, до ссылки 2 — вместо общего шага карточки 24;
+     по бокам фото выходит на поле карточки */
+  .A_SocialPhoto {
+    position: relative;
+    display: block;
+    flex: 1 1 0;
+    min-height: 0;
+    margin: calc(var(--space-1) - var(--space-3)) calc(-1 * var(--tile-pad))
+      calc(var(--stroke) - var(--space-3));
+    opacity: 0;
+    clip-path: inset(100% 0 0);
+    transition:
+      opacity var(--transition-base),
+      clip-path var(--transition-base);
+
+    /* снимок заполняет рамку, рамку задаёт раскладка карточки */
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  /* у крайних карточек поле шире на поле страницы */
+  &.U_BleedStart .A_SocialPhoto {
+    margin-left: calc(-1 * (var(--grid-margin) + var(--tile-pad)));
+  }
+
+  &.U_BleedEnd .A_SocialPhoto {
+    margin-right: calc(-1 * (var(--grid-margin) + var(--tile-pad)));
+  }
 }
 
 .T_SocialCard:hover,
-.T_SocialCard:focus-visible,
-.M_SocialGrid:not(:has(.T_SocialCard:hover, .T_SocialCard:focus-visible))
-  .T_SocialCard:first-child {
+.T_SocialCard:focus-visible {
   color: var(--color-text-inverse);
 
   &::before {
@@ -795,6 +931,11 @@ body {
 
   .A_CardLead {
     opacity: 0.6;
+  }
+
+  .A_SocialPhoto {
+    opacity: 1;
+    clip-path: inset(0);
   }
 
   /* ссылка появляется, когда заливка уже поднялась */
@@ -817,6 +958,86 @@ body {
 /* ================================================================
    СЕКЦИИ
    ================================================================ */
+
+/* ===== O_Loader ===== */
+/* Экран загрузки (по образцу aspensearch.com, loader.js). Тёмная бирюзовая
+   панель на весь экран, в центре монограмма SUPROS: за --loader-load она
+   проявляется, вырастая с 0.4, и дальше ещё --loader-scale дорастает с 0.3
+   до полного размера — два шага на двух вложенных слоях. Всё время знак
+   медленно вращается монетой. Через --loader-load панель стирается влево.
+   Анимация целиком на CSS: без скрипта экран тоже уходит, скрипт только
+   держит прокрутку и даёт сигнал тексту. */
+
+.O_Loader {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-accent-deep);
+  animation: loader-wipe var(--loader-wipe) var(--ease-wipe) var(--loader-load) forwards;
+
+  &[data-done] {
+    display: none;
+  }
+}
+
+.A_LoaderMark {
+  perspective: 1000px;
+  animation: loader-load var(--loader-load) var(--ease-wipe) both;
+
+  > span {
+    display: block;
+    animation: loader-scale var(--loader-scale) var(--ease-wipe) var(--loader-load) both;
+  }
+
+  /* сам знак — монограмма маской, вращается вокруг вертикали */
+  > span::before {
+    content: '';
+    display: block;
+    width: var(--size-loader-mark);
+    aspect-ratio: 476 / 475;
+    background: var(--color-white-12);
+    mask: url('./images/logos/monogram.svg') no-repeat center / contain;
+    animation: loader-spin var(--loader-spin) linear infinite;
+  }
+}
+
+@keyframes loader-wipe {
+  from {
+    clip-path: inset(0);
+  }
+
+  to {
+    visibility: hidden;
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+@keyframes loader-load {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+@keyframes loader-scale {
+  from {
+    transform: scale(0.3);
+  }
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotateY(-360deg);
+  }
+}
+
+/* пока экран загрузки на месте, страница не прокручивается */
+html[data-loading] {
+  overflow: hidden;
+}
 
 /* ===== O_Header ===== */
 /* Шапка (Figma 2136:41124): стекло — белый на 90% с размытием. Вне потока,
@@ -1263,7 +1484,7 @@ html[data-menu-open] {
 }
 
 /* ===== O_Clients ===== */
-/* They trust us (Figma 2392:2856): заголовок слева, ссылка справа, под ними
+/* Trusted by (Figma 2392:2856): заголовок слева, ссылка справа, под ними
    лента логотипов во всю ширину окна. */
 
 .O_Clients {
