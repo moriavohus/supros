@@ -26,18 +26,6 @@
   }
 }
 
-@media (min-width: 769px) {
-  .U_MobileOnly {
-    display: none !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .U_DesktopOnly {
-    display: none !important;
-  }
-}
-
 /* ===== ноутбук ===== */
 /* Разделы с кнопкой занимают около 670px и в две колонки сетки влезают только
    от ~1460px. Уже этого шапка раскладывается по краям: логотип слева, меню
@@ -338,7 +326,7 @@
       background: none;
       color: var(--color-text-strong);
 
-      /* в одну строку: «Supros in numbers» */
+      /* в одну строку: «SUPROS in Numbers» */
       br {
         display: none;
       }
@@ -356,8 +344,9 @@
       color: var(--color-accent-dark);
     }
 
-    .T_Stat--m-white {
-      background: var(--color-surface);
+    /* третья карточка — во всю ширину под первыми двумя */
+    .T_Stat--m-wide {
+      grid-column: 1 / -1;
     }
   }
 
@@ -372,12 +361,12 @@
     }
 
     .W_Marquee {
-      order: 1;
       margin: 0 calc(-1 * var(--grid-margin));
     }
 
     .M_ClientsLink {
-      order: 2;
+      justify-self: stretch;
+      margin-top: 0;
     }
   }
 
@@ -448,7 +437,7 @@
     padding-right: 0;
 
     /* лид прижат к заголовку: в макете они парой с шагом 8 */
-    p {
+    h2 + p {
       margin-top: calc(var(--space-1) - var(--space-3));
     }
   }
@@ -469,15 +458,16 @@
   }
 
   /* продукты — ряд всегда раскрыт и листается, плюса нет; полоса прокрутки
-     ложится в нижние 2 строки ряда под карточками */
+     ложится в 2 px под карточками */
   .T_Products {
     grid-column: 1 / -1;
     height: auto;
+    min-height: 0;
     gap: var(--space-5);
     padding: var(--tile-pad) var(--grid-margin);
 
     .M_ProductStack {
-      height: var(--size-product-row);
+      height: calc(var(--size-product-row) + var(--stroke));
       margin-right: calc(-1 * var(--grid-margin));
       padding-bottom: 0;
     }
@@ -552,6 +542,7 @@
 
     .M_ContactLabel {
       padding-block: 0;
+      padding-right: 0;
     }
 
     .M_RequestForm {
@@ -582,6 +573,16 @@
     .A_Consent {
       padding-block: var(--space-0-75) var(--space-0-875);
     }
+
+    /* контакты столбиком, плитки по 100 (Figma 1Zd6…:1:2168) */
+    .M_ContactInfo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .T_ContactCard {
+      min-height: var(--height-stat-m);
+      padding-block: var(--tile-pad);
+    }
   }
 
   /* ----- O_Footer (1Zd6…:1:2183): аккордеон меню, ниже логотип и
@@ -598,8 +599,10 @@
       margin-inline: 0;
     }
 
-    .A_Copyright {
+    .M_FooterBottom {
       position: static;
+      flex-direction: column;
+      align-items: stretch;
       padding-inline: var(--grid-margin);
     }
   }

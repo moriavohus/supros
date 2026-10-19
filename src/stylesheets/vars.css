@@ -106,7 +106,7 @@
   --size-client-logo: 100px;
   --size-product: 124px; /* карточка продукта */
   --size-product-image: 70px;
-  --size-product-row: 117px; /* высота карточки продукта */
+  --size-product-row: 87px; /* высота карточки продукта: фото 67 и поля 10 — подписей групп пока нет */
   --size-measure: 500px; /* ширина лида */
 
   --height-stat: 178px; /* карточка цифры */

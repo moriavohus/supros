@@ -378,11 +378,6 @@ body {
     object-fit: cover;
   }
 
-  span {
-    padding-inline: var(--space-1-5);
-    white-space: nowrap;
-  }
-
   &:nth-child(n + 4) {
     opacity: 0;
   }
@@ -419,11 +414,46 @@ body {
   }
 }
 
+/* текстовое поле растёт только вниз */
+textarea.A_Input {
+  display: block;
+  resize: vertical;
+}
+
+/* выпадающий список: свой шеврон справа на линии поля */
+.A_Field--select {
+  position: relative;
+
+  select {
+    appearance: none;
+    padding-right: var(--space-4);
+    cursor: pointer;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: var(--space-1);
+    bottom: calc(var(--space-2-5) + var(--space-1));
+    width: var(--size-chevron);
+    height: var(--size-chevron);
+    border-right: var(--stroke) solid currentcolor;
+    border-bottom: var(--stroke) solid currentcolor;
+    transform: rotate(45deg);
+    pointer-events: none;
+  }
+}
+
 .A_Consent {
   display: flex;
   align-items: center;
   gap: var(--space-1);
   padding-inline: var(--space-1-5);
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
 }
 
 /* галочку рисуем не глифом, а просветом: внутренняя тень оставляет
@@ -502,6 +532,21 @@ body {
   p {
     max-width: var(--size-measure);
   }
+
+  /* абзацы лида идут подряд с шагом 16 */
+  p + p {
+    margin-top: calc(var(--space-2) - var(--head-gap, var(--space-3)));
+  }
+}
+
+/* ===== M_TextStack ===== */
+/* Несколько абзацев подряд (About): первый — крупным кеглем,
+   остальные наборным, шаг 16. */
+
+.M_TextStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 /* ===== M_CardHead ===== */
@@ -804,7 +849,7 @@ body {
 }
 
 .T_Products {
-  height: var(--height-products);
+  min-height: var(--height-products);
   overflow: hidden;
   padding-bottom: var(--space-2-5);
   background: var(--color-accent-bright);
@@ -1484,27 +1529,34 @@ html[data-menu-open] {
 }
 
 /* ===== O_Clients ===== */
-/* Trusted by (Figma 2392:2856): заголовок слева, ссылка справа, под ними
-   лента логотипов во всю ширину окна. */
+/* Trusted By (Figma 2392:2856): заголовок и подзаголовок, под ними лента
+   логотипов во всю ширину окна, под лентой ссылка. */
 
 .O_Clients {
   --line-color: var(--color-deep-30);
 
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: var(--space-3);
-  padding: var(--grid-margin) var(--grid-margin) var(--grid-margin);
+  grid-template-columns: minmax(0, 1fr);
+  padding: var(--grid-margin);
   background: var(--color-surface);
   color: var(--color-ink);
 
-  .M_ClientsLink {
-    color: var(--color-text-deep);
+  .M_ClientsHead {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
   }
 
   .W_Marquee {
-    grid-column: 1 / -1;
+    order: 1;
     margin: var(--tile-pad) calc(-1 * var(--grid-margin)) 0;
+  }
+
+  .M_ClientsLink {
+    order: 2;
+    justify-self: start;
+    margin-top: var(--tile-pad);
+    color: var(--color-text-deep);
   }
 }
 
@@ -1568,9 +1620,17 @@ html[data-menu-open] {
   color: var(--color-ink);
 
   .M_ContactLabel {
+    display: flex;
     grid-column: span 2;
+    flex-direction: column;
+    gap: var(--space-3);
     padding-block: var(--space-10);
+    padding-right: var(--grid-margin);
     color: var(--color-accent-deep);
+
+    p {
+      max-width: var(--size-measure);
+    }
   }
 
   .M_RequestForm {
@@ -1599,6 +1659,38 @@ html[data-menu-open] {
     align-items: center;
     gap: var(--space-2-5);
   }
+
+  /* контакты строкой из четырёх плиток до краёв окна */
+  .M_ContactInfo {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-inline: calc(-1 * var(--grid-margin));
+  }
+}
+
+/* ===== T_ContactCard ===== */
+/* Плитка контакта: значение сверху, название группы подписью снизу, как у
+   карточки цифр. В разметке название — заголовок и стоит первым. */
+
+.T_ContactCard {
+  min-height: var(--height-stat);
+  gap: var(--space-1-25);
+  padding-inline: var(--grid-margin);
+  background: var(--color-surface);
+  color: var(--color-accent-deep);
+
+  h3 {
+    order: 1;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+.T_ContactCard--pale {
+  background: var(--color-accent-soft);
 }
 
 /* ===== O_Footer ===== */
@@ -1687,10 +1779,26 @@ html[data-menu-open] {
     mask: url('./images/logos/supros.svg') no-repeat center / 100% 100%;
   }
 
-  .A_Copyright {
+  /* нижняя строка поверх низа логотипа: ссылки и копирайт */
+  .M_FooterBottom {
     position: absolute;
+    right: var(--grid-margin);
     bottom: var(--space-2-5);
     left: var(--grid-margin);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .M_FooterLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 }
 
