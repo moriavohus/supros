@@ -763,7 +763,6 @@ textarea.A_Input {
    Поля — поля страницы, текст стоит на кромке первой колонки. */
 
 .T_HeroTitle {
-  --bleed-pad: 0px;
   --head-gap: var(--space-2-5);
 
   grid-column: span 2;
@@ -951,13 +950,13 @@ textarea.A_Input {
     }
   }
 
-  /* у крайних карточек поле шире на поле страницы */
+  /* у крайних карточек поле — поле страницы (см. U_Bleed*) */
   &.U_BleedStart .A_SocialPhoto {
-    margin-left: calc(-1 * (var(--grid-margin) + var(--tile-pad)));
+    margin-left: calc(-1 * var(--grid-margin));
   }
 
   &.U_BleedEnd .A_SocialPhoto {
-    margin-right: calc(-1 * (var(--grid-margin) + var(--tile-pad)));
+    margin-right: calc(-1 * var(--grid-margin));
   }
 }
 
@@ -1006,7 +1005,7 @@ textarea.A_Input {
 
 /* ===== O_Loader ===== */
 /* Экран загрузки (по образцу aspensearch.com, loader.js). Тёмная бирюзовая
-   панель на весь экран, в центре монограмма SUPROS: за --loader-load она
+   панель на весь экран, в центре логотип SUPROS: за --loader-load он
    проявляется, вырастая с 0.4, и дальше ещё --loader-scale дорастает с 0.3
    до полного размера — два шага на двух вложенных слоях. Всё время знак
    медленно вращается монетой. Через --loader-load панель стирается влево.
@@ -1037,14 +1036,14 @@ textarea.A_Input {
     animation: loader-scale var(--loader-scale) var(--ease-wipe) var(--loader-load) both;
   }
 
-  /* сам знак — монограмма маской, вращается вокруг вертикали */
+  /* сам знак — логотип SUPROS маской, вращается вокруг вертикали */
   > span::before {
     content: '';
     display: block;
     width: var(--size-loader-mark);
-    aspect-ratio: 476 / 475;
+    aspect-ratio: 120 / 25;
     background: var(--color-white-12);
-    mask: url('./images/logos/monogram.svg') no-repeat center / contain;
+    mask: url('./images/logos/supros.svg') no-repeat center / contain;
     animation: loader-spin var(--loader-spin) linear infinite;
   }
 }
@@ -1130,8 +1129,6 @@ html[data-loading] {
 
   /* знак сидит на акцентной плитке во всю высоту шапки, сам он белый */
   .A_Logo {
-    --bleed-pad: 0px;
-
     display: grid;
     place-items: center;
     align-self: stretch;
@@ -1495,8 +1492,6 @@ html[data-menu-open] {
 }
 
 .T_TrainingHead {
-  --bleed-pad: 0px;
-
   grid-column: span 1;
   justify-content: flex-start;
   align-items: flex-start;
@@ -1505,26 +1500,21 @@ html[data-menu-open] {
   background: var(--color-surface);
 }
 
-/* Фото без фона прижато к низу и левому краю колонки. Плитка — div, а не
-   picture: WebKit не растягивает picture по ширине ячейки сетки, и плитка не
-   доходила бы до края окна. picture только выбирает кадр и в раскладке не
-   участвует. */
+/* Чертёж трубы в изоляции (Figma 1Zd6…:149:808) — заливка плитки до краёв,
+   включая поле страницы, и обрезается по ним. Фон плитки — цвет фона
+   чертежа, поэтому шва нет при любой пропорции. */
 .T_TrainingPhoto {
-  --bleed-pad: 0px;
-
-  display: flex;
+  position: relative;
   grid-column: span 1;
-  align-items: flex-end;
+  overflow: hidden;
   background: var(--color-accent-dark);
 
-  picture {
-    display: contents;
-  }
-
   img {
-    display: block;
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
@@ -1812,16 +1802,20 @@ html[data-menu-open] {
    (U_Bleed*). Контейнер, чьи дети сами держат поля, только раздвигается
    (U_Extend*). На телефоне сетка в одну колонку и крайними становятся все —
    отсюда U_BleedSm для плиток, которые на десктопе стоят в середине.
-   Утилиты в конце файла, чтобы шорткат padding у компонентов их не затирал. */
+   Утилиты в конце файла, чтобы шорткат padding у компонентов их не затирал.
+
+   Границы текста на всём сайте — поля страницы слева и справа. Поэтому у
+   крайней плитки поле со стороны края окна ровно поле страницы, без поля
+   плитки: её текст стоит на тех же вертикалях, что заголовки секций. */
 
 .U_BleedStart {
   margin-left: calc(-1 * var(--grid-margin));
-  padding-left: calc(var(--grid-margin) + var(--bleed-pad, var(--tile-pad)));
+  padding-left: var(--grid-margin);
 }
 
 .U_BleedEnd {
   margin-right: calc(-1 * var(--grid-margin));
-  padding-right: calc(var(--grid-margin) + var(--bleed-pad, var(--tile-pad)));
+  padding-right: var(--grid-margin);
 }
 
 .U_ExtendEnd {

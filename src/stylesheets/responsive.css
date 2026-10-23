@@ -201,18 +201,11 @@
     --color-glass: var(--color-glass-m);
   }
 
-  /* Ритм страницы: секции разделены белым промежутком 80. Полоса «Our
-     service areas» — шапка Engineering solutions, между ними промежутка нет. */
+  /* Ритм страницы (Figma 1Zd6…:1:1884): секции идут встык, у каждой
+     сверху поле 50; полоса «Our service areas» — шапка Engineering
+     solutions со своим полем 16. */
   body {
     background: var(--color-surface);
-  }
-
-  .W_Page > :is(section, footer) + :is(section, footer) {
-    margin-top: var(--space-10);
-  }
-
-  .W_Page > .O_Band + .O_Solutions {
-    margin-top: 0;
   }
 
   /* знак в шапке — 20 от краёв плитки с обеих сторон */
@@ -326,10 +319,11 @@
     padding: var(--space-6-25) 0;
     background: var(--color-surface-soft);
 
+    /* метка — строка 58: поля 16 сверху и снизу */
     .T_NumberLabel {
       height: auto;
-      margin: 0 0 var(--space-4);
-      padding: 0 var(--grid-margin);
+      margin: 0;
+      padding: var(--space-2) var(--grid-margin);
       background: none;
       color: var(--color-text-strong);
 
@@ -364,7 +358,7 @@
     padding: var(--space-6-25) var(--grid-margin);
 
     .M_ClientsTitle {
-      padding-block: var(--space-2);
+      padding-block: 0;
     }
 
     .W_Marquee {
@@ -379,51 +373,49 @@
 
   /* ----- O_Solutions (2414:3799 + 2414:3807) ----- */
   .O_Solutions .M_SolutionsIntro {
+    --head-gap: var(--space-2);
+
     position: static;
     padding: var(--grid-margin) 0;
   }
 
+  /* описание плашки — 17/22 на 40% (Figma 1Zd6…:1:1943) */
   .T_Service {
     min-height: 0;
+
+    .A_CardLead {
+      opacity: 0.4;
+    }
   }
 
-  /* ----- O_Training (2414:3866 + 2414:3844): шапка, ниже текст и тёмная
-     плитка с фото в две колонки — в макете 233 и 160 из 393 ----- */
+  /* ----- O_Training (Figma 1Zd6…:23:823): в одну колонку — шапка, текст
+     со ссылкой во всю ширину, ниже полоса чертежа ----- */
   .O_Training {
-    grid-template-columns: minmax(0, 233fr) minmax(0, 160fr);
     min-height: 0;
     padding-inline: 0;
 
     > .T_TrainingHead {
       gap: var(--space-3);
       margin-inline: 0;
-      padding: var(--grid-margin);
+      padding: var(--space-6-25) var(--grid-margin) var(--grid-margin);
     }
 
     > .M_TrainingBody {
-      grid-column: 1;
       align-items: stretch;
       justify-content: flex-start;
       gap: var(--space-4);
       padding: var(--grid-margin);
     }
 
-    /* фото — заливка плитки поверх тёмной бирюзы: свой кадр, прижат к
-       низу и обрезан по краям плитки, высоту задаёт колонка текста */
+    /* в кадре торец трубы со слоями изоляции: в макете чертёж сдвинут
+       вверх на 165 из 269 лишних пикселей высоты */
     > .T_TrainingPhoto {
-      position: relative;
-      grid-column: 2;
-      overflow: hidden;
+      height: var(--height-drawing-m);
       margin-inline: 0;
       padding: 0;
 
       img {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center bottom;
+        object-position: center 61%;
       }
     }
 
@@ -440,7 +432,7 @@
   /* ----- O_Materials (1Zd6…:1:2000): шапка, под ней две стеклянные
      плитки в ряд, ниже во всю ширину плитка продуктов ----- */
   .O_Materials .M_SectionHead {
-    padding-block: var(--tile-pad);
+    padding-block: var(--space-6-25) var(--tile-pad);
     padding-right: 0;
 
     /* лид прижат к заголовку: в макете они парой с шагом 8 */
@@ -487,6 +479,10 @@
     .A_StackMore {
       display: none;
     }
+  }
+
+  .O_Social .M_SectionHead {
+    padding-top: var(--space-6-25);
   }
 
   /* ----- O_Social (1Zd6…:1:2089): наведения нет, поэтому все карточки
@@ -536,7 +532,7 @@
   /* ----- O_Contact (2414:4085): заголовок над формой, всё в столбик ----- */
   .O_Contact {
     row-gap: var(--space-5);
-    padding-block: 0;
+    padding-block: var(--space-6-25) 0;
 
     .M_ContactLabel {
       padding-block: 0;
@@ -550,6 +546,7 @@
 
     .M_FieldList {
       grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
     }
 
     .A_Field {
@@ -563,18 +560,20 @@
       gap: var(--space-1);
     }
 
-    /* в макете нижняя линия лежит внутри поля 20 + 21 + 20 */
+    /* поле ввода ниже, чем в макете: 8 + строка + 8, нижняя линия — внутри
+       нижнего поля */
     .A_Input {
-      padding-bottom: calc(var(--space-2-5) - var(--stroke));
+      padding-block: var(--space-1) calc(var(--space-1) - var(--stroke));
     }
 
     .A_Consent {
       padding-block: var(--space-0-75) var(--space-0-875);
     }
 
-    /* контакты столбиком, плитки по 100 (Figma 1Zd6…:1:2168) */
+    /* контакты столбиком, плитки по 100, в 16 от формы (Figma 1Zd6…:1:2168) */
     .M_ContactInfo {
       grid-template-columns: minmax(0, 1fr);
+      margin-top: calc(var(--space-2) - var(--space-5));
     }
 
     .T_ContactCard {
@@ -587,7 +586,7 @@
      политика с шагом 16 ----- */
   .O_Footer {
     gap: var(--space-2);
-    padding: var(--space-10) 0 var(--space-2);
+    padding: var(--space-6-25) 0 var(--space-2);
 
     .M_MenuSections {
       padding: 0 var(--grid-margin);
