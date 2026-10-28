@@ -514,35 +514,36 @@
         </div>
       </section>
 
-      <!-- Materials Supply (Figma 2414:4192, телефон 2414:3875): фото склада
-           фоном, поверх шапка секции и плитки. TODO: девять утверждённых групп
+      <!-- Materials Supply (Figma 1Zd6…:163:805): слева бокс с текстом на
+           фоне видео склада, справа плитки стеклом поверх снимка склада. TODO: девять утверждённых групп
            материалов — клиент ещё не прислал перечень, поэтому у карточек в
            стопке пока нет названий. -->
       <section class="O_Materials W_Grid" id="materials">
-        <img
-          class="A_SupplyPhoto U_Layer"
-          src="/src/images/supply/warehouse.jpg"
-          alt=""
-          width="2400"
-          height="1171"
-          loading="lazy"
-          decoding="async"
-        />
-
         <div class="M_SectionHead">
+          <!-- фон бокса с текстом — видеообзор склада без звука, по кругу;
+               играет, только пока блок на экране (video.js), до загрузки
+               виден первый кадр -->
+          <video
+            class="A_SupplyVideo"
+            poster="/video/warehouse-poster.jpg"
+            width="720"
+            height="1280"
+            muted
+            loop
+            playsinline
+            preload="none"
+            aria-hidden="true"
+            data-play-in-view
+          >
+            <source src="/video/warehouse.webm" type="video/webm" />
+            <source src="/video/warehouse.mp4" type="video/mp4" />
+          </video>
           <span class="A_Badge Subtitle">3</span>
           <h2 class="Display Display--m" data-reveal>Materials supply</h2>
           <p class="Subtitle mBody" data-reveal>
-            SUPROS supplies advanced thermal insulation materials for industrial projects across
-            Kazakhstan.
-          </p>
-          <p class="Body Body--l mBody" data-reveal>
-            Working with leading international manufacturers, we provide solutions tailored to
-            project specifications, technical requirements and operating conditions.
-          </p>
-          <p class="Body Body--l mBody" data-reveal>
-            Our warehouse in Atyrau supports efficient order fulfillment and timely material
-            deliveries.
+            SUPROS supplies thermal insulation materials from leading international manufacturers,
+            matched to your project specifications and delivered on time from our own warehouse
+            in Atyrau.
           </p>
         </div>
 
@@ -1087,6 +1088,7 @@
     <script type="module" src="/src/javascript/loader.js"></script>
     <script type="module" src="/src/javascript/reveal.js"></script>
     <script type="module" src="/src/javascript/counter.js"></script>
+    <script type="module" src="/src/javascript/video.js"></script>
     <script type="module" src="/src/javascript/nav.js"></script>
     <script type="module" src="/src/javascript/hero.js"></script>
     <script type="module" src="/src/javascript/footer.js"></script>

@@ -833,18 +833,19 @@ textarea.A_Input {
 }
 
 /* ===== T_SupplyFact / T_Products ===== */
-/* Плитки Materials Supply без скруглений. Стеклянная — белый 12% с
-   размытием 20: значение сверху, подпись снизу, у партнёров между ними
-   бегущая строка логотипов. Акцентная — яркая бирюза со стопкой продуктов. */
+/* Плитки Materials Supply без скруглений. Стеклянная — серо-бирюзовая на
+   30% с размытием 40 (Figma 1Zd6…:163:805): значение сверху, подпись снизу,
+   у партнёров между ними бегущая строка логотипов. Акцентная — яркая
+   бирюза со стопкой продуктов. */
 
 /* в макете содержимое разнесено по высоте без промежутков — шаг минимальный,
    иначе значение, лента и подпись не помещаются в плитку */
 .T_SupplyFact {
   gap: var(--space-1);
   height: var(--height-fact);
-  background: var(--color-white-12);
+  background: var(--color-glass-supply);
   color: var(--color-text-inverse);
-  backdrop-filter: blur(var(--blur-l));
+  backdrop-filter: blur(var(--blur-xl));
 }
 
 .T_Products {
@@ -1434,11 +1435,12 @@ html[data-menu-open] {
 }
 
 /* ===== O_Materials ===== */
-/* Materials Supply (Figma 2414:4192): фото склада на всю секцию. Слева на
-   две колонки шапка секции, справа на две колонки, до края окна, столбиком
-   стоят плитки: две стеклянные с цифрами и бирюзовая с продуктами. Высоту
-   секции задают плитки. Фото в макете отзеркалено и баннер SUPROS читался
-   задом наперёд — в файле оно развёрнуто обратно, затемнение 20% в снимке. */
+/* Materials Supply (Figma 1Zd6…:163:805). Слева на две колонки бокс с
+   текстом, его фон — видеообзор склада от края окна до середины секции.
+   Справа на две колонки, до края окна, столбиком стоят плитки: две
+   стеклянные с цифрами и бирюзовая с продуктами; под стеклом — снимок
+   склада с высоты. Высоту секции задают плитки, бокс с текстом
+   тянется на неё же. */
 
 .O_Materials {
   position: relative;
@@ -1447,23 +1449,34 @@ html[data-menu-open] {
   overflow: clip;
   color: var(--color-text-inverse);
 
-  .A_SupplyPhoto {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center bottom;
-  }
-
   .M_SectionHead {
+    position: relative;
+    isolation: isolate;
     grid-column: span 2;
+    align-self: stretch;
     padding-block: var(--grid-margin);
     padding-right: var(--grid-margin);
+  }
+
+  /* видео — от края окна (поле страницы слева) до конца бокса; притемнено
+     на 20%, чтобы белый текст поверх читался */
+  .A_SupplyVideo {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: calc(-1 * var(--grid-margin));
+    width: calc(100% + var(--grid-margin));
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
   }
 
   .M_SupplyTiles {
     display: flex;
     grid-column: span 2;
     flex-direction: column;
+    background: url('./images/supply/aerial.jpg') center / cover;
   }
 }
 
