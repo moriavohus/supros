@@ -127,6 +127,12 @@ body {
   --icon-size: var(--size-icon-l);
 }
 
+/* та же стрелка без подложки — подложку даёт A_IconPad */
+.A_Icon--diagonal-glyph {
+  --icon: url('./images/icons/arrow-diagonal-glyph.svg');
+  --icon-size: var(--size-icon-xs);
+}
+
 .A_Icon--download {
   --icon: url('./images/icons/download.svg');
   --icon-size: var(--size-icon-glyph);
@@ -857,37 +863,30 @@ textarea.A_Input {
 }
 
 /* ===== T_SocialCard ===== */
-/* Карточка направления (компонент 2392:2648), два варианта. Default —
-   светлая, название внизу. Variant2 — бирюзовая: сверху название и
-   описание, снизу ссылка со стрелкой. По умолчанию все карточки светлые,
-   бирюзовой становится та, что под курсором или в фокусе.
+/* Карточка направления (компонент 2392:2648), два вида с одной раскладкой:
+   сверху название и описание, посередине фото (1Zd6…:1:2427) во всю ширину
+   карточки, до её краёв, снизу ссылка со стрелкой. На десктопе фото стоит
+   над текстом (order), на телефоне — между текстом и ссылкой. Default — светлый,
+   тёмный текст; бирюзовой становится карточка под курсором или в фокусе.
 
-   Переход: бирюзовая заливка поднимается снизу (подложка ::before
-   масштабируется от нижнего края — анимация на композиторе, раскладку не
-   дёргает), заголовок едет вместе с ней снизу наверх, описание раскрывается
-   под ним, ссылка проявляется последней.
-
-   Фото (1Zd6…:1:2427) видно только у активной карточки: стоит между
-   описанием и ссылкой во всю ширину карточки, до её краёв, и открывается
-   снизу вверх вслед за заливкой. В раскладке фото занимает всё место между
-   текстом и ссылкой, поэтому в светлом варианте оно просто скрыто.
-
-   Заголовок всегда стоит наверху раскладки, а в светлом варианте опущен
-   трансформом на высоту карточки без полей минус собственную высоту.
-   Описание свёрнуто строкой сетки 0fr, поэтому в светлом варианте высота
-   блока — ровно заголовок, и он ложится точно на нижнее поле. */
+   Раньше светлая карточка прятала фото и описание, и посетитель не знал, что
+   они есть. Теперь всё видно сразу, а наведение меняет только цвет: бирюзовая
+   заливка опускается сверху (подложка ::before масштабируется от верхнего
+   края — анимация на композиторе, раскладку не дёргает) и первой накрывает
+   текст, который в этот же момент светлеет; снимок чуть приближается. */
 
 .T_SocialCard {
-  --social-shift: calc(var(--height-block) - 2 * var(--tile-pad) - 100%);
-
   position: relative;
   isolation: isolate;
   grid-column: span 1;
-  height: var(--height-block);
+  min-height: var(--height-block);
   overflow: hidden;
   background: var(--color-surface-soft);
   color: var(--color-ink);
   transition: color var(--transition-base);
+
+  /* полоска под ссылкой на светлом фоне */
+  --line-color: var(--color-ink-08);
 
   &::before {
     content: '';
@@ -896,50 +895,45 @@ textarea.A_Input {
     inset: 0;
     background: var(--color-accent-deep);
     transform: scaleY(0);
-    transform-origin: center bottom;
+    transform-origin: center top;
     transition: transform var(--transition-base);
   }
 
   .M_CardHead {
     display: grid;
-    grid-template-rows: auto 0fr;
     gap: 0;
-    transform: translateY(var(--social-shift));
-    transition:
-      transform var(--transition-base),
-      grid-template-rows var(--transition-base);
   }
 
   .A_CardLead {
-    min-height: 0;
-    overflow: hidden;
     padding-top: var(--space-1);
-    opacity: 0;
-    transition: opacity var(--transition-base);
+    opacity: 0.6;
   }
 
+  /* ссылка всегда на нижнем поле, сколько бы строк ни заняло описание */
   .A_LinkLine {
-    opacity: 0;
-    transform: translateY(var(--space-2));
-    transition:
-      opacity var(--transition-base),
-      transform var(--transition-base);
+    margin-top: auto;
   }
 
-  /* шаг до описания 8, до ссылки 2 — вместо общего шага карточки 24;
-     по бокам фото выходит на поле карточки */
+  /* подложка стрелки: на светлой карточке полупрозрачная белая, на
+     бирюзовой — белая на 10%, как у остальных стрелок сайта. Отдельным
+     элементом, потому что иконка — маска цветом текста */
+  .A_IconPad {
+    display: grid;
+    border-radius: var(--radius-s);
+    background: var(--color-white-60);
+    transition: background var(--transition-base);
+  }
+
+  /* фото — шапка карточки: стоит первым, выходит на верхнее и боковые
+     поля и у всех карточек одной высоты, так что снимки идут ровной лентой */
   .A_SocialPhoto {
     position: relative;
     display: block;
-    flex: 1 1 0;
-    min-height: 0;
-    margin: calc(var(--space-1) - var(--space-3)) calc(-1 * var(--tile-pad))
-      calc(var(--stroke) - var(--space-3));
-    opacity: 0;
-    clip-path: inset(100% 0 0);
-    transition:
-      opacity var(--transition-base),
-      clip-path var(--transition-base);
+    flex: none;
+    order: -1;
+    height: var(--height-social-photo);
+    overflow: hidden;
+    margin: calc(-1 * var(--tile-pad)) calc(-1 * var(--tile-pad)) 0;
 
     /* снимок заполняет рамку, рамку задаёт раскладка карточки */
     img {
@@ -948,7 +942,14 @@ textarea.A_Input {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform var(--transition-slow);
     }
+  }
+
+  /* карточки стоят встык, как все блоки сайта; чтобы светлые не сливались в
+     одну полосу, фон чередуется через одну */
+  &:nth-child(even) {
+    background: var(--color-surface-muted);
   }
 
   /* у крайних карточек поле — поле страницы (см. U_Bleed*) */
@@ -963,31 +964,20 @@ textarea.A_Input {
 
 .T_SocialCard:hover,
 .T_SocialCard:focus-visible {
+  --line-color: var(--color-white-30);
+
   color: var(--color-text-inverse);
 
   &::before {
     transform: scaleY(1);
   }
 
-  .M_CardHead {
-    grid-template-rows: auto 1fr;
-    transform: translateY(0);
+  .A_SocialPhoto img {
+    transform: scale(1.04);
   }
 
-  .A_CardLead {
-    opacity: 0.6;
-  }
-
-  .A_SocialPhoto {
-    opacity: 1;
-    clip-path: inset(0);
-  }
-
-  /* ссылка появляется, когда заливка уже поднялась */
-  .A_LinkLine {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: var(--delay-follow);
+  .A_IconPad {
+    background: var(--color-white-10);
   }
 }
 
@@ -1583,6 +1573,13 @@ html[data-menu-open] {
   .M_SectionHead {
     padding: var(--grid-margin);
     color: var(--color-accent-deep);
+
+    /* лид — до середины экрана: половина ширины секции без левого поля,
+       то есть половина полосы между полями. Заголовок в две строки, перенос
+       после «work,» стоит в разметке, поэтому он шире лида */
+    p {
+      max-width: 50%;
+    }
   }
 }
 

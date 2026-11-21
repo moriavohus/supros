@@ -500,6 +500,15 @@
 
   .O_Social .M_SectionHead {
     padding-top: var(--space-6-25);
+
+    p {
+      max-width: none;
+    }
+
+    /* на узком экране заголовок переносится сам */
+    h2 br {
+      display: none;
+    }
   }
 
   /* ----- O_Social (1Zd6…:1:2089): наведения нет, поэтому все карточки
@@ -508,7 +517,7 @@
     --social-shift: 0px;
     --line-color: var(--color-white-30);
 
-    height: auto;
+    min-height: 0;
     gap: var(--space-2-5);
     padding-block: var(--tile-pad);
     color: var(--color-text-inverse);
@@ -530,9 +539,9 @@
       transform: none;
     }
 
-    .A_Icon {
-      --icon: url('../images/icons/arrow-diagonal-s.svg');
-      --icon-size: var(--size-icon-xs);
+    /* карточка всегда бирюзовая — подложка как у наведённой */
+    .A_IconPad {
+      background: var(--color-white-10);
     }
   }
 
@@ -540,6 +549,8 @@
      обычный шаг карточки */
   .M_SocialGrid .T_SocialCard .A_SocialPhoto {
     flex: none;
+    order: 0;
+    height: auto;
     aspect-ratio: 2 / 1;
     margin: 0 calc(-1 * var(--grid-margin));
     opacity: 1;
